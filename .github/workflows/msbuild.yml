@@ -8,9 +8,7 @@ name: MSBuild
 on:
   workflow_dispatch: 
   push:
-    branches: [ "arm64-build" ]
   pull_request:
-    branches: [ "arm64-build" ]
 
 env:
   # Path to the solution file relative to the root of the project.
