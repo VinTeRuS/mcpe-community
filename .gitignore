@@ -8,4 +8,7 @@ dist/
 *.obj
 *.a
 *.exe
+
 build/
+
+src/options.txt
