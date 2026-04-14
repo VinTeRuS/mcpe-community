@@ -18,11 +18,11 @@ void Options::initDefaultValues() {
 	fixedCamera = false;
 	flySpeed = 1;
 	cameraSpeed = 1;
-	guiScale = 0;
+	guiScale = 1;
 
-	useMouseForDigging = true;
+	useMouseForDigging = false;
 	destroyVibration = true;
-	isLeftHanded = false;
+	isLeftHanded = true;
 
 	isJoyTouchArea = false;
 
