@@ -146,8 +146,13 @@ void GameRenderer::render(float a) {
 		bool screenCovering = mc->screen && !mc->screen->passEvents;
 		if (!screenCovering)
 		{
-			mc->player->turn(deltaT * _rotXlast, deltaT * _rotYlast * yAxis);
+			mc->player->turn(deltaT * _rotX, deltaT * _rotY * yAxis);
 		}
+
+		_rotXlast = _rotX;
+		_rotYlast = _rotY;
+		_rotX = 0;
+		_rotY = 0;
     }
 
 	int xMouse = (int)(Mouse::getX() * Gui::InvGuiScale);

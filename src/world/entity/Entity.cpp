@@ -448,6 +448,9 @@ void Entity::turn( float xo, float yo )
 	if (xRot < -90) xRot = -90;
 	if (xRot > 90) xRot = 90;
 
+	while (yRot < 0) yRot += 360;
+	while (yRot >= 360) yRot -= 360;
+
 	xRotO += xRot - xRotOld;
 	yRotO += yRot - yRotOld;
 }
@@ -458,6 +461,9 @@ void Entity::interpolateTurn( float xo, float yo )
 	xRot -= yo * 0.15f;
 	if (xRot < -90) xRot = -90;
 	if (xRot > 90) xRot = 90;
+
+	while (yRot < 0) yRot += 360;
+	while (yRot >= 360) yRot -= 360;
 }
 
 void Entity::tick()
