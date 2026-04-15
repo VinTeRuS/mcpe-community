@@ -5,13 +5,14 @@
 
 #include "../../locale/I18n.h"
 #include "../../util/Random.h"
+#include "../../platform/log.h"
 #include "UseAnim.h"
+#include "ItemInstance.h"
 class Level;
 class Tile;
 class Entity;
 class Mob;
 class Player;
-class ItemInstance;
 
 class ShearsItem;
 
@@ -370,7 +371,9 @@ public:
     }
 
     virtual std::string getName() const {
-        return I18n::get(getDescriptionId() + ".name");
+        std::string result = I18n::getDescriptionString(ItemInstance(this));
+        fprintf(stderr, "Item::getName() -> '%s' for id=%d\n", result.c_str(), id);
+        return result;
     }
 
 	virtual void releaseUsing( ItemInstance* itemInstance, Level* level, Player* player, int durationLeft ) {}

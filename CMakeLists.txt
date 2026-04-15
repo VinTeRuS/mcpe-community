@@ -89,9 +89,14 @@ list(REMOVE_ITEM COMMON_SOURCES src/raknet/AutopatcherServer.cpp)
 list(REMOVE_ITEM COMMON_SOURCES src/raknet/AutopatcherClient.cpp)
 list(REMOVE_ITEM COMMON_SOURCES src/raknet/Rackspace.cpp)
 
+# Always include touch screens for Linux (they work with mouse too)
+if(LINUX)
+    # Keep touch screens - they have better styled UI
+else()
 if(NOT BUILD_TOUCH)
     list(REMOVE_ITEM CLIENT_GUI_SCREENS_FILES ${CLIENT_GUI_TOUCH_FILES})
     list(REMOVE_ITEM CLIENT_SOURCES ${CLIENT_GUI_TOUCH_FILES})
+endif()
 endif()
 
 set(PLATFORM_AUDIO_FILES
@@ -214,6 +219,9 @@ endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_definitions(-DDEBUG_BUILD)
+    if(UNIX AND NOT APPLE)
+        add_definitions(-DLINUX_LOG_FILE)
+    endif()
 endif()
 
 if(MSVC)

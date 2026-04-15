@@ -1,5 +1,6 @@
 #include "TextEditScreen.h"
 #include "../../../world/level/tile/entity/SignTileEntity.h"
+#include "../../../world/level/Level.h"
 #include "../../../AppPlatform.h"
 #include "../../Minecraft.h"
 #include "../../renderer/tileentity/TileEntityRenderDispatcher.h"
@@ -9,10 +10,12 @@
 #include "../components/Button.h"
 #include "../../../network/Packet.h"
 #include "../../../network/RakNetInstance.h"
-TextEditScreen::TextEditScreen( SignTileEntity* signEntity )
+ TextEditScreen::TextEditScreen( SignTileEntity* signEntity )
  : sign(signEntity), isShowingKeyboard(false), frame(0), line(0), btnClose(1, "") {
-
-}
+	signX = signEntity ? signEntity->x : 0;
+	signY = signEntity ? signEntity->y : 0;
+	signZ = signEntity ? signEntity->z : 0;
+ }
 TextEditScreen::~TextEditScreen() {
 
 }
@@ -48,6 +51,13 @@ bool TextEditScreen::handleBackEvent( bool isDown ) {
 }
 
 void TextEditScreen::render( int xm, int ym, float a ) {
+	sign = (SignTileEntity*) minecraft->level->getTileEntity(signX, signY, signZ);
+	if (!sign) {
+		LOGW("TextEditScreen::render - sign entity not found, closing screen");
+		minecraft->setScreen(NULL);
+		return;
+	}
+	
 	glDepthMask(GL_FALSE);
 	renderBackground();
 	glPushMatrix();
@@ -84,7 +94,6 @@ void TextEditScreen::render( int xm, int ym, float a ) {
 	glTranslatef(0, 2 ,0);
 	glScalef2(textScale, textScale, 1);
 	for(int i = 0; i < 4; ++i) {
-		//drawCenteredString(font, sign->messages[a], 32.0f, 10 * a, 0xFF000000);
 		std::string msg = sign->messages[i];
 		if (i == sign->selectedLine && msg.length() < 14) {
 			std::string s = "> " + msg + " <";
@@ -94,7 +103,6 @@ void TextEditScreen::render( int xm, int ym, float a ) {
 		}
 	}
 	sign->selectedLine  = -1;
-	//font->draw("Hej", minecraft->width / 2, 100, 0xFFFFFFFF, false);
 	
 	glPopMatrix();
 	glEnable(GL_CULL_FACE);
@@ -102,7 +110,6 @@ void TextEditScreen::render( int xm, int ym, float a ) {
 	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
 
-	//glEnable(GL_DEPTH_TEST);
 	super::render(xm, ym, a);
 }
 

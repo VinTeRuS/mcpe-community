@@ -553,3 +553,9 @@ void CraftButton::renderBg(Minecraft* minecraft, int xm, int ym) {
 	else
 		bg->draw(Tesselator::instance, (float)x, (float)y);
 }
+
+void PaneCraftingScreen::mouseWheelEvent(int x, int y, int delta) {
+	if (pane && pane->isPointInside((float)x, (float)y)) {
+		pane->scrollBy(delta);
+	}
+}

@@ -730,3 +730,37 @@ bool ScrollingPane::queryHoldTime(int* gridItem, int* heldMs) {
 
 	return false;
 }
+
+void ScrollingPane::updateBbox(const IntRectangle& newBbox) {
+	bbox = newBbox;
+	area = RectangleArea((float)bbox.x, (float)bbox.y, (float)(bbox.x + bbox.w), (float)(bbox.y + bbox.h));
+	bboxArea = area;
+}
+
+void ScrollingPane::scrollBy(int delta) {
+	if (!_scrollEnabled)
+		return;
+
+	adjustContentSize();
+	minPoint.set((float)(size.w - adjustedContentSize.w), (float)(size.h - adjustedContentSize.h), 0);
+	
+	float scrollAmount = (float)(itemBbox.h * 3) * (delta > 0 ? 1.0f : -1.0f);
+	float newOffsetY = _contentOffset.y + scrollAmount;
+
+	if (isNotSet(SF_HardLimits)) {
+		newOffsetY = Mth::Max(minPoint.y, newOffsetY);
+		newOffsetY = Mth::Min(0.0f, newOffsetY);
+	} else {
+		newOffsetY = Mth::Min(Mth::Max(minPoint.y, newOffsetY), 0.0f);
+	}
+
+	setContentOffset(_contentOffset.x, newOffsetY);
+
+	if (isSet(SF_ShowScrollbar) && isNotSet(SF_LockY)) {
+		vScroll.fading = 1;
+	}
+}
+
+bool ScrollingPane::isPointInside(float x, float y) const {
+	return bboxArea.isInside(x, y);
+}

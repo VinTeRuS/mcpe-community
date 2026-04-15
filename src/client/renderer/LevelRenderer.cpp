@@ -935,38 +935,50 @@ void LevelRenderer::renderEntities(Vec3 cam, Culler* culler, float a) {
 	glEnableClientState2(GL_TEXTURE_COORD_ARRAY);
 
 	TIMER_POP_PUSH("entities");
-	const EntityList& entities = level->getAllEntities();
-	totalEntities = entities.size();
-	if (totalEntities > 0) {
-		Entity** toRender = new Entity*[totalEntities];
-		for (int i = 0; i < totalEntities; i++) {
-			Entity* entity = entities[i];
+    const EntityList& entities = level->getAllEntities();
+    totalEntities = entities.size();
+    LOGI("renderEntities: totalEntities=%d, thirdPersonView=%d", totalEntities, mc->options.thirdPersonView);
+    if (totalEntities > 0) {
+        Entity** toRender = new Entity*[totalEntities];
+        for (int i = 0; i < totalEntities; i++) {
+            Entity* entity = entities[i];
+            bool shouldR = entity->shouldRender(cam);
+            bool visible = culler->isVisible(entity->bb);
+            LOGI("renderEntities: entity[%d] type=%d shouldRender=%d culler=%d", i, entity->entityRendererId, shouldR, visible);
 
-			if (entity->shouldRender(cam) && culler->isVisible(entity->bb))
-			{
-				if (entity == mc->cameraTargetPlayer && mc->options.thirdPersonView == 0 && mc->cameraTargetPlayer->isPlayer() && !((Player*)mc->cameraTargetPlayer)->isSleeping()) continue;
-				if (entity == mc->cameraTargetPlayer && !mc->options.thirdPersonView)
-					continue;
-				if (!level->hasChunkAt(Mth::floor(entity->x), Mth::floor(entity->y), Mth::floor(entity->z)))
-					continue;
+            if (shouldR && visible)
+            {
+                if (entity == mc->cameraTargetPlayer && mc->options.thirdPersonView == 0 && mc->cameraTargetPlayer->isPlayer() && !((Player*)mc->cameraTargetPlayer)->isSleeping()) {
+                    LOGI("renderEntities: skipping first-person player");
+                    continue;
+                }
+                if (entity == mc->cameraTargetPlayer && !mc->options.thirdPersonView) {
+                    LOGI("renderEntities: skipping player (thirdPersonView=0)");
+                    continue;
+                }
+                if (!level->hasChunkAt(Mth::floor(entity->x), Mth::floor(entity->y), Mth::floor(entity->z))) {
+                    LOGI("renderEntities: no chunk at entity location");
+                    continue;
+                }
 
-				toRender[renderedEntities++] = entity;
-				//EntityRenderDispatcher::getInstance()->render(entity, a);
-			}
-		}
+                toRender[renderedEntities++] = entity;
+            }
+        }
+        LOGI("renderEntities: renderedEntities=%d", renderedEntities);
 
-		if (renderedEntities > 0) {
-			std::sort(&toRender[0], &toRender[renderedEntities], entityRenderPredicate);
-			for (int i = 0; i < renderedEntities; ++i) {
-				EntityRenderDispatcher* disp = EntityRenderDispatcher::getInstance();
-				disp->render(toRender[i], a);
-			}
-		}
+        if (renderedEntities > 0) {
+            std::sort(&toRender[0], &toRender[renderedEntities], entityRenderPredicate);
+            for (int i = 0; i < renderedEntities; ++i) {
+                EntityRenderDispatcher* disp = EntityRenderDispatcher::getInstance();
+                disp->render(toRender[i], a);
+            }
+        }
 
 		delete[] toRender;
 	}
 
     TIMER_POP_PUSH("tileentities");
+    LOGI("renderEntities: tileEntities count=%d", (int)level->tileEntities.size());
     for (unsigned int i = 0; i < level->tileEntities.size(); i++) {
         TileEntityRenderDispatcher::getInstance()->render(level->tileEntities[i], a);
     }

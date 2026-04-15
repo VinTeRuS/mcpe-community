@@ -472,3 +472,11 @@ void ChestScreen::drawSlotItemAt( Tesselator& t, const ItemInstance* item, int x
 		minecraft->gui.renderSlotText(item, xx + 3, yy + 3, true, true);
 	}
 }
+
+void ChestScreen::mouseWheelEvent(int x, int y, int delta) {
+	if (inventoryPane && inventoryPane->isPointInside((float)x, (float)y)) {
+		inventoryPane->scrollBy(delta);
+	} else if (chestPane && chestPane->isPointInside((float)x, (float)y)) {
+		chestPane->scrollBy(delta);
+	}
+}

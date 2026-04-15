@@ -13,7 +13,7 @@ public:
 	{}
 
 	virtual ~IArea() {};
-	virtual bool isInside(float x, float y) = 0;
+	virtual bool isInside(float x, float y) const = 0;
 	//virtual void expandRectToInclude(float& l, float& t, float& r, float& b) {}
 
 	bool deleteMe;
@@ -97,7 +97,7 @@ public:
 		delete[] _y;
 	}
 
-    virtual bool isInside(float x, float y)
+    virtual bool isInside(float x, float y) const
     {
 	  bool c = false;
       for (int i = 0, j = _numPoints-1; i < _numPoints; j = i++) {
@@ -126,7 +126,7 @@ public:
 		_y1(y1)
 	{}
 
-	virtual bool isInside(float x, float y) {
+	virtual bool isInside(float x, float y) const {
 		return x >= _x0 && x <= _x1
 			&& y >= _y0 && y <= _y1;
 	}
@@ -193,7 +193,7 @@ public:
 	void include(IArea* area) { _includes.push_back(area); }
 	void exclude(IArea* area) { _excludes.push_back(area); }
 
-	virtual bool isInside(float x, float y) {
+	virtual bool isInside(float x, float y) const {
 		for (unsigned int i = 0; i < _includes.size(); ++i)
 			if (_includes[i]->isInside(x, y)) {
 				bool good = true;

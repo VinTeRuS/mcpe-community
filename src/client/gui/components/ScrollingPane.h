@@ -54,6 +54,11 @@ public:
 	bool getGridItemFor_slow(int itemIndex, GridItem& out);
 
 	void setSelected(int id, bool selected);
+	
+	void updateBbox(const IntRectangle& newBbox);
+	void scrollBy(int delta);
+	bool isPointInside(float x, float y) const;
+	IntRectangle getBbox() const { return bbox; }
 
 	// This function is called with all visible GridItems. The base
 	// implementation just dispatches each item to renderItem in y,x order

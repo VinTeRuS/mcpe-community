@@ -73,8 +73,11 @@ void TileEntityRenderDispatcher::render( TileEntity* e, float a )
 void TileEntityRenderDispatcher::render( TileEntity* entity, float x, float y, float z, float a )
 {
 	TileEntityRenderer* renderer = getRenderer(entity);
+	LOGI("TileEntityRenderDispatcher::render: entity=%p renderer=%p type=%d", entity, renderer, entity->type);
 	if (renderer != NULL) {
 		renderer->render(entity, x, y, z, a);
+	} else {
+		LOGW("TileEntityRenderDispatcher::render: no renderer for tile entity type=%d", entity->type);
 	}
 }
 
@@ -117,6 +120,7 @@ TileEntityRenderer* TileEntityRenderDispatcher::getRenderer( TileEntityRendererI
 	if (cit != _renderers.end()) {
 		renderer = cit->second;
 	}
+	LOGI("TileEntityRenderDispatcher::getRenderer: rendererId=%d, renderer=%p", rendererId, renderer);
 	return renderer;
 }
 

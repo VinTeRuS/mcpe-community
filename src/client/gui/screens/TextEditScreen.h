@@ -26,6 +26,7 @@ public:
 protected:
 	bool isShowingKeyboard;
 	SignTileEntity* sign;
+	int signX, signY, signZ;
 	int frame;
 	int line;
 private:

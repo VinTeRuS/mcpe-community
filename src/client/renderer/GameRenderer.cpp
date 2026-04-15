@@ -328,19 +328,16 @@ void GameRenderer::renderLevel(float a) {
         LOGVV("GameRenderer::renderLevel - after loadAndBindTexture");
 		glDisable2(GL_ALPHA_TEST);
         glDisable2(GL_BLEND);
-        glDisable2(GL_CULL_FACE);
-        glEnable2(GL_TEXTURE_2D);
-        
+        glEnable2(GL_CULL_FACE);
+
+        if (mc->options.ambientOcclusion) {
+            glShadeModel2(GL_SMOOTH);
+		}
+
 		TIMER_POP_PUSH("terrain-0");
-        glShadeModel2(GL_SMOOTH);  // Smooth shading for AO per-vertex colors
-        glDisable2(GL_COLOR_MATERIAL);  // Disable to allow per-vertex colors to work
-        LOGVV("GameRenderer::renderLevel - before levelRenderer->render");
         levelRenderer->render(cameraEntity, 0, a);
-        LOGVV("GameRenderer::renderLevel - after levelRenderer->render");
-        glEnable2(GL_COLOR_MATERIAL);  // Re-enable
 
 		TIMER_POP_PUSH("terrain-1");
-        glShadeModel2(GL_SMOOTH);  // Smooth shading for AO per-vertex colors
         glEnable2(GL_ALPHA_TEST);
         levelRenderer->render(cameraEntity, 1, a);
         

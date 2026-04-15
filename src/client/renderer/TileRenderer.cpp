@@ -739,7 +739,6 @@ bool TileRenderer::tesselateBlockInWorldWithAmbienceOcclusion( Tile* tt, int pX,
 	bool tint4 = true;
 	bool tint5 = true;
 
-	LOGI("AO: base=(%.2f,%.2f,%.2f)\n", pBaseRed, pBaseGreen, pBaseBlue);
 	ll000 = tt->getBrightness(level, pX, pY, pZ);
 	llx00 = tt->getBrightness(level, pX - 1, pY, pZ);
 	ll0y0 = tt->getBrightness(level, pX, pY - 1, pZ);
@@ -760,12 +759,6 @@ bool TileRenderer::tesselateBlockInWorldWithAmbienceOcclusion( Tile* tt, int pX,
 	llTrans0Yz = Tile::translucent[level->getTile(pX, pY + 1, pZ - 1)];
 	llTrans0yZ = Tile::translucent[level->getTile(pX, pY - 1, pZ + 1)];
 	llTrans0yz = Tile::translucent[level->getTile(pX, pY - 1, pZ - 1)];
-	llTrans0y0 = Tile::translucent[level->getTile(pX, pY - 1, pZ)];
-	llTransx00 = Tile::translucent[level->getTile(pX - 1, pY, pZ)];
-	llTransX00 = Tile::translucent[level->getTile(pX + 1, pY, pZ)];
-	llTrans00z = Tile::translucent[level->getTile(pX, pY, pZ - 1)];
-	llTrans00Z = Tile::translucent[level->getTile(pX, pY, pZ + 1)];
-	llTrans0Y0 = Tile::translucent[level->getTile(pX, pY + 1, pZ)];
 
 	if (tt->tex == 3) tint0 = tint2 = tint3 = tint4 = tint5 = false;
 
@@ -821,13 +814,11 @@ bool TileRenderer::tesselateBlockInWorldWithAmbienceOcclusion( Tile* tt, int pX,
 		c4g *= ll4;
 		c4b *= ll4;
 
-		LOGI("AO down: ll=(%.2f,%.2f,%.2f,%.2f) c=(%.2f,%.2f,%.2f),(%.2f,%.2f,%.2f),(%.2f,%.2f,%.2f),(%.2f,%.2f,%.2f)\n",
-			ll1,ll2,ll3,ll4,c1r,c1g,c1b,c2r,c2g,c2b,c3r,c3g,c3b,c4r,c4g,c4b);
 		renderFaceDown(tt, (float) pX, (float) pY, (float) pZ, tt->getTexture(level, pX, pY, pZ, 0));
 		i = true;
 	}
 	if ((noCulling) || (tt->shouldRenderFace(level, pX, pY + 1, pZ, 1))) {
-		if (blsmooth > 0 && !llTrans0Y0) {
+		if (blsmooth > 0) {
 			pY++;
 
 			llxY0 = tt->getBrightness(level, pX - 1, pY, pZ);
@@ -881,7 +872,7 @@ bool TileRenderer::tesselateBlockInWorldWithAmbienceOcclusion( Tile* tt, int pX,
 		i = true;
 	}
 	if ((noCulling) || (tt->shouldRenderFace(level, pX, pY, pZ - 1, 2))) {
-		if (blsmooth > 0 && !llTrans00z) {
+		if (blsmooth > 0) {
 			pZ--;
 			llx0z = tt->getBrightness(level, pX - 1, pY, pZ);
 			ll0yz = tt->getBrightness(level, pX, pY - 1, pZ);
@@ -933,7 +924,7 @@ bool TileRenderer::tesselateBlockInWorldWithAmbienceOcclusion( Tile* tt, int pX,
 		i = true;
 	}
 	if ((noCulling) || (tt->shouldRenderFace(level, pX, pY, pZ + 1, 3))) {
-		if (blsmooth > 0 && !llTrans00Z) {
+		if (blsmooth > 0) {
 			pZ++;
 
 			llx0Z = tt->getBrightness(level, pX - 1, pY, pZ);
@@ -986,7 +977,7 @@ bool TileRenderer::tesselateBlockInWorldWithAmbienceOcclusion( Tile* tt, int pX,
 		i = true;
 	}
 	if ((noCulling) || (tt->shouldRenderFace(level, pX - 1, pY, pZ, 4))) {
-		if (blsmooth > 0 && !llTransx00) {
+		if (blsmooth > 0) {
 			pX--;
 			llxy0 = tt->getBrightness(level, pX, pY - 1, pZ);
 			llx0z = tt->getBrightness(level, pX, pY, pZ - 1);
@@ -1038,7 +1029,7 @@ bool TileRenderer::tesselateBlockInWorldWithAmbienceOcclusion( Tile* tt, int pX,
 		i = true;
 	}
 	if ((noCulling) || (tt->shouldRenderFace(level, pX + 1, pY, pZ, 5))) {
-		if (blsmooth > 0 && !llTransX00) {
+		if (blsmooth > 0) {
 			pX++;
 			llXy0 = tt->getBrightness(level, pX, pY - 1, pZ);
 			llX0z = tt->getBrightness(level, pX, pY, pZ - 1);
@@ -1972,13 +1963,13 @@ void TileRenderer::renderWest( Tile* tt, float x, float y, float z, int tex )
 	float z1 = z + tt->zz1;
 
 	if (applyAmbienceOcclusion) {
-		float avgR = (c1r + c2r + c3r + c4r) * 0.25f;
-		float avgG = (c1g + c2g + c3g + c4g) * 0.25f;
-		float avgB = (c1b + c2b + c3b + c4b) * 0.25f;
-		t.color(avgR, avgG, avgB);
+		t.color(c1r, c1g, c1b);
 		t.vertexUV(x0, y1, z1, u1, v0);
+		t.color(c2r, c2g, c2b);
 		t.vertexUV(x0, y1, z0, u0, v0);
+		t.color(c3r, c3g, c3b);
 		t.vertexUV(x0, y0, z0, u0, v1);
+		t.color(c4r, c4g, c4b);
 		t.vertexUV(x0, y0, z1, u1, v1);
 	} else {
 		t.vertexUV(x0, y1, z1, u1, v0);
@@ -2022,13 +2013,13 @@ void TileRenderer::renderEast( Tile* tt, float x, float y, float z, int tex )
 	float z1 = z + tt->zz1;
 
 	if (applyAmbienceOcclusion) {
-		float avgR = (c1r + c2r + c3r + c4r) * 0.25f;
-		float avgG = (c1g + c2g + c3g + c4g) * 0.25f;
-		float avgB = (c1b + c2b + c3b + c4b) * 0.25f;
-		t.color(avgR, avgG, avgB);
+		t.color(c1r, c1g, c1b);
 		t.vertexUV(x1, y0, z1, u0, v1);
+		t.color(c2r, c2g, c2b);
 		t.vertexUV(x1, y0, z0, u1, v1);
+		t.color(c3r, c3g, c3b);
 		t.vertexUV(x1, y1, z0, u1, v0);
+		t.color(c4r, c4g, c4b);
 		t.vertexUV(x1, y1, z1, u0, v0);
 	} else {
 		t.vertexUV(x1, y0, z1, u0, v1);

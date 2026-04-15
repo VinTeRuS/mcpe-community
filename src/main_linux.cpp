@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <ctime>
 #include <unistd.h>
 #include <dirent.h>
 
@@ -23,6 +24,9 @@
 
 #include "NinecraftApp.h"
 #include "platform/input/Multitouch.h"
+#include "platform/log.h"
+
+FILE* g_logFile = nullptr;
 
 int width = 854;
 int height = 480;
@@ -43,8 +47,11 @@ public:
         _userInputStatus = 1;
         _userInput.clear();
         _userInput.push_back("New World");
-        _userInput.push_back("0");
-        _userInput.push_back("creative");
+        char seedStr[16];
+        srand((unsigned int)time(nullptr));
+        snprintf(seedStr, sizeof(seedStr), "%d", rand());
+        _userInput.push_back(seedStr);
+        _userInput.push_back("survival");
         LOGVV("createUserInput called - using default values");
     }
 
@@ -135,6 +142,29 @@ public:
         }
     }
 
+    BinaryBlob readAssetFile(const std::string& filename) {
+        std::string path = "data/" + filename;
+        std::ifstream file(path, std::ios::binary | std::ios::ate);
+        
+        if (!file) {
+            LOGW("Couldn't find asset file: %s", path.c_str());
+            return BinaryBlob();
+        }
+        
+        std::streamsize size = file.tellg();
+        file.seekg(0, std::ios::beg);
+        
+        unsigned char* buffer = new unsigned char[size];
+        if (!file.read((char*)buffer, size)) {
+            delete[] buffer;
+            LOGW("Failed to read asset file: %s", path.c_str());
+            return BinaryBlob();
+        }
+        
+        LOGI("Loaded asset file: %s (%d bytes)", path.c_str(), (int)size);
+        return BinaryBlob(buffer, (unsigned int)size);
+    }
+
 private:
     int _userInputStatus = -1;
     StringVector _userInput;
@@ -174,10 +204,26 @@ int handleEvents() {
         if (SDL_QUIT == event.type) {
             return -1;
         }
+        if (SDL_TEXTINPUT == event.type) {
+            const char* text = event.text.text;
+            if (text && text[0]) {
+                for (int i = 0; text[i]; i++) {
+                    Keyboard::feedText(text[i]);
+                }
+            }
+        }
         if (SDL_KEYDOWN == event.type) {
             int key = event.key.keysym.sym;
             unsigned char transformed = transformKey(key);
             if (transformed) Keyboard::feed(transformed, 1);
+            
+            if (!mouseCaptured) {
+                if (key == SDLK_BACKSPACE) {
+                    Keyboard::feed(8, 1); // Backspace key code
+                } else if (key == SDLK_RETURN || key == SDLK_KP_ENTER) {
+                    Keyboard::feed(13, 1); // Enter key code
+                }
+            }
         }
         if (SDL_KEYUP == event.type) {
             int key = event.key.keysym.sym;
@@ -191,23 +237,28 @@ int handleEvents() {
                 SDL_ShowCursor(SDL_ENABLE);
             }
         }
+        if (SDL_MOUSEWHEEL == event.type) {
+            int x, y;
+            SDL_GetGlobalMouseState(&x, &y);
+            int wx, wy;
+            SDL_GetWindowPosition(_window, &wx, &wy);
+            int localX = x - wx;
+            int localY = y - wy;
+            if (event.wheel.y != 0) {
+                Mouse::feed(3, 0, localX, localY, 0, event.wheel.y);
+            }
+        }
         if (SDL_MOUSEBUTTONDOWN == event.type) {
-            if (event.button.button == SDL_BUTTON(4)) {
-                Mouse::feed(3, 0, event.button.x, event.button.y, 0, 1);
-            } else if (event.button.button == SDL_BUTTON(5)) {
-                Mouse::feed(3, 0, event.button.x, event.button.y, 0, -1);
-            } else {
-                bool left = (SDL_BUTTON_LEFT == event.button.button);
-                char button = left ? 1 : 2;
-                Mouse::feed(button, 1, event.button.x, event.button.y);
-                Multitouch::feed(button, 1, event.button.x, event.button.y, 0);
-                
-                if (left && !mouseCaptured && AppPlatform::captureMouse) {
-                    SDL_CaptureMouse(SDL_TRUE);
-                    SDL_SetWindowGrab(_window, SDL_TRUE);
-                    mouseCaptured = true;
-                    SDL_ShowCursor(SDL_DISABLE);
-                }
+            bool left = (SDL_BUTTON_LEFT == event.button.button);
+            char button = left ? 1 : 2;
+            Mouse::feed(button, 1, event.button.x, event.button.y);
+            Multitouch::feed(button, 1, event.button.x, event.button.y, 0);
+            
+            if (left && !mouseCaptured && AppPlatform::captureMouse) {
+                SDL_CaptureMouse(SDL_TRUE);
+                SDL_SetWindowGrab(_window, SDL_TRUE);
+                mouseCaptured = true;
+                SDL_ShowCursor(SDL_DISABLE);
             }
         }
         if (SDL_MOUSEBUTTONUP == event.type) {
@@ -239,6 +290,12 @@ int handleEvents() {
                     _app->setSize(width, height);
                 }
                 glViewport(0, 0, width, height);
+            }
+            if (event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
+                SDL_StartTextInput();
+            }
+            if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
+                SDL_StopTextInput();
             }
         }
     }
@@ -357,10 +414,25 @@ void teardown() {
         SDL_DestroyWindow(_window);
         _window = NULL;
     }
+    if (g_logFile) {
+        fclose(g_logFile);
+        g_logFile = nullptr;
+    }
     SDL_Quit();
 }
 
 int main(int argc, char** argv) {
+    g_logFile = fopen("game.log", "w");
+    
+    time_t now = time(nullptr);
+    char timestamp[64];
+    strftime(timestamp, sizeof(timestamp), "%Y-%m-%d %H:%M:%S", localtime(&now));
+    fprintf(stderr, "[%s] Opening game.log: %p\n", timestamp, g_logFile);
+    if (g_logFile) {
+        fprintf(g_logFile, "[%s] Log opened\n", timestamp);
+        fflush(g_logFile);
+    }
+    
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("Couldn't initialize SDL: %s\n", SDL_GetError());
         return -1;
@@ -392,6 +464,8 @@ int main(int argc, char** argv) {
 
     SDL_GetWindowSize(_window, &width, &height);
     LOGI("Window created with size: %dx%d", width, height);
+
+    SDL_StartTextInput();
 
 #ifdef OPENGL_ES
     _glContext = NULL;

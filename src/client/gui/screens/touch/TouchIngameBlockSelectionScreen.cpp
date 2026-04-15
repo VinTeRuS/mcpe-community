@@ -75,6 +75,12 @@ void IngameBlockSelectionScreen::init()
 
 	int maxWidth = width - Bx - Bx;
 	InventoryColumns = maxWidth / ItemSize;
+	// Cap columns like the non-touch version does
+	if (minecraft->isCreativeMode())
+		InventoryColumns = std::min(InventoryColumns, 13);
+	else
+		InventoryColumns = std::min(InventoryColumns, 9);
+	
 	const int realWidth = InventoryColumns * ItemSize;
 	const int realBx = (width - realWidth) / 2;
 
@@ -137,6 +143,28 @@ void IngameBlockSelectionScreen::setupPositions() {
 	clippingArea.w = minecraft->width;
 	clippingArea.y = 0;
 	clippingArea.h = (int)(Gui::GuiScale * 24);
+
+	// Update block list bbox on resize
+	if (_blockList) {
+		int maxWidth = width - Bx - Bx;
+		InventoryColumns = maxWidth / ItemSize;
+		if (minecraft->isCreativeMode())
+			InventoryColumns = std::min(InventoryColumns, 13);
+		else
+			InventoryColumns = std::min(InventoryColumns, 9);
+		
+		const int realWidth = InventoryColumns * ItemSize;
+		const int realBx = (width - realWidth) / 2;
+		
+		IntRectangle rect(realBx,
+	#ifdef __APPLE__
+			24 + By - ((width==240)?1:0), realWidth, ((width==240)?1:0) + height-By-By-20-24);
+	#else
+			24 + By, realWidth, height-By-By-20-24);
+	#endif
+		_blockList->updateBbox(rect);
+		_blockList->fillMarginX = realBx;
+	}
 }
 
 void IngameBlockSelectionScreen::removed()
@@ -263,6 +291,12 @@ std::vector<const ItemInstance*> IngameBlockSelectionScreen::getItems( const Inv
 	for (int i = Inventory::MAX_SELECTION_SIZE; i < minecraft->player->inventory->getContainerSize(); ++i)
 		out.push_back(minecraft->player->inventory->getItem(i));
 	return out;
+}
+
+void IngameBlockSelectionScreen::mouseWheelEvent(int x, int y, int delta) {
+	if (_blockList && _blockList->isPointInside((float)x, (float)y)) {
+		_blockList->scrollBy(delta);
+	}
 }
 
 }

@@ -28,6 +28,7 @@ public:
 	void render(int xm, int ym, float a);
 	bool renderGameBehind();
 	void buttonClicked(Button* button);
+	void mouseWheelEvent(int x, int y, int delta);
 
 	// IInventoryPaneCallback
 	bool addItem(const Touch::InventoryPane* pane, int itemId);

@@ -4,6 +4,7 @@
 #include "../util/StringUtils.h"
 #include "../world/level/tile/Tile.h"
 #include "../world/item/ItemInstance.h"
+#include "../platform/log.h"
 #include <ctype.h>
 
 I18n::Map I18n::_strings;
@@ -64,8 +65,6 @@ void I18n::fillTranslations( AppPlatform* platform, const std::string& filename,
 
 std::string I18n::getDescriptionString( const ItemInstance& item )
 {
-	// Convert to lower. Normally std::transform would be used, but tolower might be
-	// implemented with a macro in certain C-implementations -> messing stuff up
 	const std::string desc = item.getDescriptionId();
 
 	std::string s = desc;
@@ -82,11 +81,54 @@ std::string I18n::getDescriptionString( const ItemInstance& item )
 	for (unsigned int i = 0; i < s.length(); ++i)
 		s[i] = ::tolower(s[i]);
 
-	// Replace item./tile. with desc., hopefully it's enough
-	if (s[0] == 't') s = Util::stringReplace(s, "tile.", "desc.");
-	if (s[0] == 'i') s = Util::stringReplace(s, "item.", "desc.");
-	if (I18n::get(s, trans))
+	// Extract key without prefix
+	std::string prefix = "item.";
+	std::string key = s;
+	if (s.length() >= 5 && s.substr(0, 5) == "tile.") {
+		prefix = "tile.";
+		key = s.substr(5);
+	} else if (s.length() >= 5 && s.substr(0, 5) == "item.") {
+		prefix = "item.";
+		key = s.substr(5);
+	}
+
+	// Try: item.seeds_melon.name or tile.stone.name
+	std::string lookupKey = prefix + key + ".name";
+	if (I18n::get(lookupKey, trans)) {
 		return trans;
+	}
+
+	// Try underscore format: Item.seedsMelon -> item.seeds_melon.name
+	std::string underscoreKey = prefix + desc;
+	for (size_t i = prefix.length(); i < underscoreKey.length(); i++) {
+		if (underscoreKey[i] >= 'A' && underscoreKey[i] <= 'Z') {
+			underscoreKey.insert(i, "_");
+			i++;
+		}
+	}
+	for (size_t i = 0; i < underscoreKey.length(); i++) {
+		underscoreKey[i] = tolower(underscoreKey[i]);
+	}
+	underscoreKey = underscoreKey + ".name";
+	if (I18n::get(underscoreKey, trans)) {
+		return trans;
+	}
+
+	// Try dot format: Item.seedsMelon -> item.seeds.melon.name
+	std::string dotKey = prefix + desc;
+	for (size_t i = prefix.length(); i < dotKey.length(); i++) {
+		if (dotKey[i] >= 'A' && dotKey[i] <= 'Z') {
+			dotKey.insert(i, ".");
+			i++;
+		}
+	}
+	for (size_t i = 0; i < dotKey.length(); i++) {
+		dotKey[i] = tolower(dotKey[i]);
+	}
+	dotKey = dotKey + ".name";
+	if (I18n::get(dotKey, trans)) {
+		return trans;
+	}
 
 	// Remove all materials from the identifier, since swordWood should
 	// be read as just sword
@@ -102,8 +144,8 @@ std::string I18n::getDescriptionString( const ItemInstance& item )
 		"cloth"
 	};
 
-	Util::removeAll(s, materials, sizeof(materials) / sizeof(const char*));
-	if (I18n::get(s, trans))
+	Util::removeAll(key, materials, sizeof(materials) / sizeof(const char*));
+	if (I18n::get(prefix + key, trans))
 		return trans;
 
 	std::string mapping[] = {

@@ -51,6 +51,7 @@ public:
     bool closeOnPlayerHurt();
 	void buttonClicked(Button* button);
 	void keyPressed( int eventKey );
+	void mouseWheelEvent(int x, int y, int delta);
 
 	// IItemPaneCallback
 	void onItemSelected(const ItemPane* forPane, int itemIndexInCurrentCategory);

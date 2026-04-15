@@ -132,8 +132,10 @@ void EntityRenderDispatcher::render( Entity* entity, float x, float y, float z, 
 {
 	EntityRenderer* renderer = getRenderer(entity);
 	if (renderer != NULL) {
+		LOGI("EntityRenderDispatcher::render: rendering entity at (%.1f, %.1f, %.1f)", x, y, z);
 		renderer->render(entity, x, y, z, rot, a);
-		//renderer->postRender(entity, x, y, z, rot, a);
+	} else {
+		LOGW("EntityRenderDispatcher::render: no renderer for entity type=%d", entity->entityRendererId);
 	}
 }
 
@@ -155,6 +157,7 @@ EntityRenderer* EntityRenderDispatcher::getRenderer( EntityRendererId rendererId
 	if (cit != _renderers.end()) {
 		renderer = cit->second;
 	}
+	LOGI("getRenderer: id=%d, renderer=%p", rendererId, renderer);
 	return renderer;
 }
 

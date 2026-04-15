@@ -2,6 +2,7 @@
 #include "StartMenuScreen.h"
 #include "ProgressScreen.h"
 #include "DialogDefinitions.h"
+#include "CreateWorldScreen.h"
 #include "../../renderer/Tesselator.h"
 #include "../../../AppPlatform.h"
 #include "../../../util/StringUtils.h"
@@ -306,55 +307,9 @@ void SelectWorldScreen::tick()
 			std::string name = getUniqueLevelName("perf");
 			minecraft->setScreen(new SimpleChooseLevelScreen(name));
 		#else
-			int status = minecraft->platform()->getUserInputStatus();
-			if (status > -1) {
-				if (status == 1) {
-					StringVector sv = minecraft->platform()->getUserInput();
-					
-					// Read the level name.
-					// 1) Trim name 2) Remove all bad chars 3) Append '-' chars 'til the name is unique
-					std::string levelName = Util::stringTrim(sv[0]);
-					std::string levelId = levelName;
-
-					for (int i = 0; i < sizeof(ILLEGAL_FILE_CHARACTERS) / sizeof(char); ++i)
-						levelId = Util::stringReplace(levelId, std::string(1, ILLEGAL_FILE_CHARACTERS[i]), "");
-                    if ((int)levelId.length() == 0) {
-                        levelId = "no_name";
-                    }
-					levelId = getUniqueLevelName(levelId);
-
-					// Read the seed
-					int seed = getEpochTimeS();
-					if (sv.size() >= 2) {
-						std::string seedString = Util::stringTrim(sv[1]);
-						if (seedString.length() > 0) {
-							int tmpSeed;
-							// Try to read it as an integer
-							if (sscanf(seedString.c_str(), "%d", &tmpSeed) > 0) {
-								seed = tmpSeed;
-							} // Hash the "seed"
-							else {
-								seed = Util::hashCode(seedString);
-							}
-						}
-					}
-					// Read the game mode
-					bool isCreative = true;
-					if (sv.size() >= 3 && sv[2] == "survival")
-						isCreative = false;
-
-					// Start a new level with the given name and seed
-					LevelSettings settings(seed, isCreative? GameType::Creative : GameType::Survival);
-					LOGI("Creating a level with id '%s', name '%s' and seed '%d'\n", levelId.c_str(), levelName.c_str(), seed);
-					minecraft->selectLevel(levelId, levelName, settings);
-					minecraft->hostMultiplayer();
-					minecraft->setScreen(new ProgressScreen());
-					_hasStartedLevel = true;
-				}
-				_state = _STATE_DEFAULT;
-			}
+			minecraft->setScreen(new CreateWorldScreen());
 		#endif
-
+		_state = _STATE_DEFAULT;
 		return;
 	}
 

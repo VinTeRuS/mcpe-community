@@ -72,6 +72,14 @@ void Screen::updateEvents()
 void Screen::mouseEvent()
 {
 	const MouseAction& e = Mouse::getEvent();
+
+	if (e.action == MouseAction::ACTION_WHEEL) {
+		int xm = e.x * width / minecraft->width;
+		int ym = e.y * height / minecraft->height - 1;
+		mouseWheelEvent(xm, ym, e.dy);
+		return;
+	}
+
 	if (!e.isButton())
 		return;
 
@@ -246,6 +254,10 @@ void Screen::mouseReleased( int x, int y, int buttonNum )
 		clickedButton->released(x, y);
 #endif // }
 	clickedButton = NULL;
+}
+
+void Screen::mouseWheelEvent( int x, int y, int delta )
+{
 }
 
 bool Screen::renderGameBehind() {

@@ -21,6 +21,7 @@ public:
 	virtual bool loseFocus(Minecraft* minecraft);
 
     virtual void render(Minecraft* minecraft, int xm, int ym);
+	bool isMouseOver(Minecraft* minecraft, int xm, int ym);
 	
 public:
 	int w, h;

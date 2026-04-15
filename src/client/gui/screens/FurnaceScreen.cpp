@@ -312,14 +312,12 @@ void FurnaceScreen::recheckRecipes()
 			if (ItemInstance* item = inv->getItem(i)) {
 				// Fuel material
 				if (FurnaceTileEntity::isFuel(*item)) {
-					CItem* ci = new CItem(*item, NULL, "");//item->getName());
-					//LOGI("Adding fuel: %s\n", item->getName());
+					CItem* ci = new CItem(*item, NULL, item->getName());
 					listFuel.push_back(ci);
 				}
 				// Ingredient/burn material
 				if (recipes->isFurnaceItem(item->id)) {
-					CItem* ci = new CItem(*item, NULL, "");//item->getName());
-					//LOGI("Adding item to burn: %s\n", item->getName());
+					CItem* ci = new CItem(*item, NULL, item->getName());
 					listIngredient.push_back(ci);
 				}
 				//ip.add(ItemPack::getIdForItemInstance(item), item->count);
@@ -552,4 +550,10 @@ bool FurnaceScreen::handleAddItem( int slot, const ItemInstance* item )
 
 	int newSize = minecraft->player->inventory->getNumEmptySlots();
 	return (newSize != oldSize);
+}
+
+void FurnaceScreen::mouseWheelEvent(int x, int y, int delta) {
+	if (inventoryPane && inventoryPane->isPointInside((float)x, (float)y)) {
+		inventoryPane->scrollBy(delta);
+	}
 }

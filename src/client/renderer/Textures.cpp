@@ -66,13 +66,16 @@ TextureId Textures::loadTexture( const std::string& resourceName, bool inTexture
 		return it->second;
 
 	TextureData texdata = platform->loadTexture(resourceName, inTextureFolder);
-	if (texdata.data)
+	if (texdata.data) {
+		LOGI("Textures::loadTexture: loaded %s (%dx%d)", resourceName.c_str(), texdata.w, texdata.h);
 		return assignTexture(resourceName, texdata);
+	}
     else if (texdata.identifier != InvalidId) {
         //LOGI("Adding id: %d for %s\n", texdata.identifier, resourceName.c_str());
 		idMap.insert(std::make_pair(resourceName, texdata.identifier));
     }
 	else {
+		LOGE("Textures::loadTexture: FAILED to load %s", resourceName.c_str());
 		idMap.insert(std::make_pair(resourceName, Textures::InvalidId));
 		//loadedImages.insert(std::make_pair(InvalidId, texdata));
 	}

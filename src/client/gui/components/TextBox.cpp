@@ -42,7 +42,7 @@ void TextBox::render( Minecraft* minecraft, int xm, int ym ) {
 	fill(x, y, x + w, y + 1, borderCol);
 	fill(x, y + h - 1, x + w, y + h, borderCol);
 	fill(x, y, x + 1, y + h, borderCol);
-	fill(x + w - 1, y, x + w, y + h, borderCol);
+	fill(x + w - 1, x, x + w, y + h, borderCol);
 	
 	std::string displayText = text;
 	if (focused) {
@@ -55,4 +55,8 @@ void TextBox::render( Minecraft* minecraft, int xm, int ym ) {
 	if (displayText.length() > 0) {
 		drawString(minecraft->font, displayText, x + 4, y + (h - 8) / 2, 0xFFFFFFFF);
 	}
+}
+
+bool TextBox::isMouseOver(Minecraft* minecraft, int xm, int ym) {
+	return xm >= x && xm < x + w && ym >= y && ym < y + h;
 }

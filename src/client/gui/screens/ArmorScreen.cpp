@@ -368,3 +368,9 @@ void ArmorScreen::renderPlayer(float xo, float yo) {
 
 	glPopMatrix();
 }
+
+void ArmorScreen::mouseWheelEvent(int x, int y, int delta) {
+	if (inventoryPane && inventoryPane->isPointInside((float)x, (float)y)) {
+		inventoryPane->scrollBy(delta);
+	}
+}

@@ -39,6 +39,7 @@ public:
 protected:
 	virtual void mouseClicked(int x, int y, int buttonNum);
 	virtual void mouseReleased(int x, int y, int buttonNum);
+	virtual void mouseWheelEvent(int x, int y, int delta);
 private:
 	void renderDemoOverlay();
 
