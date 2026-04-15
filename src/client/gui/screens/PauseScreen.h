@@ -33,6 +33,7 @@ private:
 	Button* bQuit;
 	Button* bQuitAndSaveLocally;
 	Button* bServerVisibility;
+	Button* bOptions;
 //	Button* bThirdPerson;
 
 	OptionButton bSound;

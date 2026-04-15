@@ -1,5 +1,6 @@
 #include "PauseScreen.h"
 #include "StartMenuScreen.h"
+#include "OptionsScreen.h"
 #include "../components/ImageButton.h"
 #include "../../Minecraft.h"
 #include "../../../util/Mth.h"
@@ -13,6 +14,7 @@ PauseScreen::PauseScreen(bool wasBackPaused)
 	bQuit(0),
 	bQuitAndSaveLocally(0),
 	bServerVisibility(0),
+	bOptions(0),
 //	bThirdPerson(0),
 	wasBackPaused(wasBackPaused),
 	bSound(&Options::Option::SOUND, 1, 0),
@@ -39,6 +41,7 @@ PauseScreen::~PauseScreen() {
 	delete bQuit;
 	delete bQuitAndSaveLocally;
 	delete bServerVisibility;
+	delete bOptions;
 //	delete bThirdPerson;
 }
 
@@ -48,21 +51,24 @@ void PauseScreen::init() {
 		bQuit = new Touch::TButton(2, "Quit to title");
 		bQuitAndSaveLocally = new Touch::TButton(3, "Quit and copy map");
 		bServerVisibility = new Touch::TButton(4, "");
+		bOptions = new Touch::TButton(5, "Options");
 //		bThirdPerson = new Touch::TButton(5, "Toggle 3:rd person view");
 	} else {
 		bContinue = new Button(1, "Back to game");
 		bQuit = new Button(2, "Quit to title");
 		bQuitAndSaveLocally = new Button(3, "Quit and copy map");
 		bServerVisibility = new Button(4, "");
+		bOptions = new Button(5, "Options");
 //		bThirdPerson = new Button(5, "Toggle 3:rd person view");
 	}
 
 	buttons.push_back(bContinue);
 	buttons.push_back(bQuit);
+	buttons.push_back(bOptions);
 
 	bSound.updateImage(&minecraft->options);
 	bThirdPerson.updateImage(&minecraft->options);
-	bHideGui.updateImage(&minecraft->options);
+    bHideGui.updateImage(&minecraft->options);
 	buttons.push_back(&bSound);
 	buttons.push_back(&bThirdPerson);
     //buttons.push_back(&bHideGui);
@@ -99,21 +105,24 @@ void PauseScreen::setupPositions() {
     saveStep = 0;
 	int yBase = 16;
 
-	bContinue->width = bQuit->width = /*bThirdPerson->w =*/ 160;
+	bContinue->width = bQuit->width = bOptions->width = /*bThirdPerson->w =*/ 160;
 	bQuitAndSaveLocally->width = bServerVisibility->width = 160;
 
 	bContinue->x = (width - bContinue->width) / 2;
 	bContinue->y = yBase + 32 * 1;
 
+	bOptions->x = (width - bOptions->width) / 2;
+	bOptions->y = yBase + 32 * 2;
+
 	bQuit->x = (width - bQuit->width) / 2;
-	bQuit->y = yBase + 32 * 2;
+	bQuit->y = yBase + 32 * 3;
 
 #if APPLE_DEMO_PROMOTION
     bQuit->y += 16;
 #endif
     
 	bQuitAndSaveLocally->x = bServerVisibility->x = (width - bQuitAndSaveLocally->width) / 2;
-	bQuitAndSaveLocally->y = bServerVisibility->y = yBase + 32 * 3;
+	bQuitAndSaveLocally->y = bServerVisibility->y = yBase + 32 * 4;
 
 	bSound.y = bThirdPerson.y = 8;
 	bSound.x = 4;
@@ -156,6 +165,9 @@ void PauseScreen::buttonClicked(Button* button) {
     }
 	if (button->id == bQuitAndSaveLocally->id) {
 		minecraft->leaveGame(true);
+	}
+	if (button->id == bOptions->id) {
+		minecraft->setScreen(new OptionsScreen());
 	}
 
 	if (button->id == bServerVisibility->id) {

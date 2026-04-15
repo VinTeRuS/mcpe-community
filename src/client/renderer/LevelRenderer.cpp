@@ -78,6 +78,8 @@ LevelRenderer::LevelRenderer( Minecraft* mc)
 	int maxChunksWidth = 1024 / CHUNK_SIZE;
 	numListsOrBuffers = maxChunksWidth * maxChunksWidth * maxChunksWidth * 3;
 	chunkLists = glGenLists(numListsOrBuffers);
+	chunkBuffers = new GLuint[numListsOrBuffers];
+	glGenBuffers2(numListsOrBuffers, chunkBuffers);
 #endif
 }
 
@@ -592,6 +594,8 @@ void LevelRenderer::tick()
 
 bool LevelRenderer::updateDirtyChunks( Mob* player, bool force )
 {
+	static int updateCount = 0;
+	LOGI("updateDirtyChunks #%d, dirty=%d\n", ++updateCount, (int)dirtyChunks.size());
 	bool slow = false;
 
 	if (slow) {

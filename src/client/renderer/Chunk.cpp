@@ -72,6 +72,9 @@ void Chunk::rebuild()
 	//if (!visible) return;
 	updates++;
 
+	static int rebuildCount = 0;
+	LOGI("Chunk::rebuild #%d at (%d,%d,%d)\n", ++rebuildCount, x, y, z);
+
     //if (!_layerChunks[0]) {
     //    for (int i = 0; i < NumLayers; ++i)
     //        _layerChunks[i] = new int[xs * ys * zs];
@@ -148,6 +151,8 @@ void Chunk::rebuild()
                             doRenderLayer[renderLayer] = true;
 						} else if (renderLayer == l) {
 							rendered |= tileRenderer.tesselateInWorld(tile, x, y, z);
+							static int tileCount = 0;
+							if (++tileCount <= 5) LOGI("Chunk: rendered tile %d at (%d,%d,%d)\n", tileCount, x, y, z);
 						}
 					}
 				}

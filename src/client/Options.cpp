@@ -87,6 +87,13 @@ void Options::initDefaultValues() {
 	keyMappings[k++] = &keyMenuPrevious;
 	keyMappings[k++] = &keyMenuOk;
 	keyMappings[k++] = &keyMenuCancel;
+	keyMappings[k++] = &keyToggleView;
+
+#ifndef RPI
+	keyToggleView = KeyMapping("key.toggleView", Keyboard::KEY_F5);
+#else
+	keyToggleView = KeyMapping("key.toggleView", Keyboard::KEY_F5);
+#endif
 
 //	"Polymorphism" at it's worst. At least it's better to have it here
 //	for now, then to have it spread all around the game code (even if
@@ -204,9 +211,7 @@ void Options::update()
         if (key == OptionStrings::Controls_Sensitivity) {
             float sens;
             if (readFloat(value, sens)) {
-                // sens is in range [0,1] with default/center at 0.5 (for aesthetics)
-                // We wanna map it to something like [0.3, 0.9] BUT keep 0.5 @ ~0.5...
-                sensitivity = 0.3f + std::pow(1.1f * sens, 1.3f) * 0.42f;
+                sensitivity = sens;
             }
         }
 		if (key == OptionStrings::Controls_InvertMouse) {
@@ -244,7 +249,9 @@ void Options::update()
 		if (key == "bobView") readBool(value, bobView);
 		if (key == "anaglyph3d") readBool(value, anaglyph3d);
 		if (key == "limitFramerate") readBool(value, limitFramerate);
-		if (key == "ambientOcclusion") readBool(value, ambientOcclusion);
+		if (key == "ambientOcclusion") {
+			readBool(value, ambientOcclusion);
+		}
 		if (key == "guiScale") readInt(value, guiScale);
 		if (key == "thirdPersonView") readBool(value, thirdPersonView);
 		if (key == "hideGui") readBool(value, hideGui);
@@ -256,6 +263,16 @@ void Options::update()
 			// Only support peaceful and normal right now
 			if (difficulty != Difficulty::PEACEFUL && difficulty != Difficulty::NORMAL)
 				difficulty = Difficulty::NORMAL;
+		}
+
+		// Key bindings
+		for (int i = 0; i < 17; i++) {
+			if (keyMappings[i] != NULL && key == "key_" + keyMappings[i]->name) {
+				int keyCode;
+				if (sscanf(value.c_str(), "%d", &keyCode) == 1) {
+					keyMappings[i]->key = keyCode;
+				}
+			}
 		}
 	}
     
@@ -339,6 +356,15 @@ void Options::save()
 	addOptionToSaveOutput(stringVec, "thirdPersonView", thirdPersonView);
 	addOptionToSaveOutput(stringVec, "hideGui", hideGui);
 	addOptionToSaveOutput(stringVec, "pixelsPerMillimeter", pixelsPerMillimeter);
+
+	// Key bindings
+	for (int i = 0; i < 17; i++) {
+		if (keyMappings[i] != NULL) {
+			std::stringstream ss;
+			ss << "key_" << keyMappings[i]->name << "=" << keyMappings[i]->key;
+			stringVec.push_back(ss.str());
+		}
+	}
 
 	// Save to file
 	optionsFile.save(stringVec);
@@ -459,4 +485,8 @@ void Options::notifyOptionUpdate( const Option* option, float value ) {
 
 void Options::notifyOptionUpdate( const Option* option, int value ) {
 	minecraft->optionUpdated(option, value);
+}
+
+void Options::setFilePath(const std::string& path) {
+	optionsFile.setPath(path);
 }

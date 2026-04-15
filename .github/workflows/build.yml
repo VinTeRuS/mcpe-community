@@ -1,0 +1,93 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build-server:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential zlib1g-dev libpng-dev
+
+      - name: Configure CMake
+        run: |
+          mkdir -p build && cd build
+          cmake ..
+
+      - name: Build Server
+        run: |
+          cd build
+          make -j$(nproc) MinecraftServer
+
+      - name: Upload Server Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MinecraftServer-Linux
+          path: build/MinecraftServer
+
+  build-client:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential zlib1g-dev libpng-dev \
+            libsdl2-dev libgl-dev libx11-dev libopenal-dev libglew-dev libegl-dev
+
+      - name: Create symlinks for headers
+        run: |
+          sudo ln -sf /usr/include/GL /usr/include/gl
+          sudo ln -sf /usr/include/AL /usr/include/OpenAL
+          sudo ln -sf /usr/include/GL/glew.h /usr/include/gl/GLEW.h
+          sudo ln -sf /usr/include/GL/gl.h /usr/include/gl/GL.h
+
+      - name: Configure CMake
+        run: |
+          mkdir -p build && cd build
+          cmake ..
+
+      - name: Build Client
+        run: |
+          cd build
+          make -j$(nproc) MinecraftClient
+
+      - name: Upload Client Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MinecraftClient-Linux
+          path: build/MinecraftClient
+
+  build-windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: ${{github.workspace}}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v1.0.2
+
+      - name: Restore NuGet packages
+        run: nuget restore ./project/win32/MinecraftWin32.sln
+
+      - name: Build
+        run: msbuild /m /p:Configuration=Minecraft ./project/win32/MinecraftWin32.sln
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Minecraft-Windows
+          path: project/win32/dist/Minecraft.Windows.CE.exe

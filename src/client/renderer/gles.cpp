@@ -47,9 +47,13 @@ void glInit()
 }
 
 void anGenBuffers(GLsizei n, GLuint* buffers) {
+#ifdef OPENGL_ES
 	static GLuint k = 1;
 	for (int i = 0; i < n; ++i)
 		buffers[i] = ++k;
+#else
+	glGenBuffers(n, buffers);
+#endif
 }
 
 #ifdef USE_VBO
@@ -91,6 +95,18 @@ void drawArrayVTC(int bufferId, int vertices, int vertexSize /* = 24 */) {
 	glVertexPointer2(  3, GL_FLOAT, vertexSize, 0);
 	glTexCoordPointer2(2, GL_FLOAT, vertexSize, (GLvoid*) (3 * 4));
 	glColorPointer2(4, GL_UNSIGNED_BYTE, vertexSize, (GLvoid*) (5*4));
+
+	GLboolean cullEnabled;
+	glGetBooleanv(GL_CULL_FACE, &cullEnabled);
+	GLint cullMode;
+	glGetIntegerv(GL_CULL_FACE_MODE, &cullMode);
+	GLenum err = glGetError();
+
+	static int drawCount = 0;
+	if (++drawCount <= 5) {
+		LOGI("drawArrayVTC #%d: verts=%d, cull=%d, cullMode=%d, glError=%d\n", 
+			drawCount, vertices, cullEnabled, cullMode, err);
+	}
 
 	glDrawArrays2(GL_TRIANGLES, 0, vertices);
 

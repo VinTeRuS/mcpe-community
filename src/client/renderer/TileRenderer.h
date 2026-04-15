@@ -79,6 +79,9 @@ private:
 	bool llTrans0Yz, llTransXY0, llTransxY0, llTrans0YZ;
 	bool llTransx0z, llTransX0Z, llTransx0Z, llTransX0z;
 	bool llTrans0yz, llTransXy0, llTransxy0, llTrans0yZ;
+	bool llTrans0y0;
+	bool llTransx00, llTransX00, llTrans00z, llTrans00Z;
+	bool llTrans0Y0;
 };
 
 

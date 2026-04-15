@@ -9,9 +9,11 @@
     #define OPENGL_ES
 #endif
 
+// Always use VBO - supported in both OpenGL and GLES
+#define USE_VBO
+
 // Other systems might run it, if they #define OPENGL_ES
-#if defined(OPENGL_ES) // || defined(ANDROID)
-	#define USE_VBO
+#if defined(OPENGL_ES)
 	#define GL_QUADS 0x0007
     #if defined(__APPLE__)
         #import <OpenGLES/ES1/gl.h>

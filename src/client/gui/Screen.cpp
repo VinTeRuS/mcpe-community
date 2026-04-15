@@ -75,13 +75,17 @@ void Screen::mouseEvent()
 	if (!e.isButton())
 		return;
 
+	LOGVV("mouseEvent - x: %d, y: %d, buttonState: %d", e.x, e.y, Mouse::getEventButtonState());
+
 	if (Mouse::getEventButtonState()) {
 		int xm = e.x * width / minecraft->width;
 		int ym = e.y * height / minecraft->height - 1;
+		LOGVV("mouseClicked - scaled: xm: %d, ym: %d, width: %d, height: %d, mc-width: %d, mc-height: %d", xm, ym, width, height, minecraft->width, minecraft->height);
 		mouseClicked(xm, ym, Mouse::getEventButton());
 	} else {
 		int xm = e.x * width / minecraft->width;
 		int ym = e.y * height / minecraft->height - 1;
+		LOGVV("mouseReleased - scaled: xm: %d, ym: %d", xm, ym);
 		mouseReleased(xm, ym, Mouse::getEventButton());
 	}
 }
@@ -192,12 +196,14 @@ void Screen::updateTabButtonSelection()
 
 void Screen::mouseClicked( int x, int y, int buttonNum )
 {
+	LOGVV("Screen::mouseClicked - x: %d, y: %d, button: %d", x, y, buttonNum);
 	if (buttonNum == MouseAction::ACTION_LEFT) {
 		for (unsigned int i = 0; i < buttons.size(); ++i) {
 			Button* button = buttons[i];
             //LOGI("Hit-testing button: %p\n", button);
 			if (button->clicked(minecraft, x, y)) {
                 button->setPressed();
+                LOGVV("Button clicked! id: %d, msg: %s", button->id, button->msg.c_str());
 
                 //LOGI("Hit-test successful: %p\n", button);
 				clickedButton = button;
@@ -215,13 +221,22 @@ void Screen::mouseClicked( int x, int y, int buttonNum )
 void Screen::mouseReleased( int x, int y, int buttonNum )
 {
 	//LOGI("b_id: %d, (%p), text: %s\n", buttonNum, clickedButton, clickedButton?clickedButton->msg.c_str():"<null>");
-	if (!clickedButton || buttonNum != MouseAction::ACTION_LEFT) return;
+	LOGVV("mouseReleased - x: %d, y: %d, buttonNum: %d, clickedButton: %p", x, y, buttonNum, (void*)clickedButton);
+	if (clickedButton) {
+		LOGVV("mouseReleased - clickedButton id: %d, msg: %s", clickedButton->id, clickedButton->msg.c_str());
+	}
+	if (!clickedButton || buttonNum != MouseAction::ACTION_LEFT) {
+		LOGVV("mouseReleased - no clickedButton or wrong button");
+		return;
+	}
 
 #if 1
 //#if defined(ANDROID) || defined(__APPLE__) //if (minecraft->isTouchscreen()) {
 		for (unsigned int i = 0; i < buttons.size(); ++i) {
 			Button* button = buttons[i];
+			LOGVV("mouseReleased - checking button %d: id: %d, msg: %s", i, button->id, button->msg.c_str());
 			if (clickedButton == button && button->clicked(minecraft, x, y)) {
+				LOGVV("Button release hit! id: %d, msg: %s", button->id, button->msg.c_str());
 				buttonClicked(button);
 				minecraft->soundEngine->playUI("random.click", 1, 1);
 				clickedButton->released(x, y);

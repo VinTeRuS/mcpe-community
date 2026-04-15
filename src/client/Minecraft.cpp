@@ -732,16 +732,13 @@ void Minecraft::tickInput() {
 					options.isFlying = !options.isFlying;
 					player->noPhysics = options.isFlying;
 				}
+			#endif
 
-				if (key == Keyboard::KEY_T) {
-					options.thirdPersonView = !options.thirdPersonView;
-					/*
-					ImprovedNoise noise;
-					for (int i = 0; i < 16; ++i)
-						printf("%d\t%f\n", i, noise.grad2(i, 3, 8));
-					*/
-				}
+			if (key == options.keyToggleView.key) {
+				options.thirdPersonView = !options.thirdPersonView;
+			}
 
+			#if defined(WIN32)
 				if (key == Keyboard::KEY_LALT) {
 					if (isPressed) {
 						releaseMouse();
@@ -844,7 +841,7 @@ void Minecraft::tickInput() {
 			#endif
 
 			#ifndef RPI
-				if (key == 82)
+				if (key == Keyboard::KEY_ESCAPE)
 					pauseGame(false);
 			#else
 				if (key == Keyboard::KEY_ESCAPE)
@@ -1117,7 +1114,7 @@ void Minecraft::grabMouse()
 	mouseGrabbed = true;
 	// Don't hide cursor if useTouchScreen is enabled
 	mouseHandler.grab(!options.useTouchScreen);
-	//setScreen(NULL);
+	platform()->captureMouse = true;
 #endif
 }
 
@@ -1132,6 +1129,7 @@ void Minecraft::releaseMouse()
 	}
 	mouseGrabbed = false;
 	mouseHandler.release();
+	platform()->captureMouse = false;
 #endif
 }
 
@@ -1139,7 +1137,9 @@ bool Minecraft::useTouchscreen() {
 #ifdef RPI
 	return false;
 #endif
-	return options.useTouchScreen || !_supportsNonTouchscreen;
+	if (_supportsNonTouchscreen)
+		return false;
+	return options.useTouchScreen;
 }
 bool Minecraft::supportNonTouchScreen() {
 	return _supportsNonTouchscreen;
@@ -1184,24 +1184,31 @@ void Minecraft::setSize(int w, int h) {
 	width  = w;
 	height = h;
 
-	if (width >= 1000) {
-        #ifdef __APPLE__
-            Gui::GuiScale = (width > 2000)? 8.0f : 4.0f;
-        #else
-            Gui::GuiScale = 4.0f;
-        #endif
-    }
-	else if (width >= 800) {
-#ifdef __APPLE__
-        Gui::GuiScale = 4.0f;
-#else
-		Gui::GuiScale = 3.0f;
-#endif
-    }
-	else if (width >= 400)
-		Gui::GuiScale = 2.0f;
-	else
-		Gui::GuiScale = 1.0f;
+	Gui::lastAppliedGuiScale = -1;
+
+	int guiScaleOption = options.guiScale;
+	if (guiScaleOption == 0) {
+		if (width >= 1000) {
+            #ifdef __APPLE__
+                Gui::GuiScale = (width > 2000)? 8.0f : 4.0f;
+            #else
+                Gui::GuiScale = 4.0f;
+            #endif
+        }
+		else if (width >= 800) {
+            #ifdef __APPLE__
+                Gui::GuiScale = 4.0f;
+            #else
+                Gui::GuiScale = 3.0f;
+            #endif
+        }
+		else if (width >= 400)
+			Gui::GuiScale = 2.0f;
+		else
+			Gui::GuiScale = 1.0f;
+	} else {
+		Gui::GuiScale = (float)guiScaleOption + 1.0f;
+	}
 
 	Gui::InvGuiScale = 1.0f / Gui::GuiScale;
 	int screenWidth  = (int)(width  * Gui::InvGuiScale);
@@ -1233,15 +1240,22 @@ void Minecraft::setSize(int w, int h) {
 
 void Minecraft::reloadOptions() {
 	options.update();
+	options.setFilePath(externalStoragePath + "options.txt");
 	options.save();
 	bool wasTouchscreen = options.useTouchScreen;
 	options.useTouchScreen = useTouchscreen();
 	options.save();
 
+#ifndef RPI
+	options.thirdPersonView = false;
+#endif
+
 	if ((wasTouchscreen != options.useTouchScreen) || (inputHolder == 0))
 		_reloadInput();
 
 	user->name = options.username;
+
+	useAmbientOcclusion = options.ambientOcclusion;
 
 	LOGI("Reloading-options\n");
 
@@ -1555,10 +1569,23 @@ ICreator* Minecraft::getCreator()
 }
 
 void Minecraft::optionUpdated( const Options::Option* option, bool value ) {
+#ifndef STANDALONE_SERVER
 	if(netCallback != NULL && option == &Options::Option::SERVER_VISIBLE) {
 		ServerSideNetworkHandler* ss = (ServerSideNetworkHandler*) netCallback;
 		ss->allowIncomingConnections(value);
 	}
+	if(option == &Options::Option::AMBIENT_OCCLUSION) {
+		useAmbientOcclusion = value;
+		if(levelRenderer != NULL) {
+			levelRenderer->allChanged();
+		}
+	}
+	if(option == &Options::Option::GRAPHICS) {
+		if(levelRenderer != NULL) {
+			levelRenderer->allChanged();
+		}
+	}
+#endif
 }
 
 void Minecraft::optionUpdated( const Options::Option* option, float value ) {
@@ -1566,6 +1593,19 @@ void Minecraft::optionUpdated( const Options::Option* option, float value ) {
 	if(option == &Options::Option::PIXELS_PER_MILLIMETER) {
 		pixelCalcUi.setPixelsPerMillimeter(value * Gui::InvGuiScale);
 		pixelCalc.setPixelsPerMillimeter(value);
+	}
+	if(option == &Options::Option::GUI_SCALE) {
+		int guiScaleOption = (int)(value + 0.5f);
+		if(guiScaleOption == Gui::lastAppliedGuiScale) return;
+		Gui::lastAppliedGuiScale = guiScaleOption;
+		if(guiScaleOption == 0) {
+			Gui::GuiScale = (width >= 1000) ? 4.0f : (width >= 800) ? 3.0f : (width >= 400) ? 2.0f : 1.0f;
+		} else {
+			Gui::GuiScale = (float)guiScaleOption + 1.0f;
+		}
+		Gui::InvGuiScale = 1.0f / Gui::GuiScale;
+		Config config = createConfig(this);
+		gui.onConfigChanged(config);
 	}
 #endif
 }

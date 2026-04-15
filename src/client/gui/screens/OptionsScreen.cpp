@@ -102,7 +102,7 @@ void OptionsScreen::removed()
 }
 void OptionsScreen::buttonClicked( Button* button ) {
 	if(button == btnClose) {
-		minecraft->reloadOptions();
+		minecraft->options.save();
 		minecraft->screenChooser.setScreen(SCREEN_STARTMENU);
 	} else if(button->id > 1 && button->id < 7) {
 		// This is a category button
@@ -136,27 +136,27 @@ void OptionsScreen::generateOptionScreens() {
 	
 	// Game Pane
 	optionPanes[1]->createOptionsGroup("Game");
-	optionPanes[1]->createToggle(0, "Third person camera", &Options::Option::THIRD_PERSON);
-	optionPanes[1]->createToggle(0, "Server visible", &Options::Option::SERVER_VISIBLE);
-	optionPanes[1]->createToggle(0, "Hide GUI", &Options::Option::HIDE_GUI);
-	optionPanes[1]->createToggle(0, "Left-handed", &Options::Option::LEFT_HANDED);
+	optionPanes[1]->createToggle(minecraft, 0, "Third person camera", &Options::Option::THIRD_PERSON);
+	optionPanes[1]->createToggle(minecraft, 0, "Server visible", &Options::Option::SERVER_VISIBLE);
+	optionPanes[1]->createToggle(minecraft, 0, "Hide GUI", &Options::Option::HIDE_GUI);
+	optionPanes[1]->createToggle(minecraft, 0, "Left-handed", &Options::Option::LEFT_HANDED);
 	
 	// Controls Pane
 	optionPanes[2]->createOptionsGroup("Controls");
-	optionPanes[2]->createToggle(0, "Invert mouse", &Options::Option::INVERT_MOUSE);
-	optionPanes[2]->createToggle(0, "Use touch screen", &Options::Option::USE_TOUCHSCREEN);
-	optionPanes[2]->createToggle(0, "Use touch joypad", &Options::Option::USE_TOUCH_JOYPAD);
+	optionPanes[2]->createToggle(minecraft, 0, "Invert mouse", &Options::Option::INVERT_MOUSE);
+	optionPanes[2]->createToggle(minecraft, 0, "Use touch screen", &Options::Option::USE_TOUCHSCREEN);
+	optionPanes[2]->createToggle(minecraft, 0, "Use touch joypad", &Options::Option::USE_TOUCH_JOYPAD);
 	optionPanes[2]->createOptionsGroup("Feedback");
-	optionPanes[2]->createToggle(1, "Vibrate on destroy", &Options::Option::DESTROY_VIBRATION);
+	optionPanes[2]->createToggle(minecraft, 1, "Vibrate on destroy", &Options::Option::DESTROY_VIBRATION);
 
 	// Graphics Pane
 	optionPanes[3]->createOptionsGroup("Graphics");
 	optionPanes[3]->createProgressSlider(minecraft, 0, "GUI Scale", &Options::Option::GUI_SCALE, 0.0f, 3.0f);
-	optionPanes[3]->createToggle(0, "Fancy graphics", &Options::Option::GRAPHICS);
-	optionPanes[3]->createToggle(0, "Ambient occlusion", &Options::Option::AMBIENT_OCCLUSION);
-	optionPanes[3]->createToggle(0, "View bobbing", &Options::Option::VIEW_BOBBING);
-	optionPanes[3]->createToggle(0, "Anaglyph 3D", &Options::Option::ANAGLYPH);
-	optionPanes[3]->createToggle(0, "Limit framerate", &Options::Option::LIMIT_FRAMERATE);
+	optionPanes[3]->createToggle(minecraft, 0, "Fancy graphics", &Options::Option::GRAPHICS);
+	optionPanes[3]->createToggle(minecraft, 0, "Ambient occlusion", &Options::Option::AMBIENT_OCCLUSION);
+	optionPanes[3]->createToggle(minecraft, 0, "View bobbing", &Options::Option::VIEW_BOBBING);
+	optionPanes[3]->createToggle(minecraft, 0, "Anaglyph 3D", &Options::Option::ANAGLYPH);
+	optionPanes[3]->createToggle(minecraft, 0, "Limit framerate", &Options::Option::LIMIT_FRAMERATE);
 }
 
 void OptionsScreen::mouseClicked( int x, int y, int buttonNum ) {

@@ -89,8 +89,6 @@ protected:
 
 	virtual void mouseClicked( Minecraft* minecraft, int x, int y, int buttonNum );
 
-private:
-
 	const Options::Option* _option;
 	bool _secondImage;
 

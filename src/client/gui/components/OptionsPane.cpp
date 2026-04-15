@@ -28,7 +28,7 @@ OptionsGroup& OptionsPane::createOptionsGroup( std::string label ) {
 	return *newGroup;
 }
 
-void OptionsPane::createToggle( unsigned int group, std::string label, const Options::Option* option ) {
+void OptionsPane::createToggle( Minecraft* minecraft, unsigned int group, std::string label, const Options::Option* option ) {
 	if(group >= children.size()) return;
 	ImageDef def;
 	def.setSrc(IntRectangle(160, 206, 39, 20));
@@ -37,6 +37,7 @@ void OptionsPane::createToggle( unsigned int group, std::string label, const Opt
 	def.height = 20 * 0.7f;
 	OptionButton* element = new OptionButton(option);
 	element->setImageDef(def, true);
+	element->updateImage(&minecraft->options);
 	OptionsItem* item = new OptionsItem(label, element);
 	((OptionsGroup*)children[group])->addChild(item);
 	setupPositions();

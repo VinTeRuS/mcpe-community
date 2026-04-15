@@ -7,6 +7,8 @@
 
 #include <string>
 #include <cstdio>
+#include <cmath>
+#include "../platform/log.h"
 #include "KeyMapping.h"
 #include "../platform/input/Keyboard.h"
 #include "../util/StringUtils.h"
@@ -138,8 +140,9 @@ public:
 	KeyMapping keyMenuPrevious;
 	KeyMapping keyMenuOk;
 	KeyMapping keyMenuCancel;
+	KeyMapping keyToggleView;
 
-    KeyMapping* keyMappings[16];
+    KeyMapping* keyMappings[17];
 
 	/*protected*/ Minecraft* minecraft;
     ///*private*/ File optionsFile;
@@ -205,12 +208,16 @@ public:
             sensitivity = value;
 		} else if (item == &Option::PIXELS_PER_MILLIMETER) {
 			 pixelsPerMillimeter = value;
+		} else if (item == &Option::GUI_SCALE) {
+			 guiScale = (int)(value + 0.5f);
 		}
 		notifyOptionUpdate(item, value);
     }
 	void set(const Option* item, int value) {
 		if(item == &Option::DIFFICULTY) {
 			difficulty = value;
+		} else if(item == &Option::GUI_SCALE) {
+			guiScale = value;
 		}
 		notifyOptionUpdate(item, value);
 	}
@@ -229,17 +236,14 @@ public:
 		if (option == &Option::DESTROY_VIBRATION) destroyVibration = !destroyVibration;
 		if (option == &Option::ANAGLYPH) {
             anaglyph3d = !anaglyph3d;
-            //minecraft->textures.reloadAll();
         }
         if (option == &Option::LIMIT_FRAMERATE) limitFramerate = !limitFramerate;
         if (option == &Option::DIFFICULTY) difficulty = (difficulty + dir) & 3;
         if (option == &Option::GRAPHICS) {
             fancyGraphics = !fancyGraphics;
-            //minecraft->levelRenderer.allChanged();
         }
         if (option == &Option::AMBIENT_OCCLUSION) {
             ambientOcclusion = !ambientOcclusion;
-            //minecraft->levelRenderer.allChanged();
         }
 		notifyOptionUpdate(option, getBooleanValue(option));
         save();
@@ -255,6 +259,7 @@ public:
         if (item == &Option::SOUND) return sound;
         if (item == &Option::SENSITIVITY) return sensitivity;
 		if (item == &Option::PIXELS_PER_MILLIMETER) return pixelsPerMillimeter;
+		if (item == &Option::GUI_SCALE) return (float)guiScale;
         return 0;
     }
 
@@ -285,6 +290,8 @@ public:
 			return isJoyTouchArea;
 		if (item == &Option::DESTROY_VIBRATION)
 			return destroyVibration;
+		if (item == &Option::GRAPHICS)
+			return fancyGraphics;
 		return false;
 	}
 
@@ -316,6 +323,7 @@ public:
 	void notifyOptionUpdate(const Option* option, bool value);
 	void notifyOptionUpdate(const Option* option, float value);
 	void notifyOptionUpdate(const Option* option, int value);
+	void setFilePath(const std::string& path);
 private:
     static bool readFloat(const std::string& string, float& value);
     static bool readInt(const std::string& string, int& value);

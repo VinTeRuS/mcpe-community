@@ -1,5 +1,6 @@
 #include "Gui.h"
 #include "Font.h"
+#include "../../AppPlatform.h"
 #include "screens/IngameBlockSelectionScreen.h"
 #include "../Minecraft.h"
 #include "../player/LocalPlayer.h"
@@ -23,6 +24,7 @@
 
 float Gui::InvGuiScale = 1.0f / 3.0f;
 float Gui::GuiScale = 1.0f / Gui::InvGuiScale;
+int Gui::lastAppliedGuiScale = -1;
 const float Gui::DropTicks = 40.0f;
 
 //#include <android/log.h>
@@ -44,9 +46,11 @@ Gui::Gui(Minecraft* minecraft)
 	MAX_MESSAGE_WIDTH(240),
 	itemNameOverlayTime(2)
 {
-	glGenBuffers2(1, &_inventoryRc.vboId);
-	glGenBuffers2(1, &rcFeedbackInner.vboId);
-	glGenBuffers2(1, &rcFeedbackOuter.vboId);
+	if (AppPlatform::glInitialized) {
+		glGenBuffers2(1, &_inventoryRc.vboId);
+		glGenBuffers2(1, &rcFeedbackInner.vboId);
+		glGenBuffers2(1, &rcFeedbackOuter.vboId);
+	}
 	//Gui::InvGuiScale = 1.0f / (int) (3 * Minecraft::width / 854);
 }
 

@@ -69,6 +69,9 @@ public:
 	AppPlatform() : keyboardVisible(false) {}
     virtual ~AppPlatform() {}
 
+    static bool glInitialized;
+    static bool captureMouse;
+
 	virtual void saveScreenshot(const std::string& filename, int glWidth, int glHeight) {}
 	virtual TextureData loadTexture(const std::string& filename_, bool textureFolder) { return TextureData(); }
 

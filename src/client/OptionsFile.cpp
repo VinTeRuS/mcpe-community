@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <cctype>
+#include <cstdlib>
+#include <sys/stat.h>
 
 OptionsFile::OptionsFile() {
 #ifdef __APPLE__
@@ -9,11 +11,33 @@ OptionsFile::OptionsFile() {
 #elif defined(ANDROID)
 	settingsPath = "options.txt";
 #else
-	settingsPath = "options.txt";
+	char* home = getenv("HOME");
+	if (home) {
+		settingsPath = std::string(home) + "/.minecraft/options.txt";
+	} else {
+		settingsPath = "options.txt";
+	}
 #endif
 }
 
+void OptionsFile::setPath(const std::string& path) {
+	settingsPath = path;
+}
+
 void OptionsFile::save(const StringVector& settings) {
+	// Create directory if it doesn't exist
+	size_t lastSlash = settingsPath.find_last_of('/');
+	if (lastSlash != std::string::npos) {
+		std::string dirPath = settingsPath.substr(0, lastSlash);
+		// Create directories recursively
+		for (size_t i = 1; i <= dirPath.length(); i++) {
+			if (i == dirPath.length() || dirPath[i] == '/') {
+				std::string subDir = dirPath.substr(0, i);
+				mkdir(subDir.c_str(), 0755);
+			}
+		}
+	}
+	
 	FILE* pFile = fopen(settingsPath.c_str(), "w");
 	if(pFile != NULL) {
 		for(StringVector::const_iterator it = settings.begin(); it != settings.end(); ++it) {

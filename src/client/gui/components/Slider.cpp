@@ -43,8 +43,8 @@ void Slider::render( Minecraft* minecraft, int xm, int ym ) {
 	int handleSizeX = 9;
 	int handleSizeY = 15;
 	int barWidth = xSliderEnd - xSliderStart;
-	//fill(x, y + 8, x + (int)(width * percentage), y + height, 0xffff00ff);
 	fill(xSliderStart, ySliderStart, xSliderEnd, ySliderEnd, 0xff606060);
+	
 	if(sliderType == SliderStep) {
 		int stepDistance = barWidth / (numSteps -1);
 		for(int a = 0; a <= numSteps - 1; ++a) {
@@ -52,6 +52,21 @@ void Slider::render( Minecraft* minecraft, int xm, int ym ) {
 			fill(renderSliderStepPosX - 1, ySliderStart - 2, renderSliderStepPosX + 1, ySliderEnd + 2, 0xff606060);
 		}
 	}
+	
+	if(option != NULL && option == &Options::Option::SENSITIVITY) {
+		for(int a = 0; a <= 4; ++a) {
+			int tickX = xSliderStart + (barWidth * a / 4) + 1;
+			fill(tickX - 1, ySliderStart - 2, tickX + 1, ySliderEnd + 2, 0xff606060);
+		}
+	}
+	
+	if(option != NULL && option == &Options::Option::GUI_SCALE) {
+		for(int a = 0; a <= 3; ++a) {
+			int tickX = xSliderStart + (barWidth * a / 3) + 1;
+			fill(tickX - 1, ySliderStart - 2, tickX + 1, ySliderEnd + 2, 0xff606060);
+		}
+	}
+	
 	minecraft->textures->loadAndBindTexture("gui/touchgui.png");
 	blit(xSliderStart + (int)(percentage * barWidth) - handleSizeX / 2, y, 226, 126, handleSizeX, handleSizeY, handleSizeX, handleSizeY);
 }
@@ -69,19 +84,19 @@ void Slider::mouseReleased( Minecraft* minecraft, int x, int y, int buttonNum ) 
 		curStepValue = sliderSteps[Mth::Min(curStep, numSteps-1)];
 		percentage = float(curStep) / (numSteps - 1);
 		setOption(minecraft);
+	} else {
+		setOption(minecraft);
 	}
 }
 
 void Slider::tick(Minecraft* minecraft) {
-	if(minecraft->screen != NULL) {
+	if(minecraft->screen != NULL && mouseDownOnElement) {
 		int xm = Mouse::getX();
 		int ym = Mouse::getY();
 		minecraft->screen->toGUICoordinate(xm, ym);
-		if(mouseDownOnElement) {
-			percentage = float(xm - x) / float(width);
-			percentage = Mth::clamp(percentage, 0.0f, 1.0f);
-			setOption(minecraft);
-		}
+		percentage = float(xm - x) / float(width);
+		percentage = Mth::clamp(percentage, 0.0f, 1.0f);
+		setOption(minecraft);
 	}
 }
 
@@ -92,8 +107,9 @@ void Slider::setOption( Minecraft* minecraft ) {
 				minecraft->options.set(option, curStepValue);
 			}
 		} else {
-			if(minecraft->options.getProgressValue(option) != percentage * (progressMax - progressMin) + progressMin) {
-				minecraft->options.set(option, percentage *  (progressMax - progressMin) + progressMin);
+			float value = percentage * (progressMax - progressMin) + progressMin;
+			if(minecraft->options.getProgressValue(option) != value) {
+				minecraft->options.set(option, value);
 			}
 		}
 	}

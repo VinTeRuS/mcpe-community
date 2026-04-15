@@ -9,6 +9,7 @@ class OptionsFile
 {
 public:
 	OptionsFile();
+    void setPath(const std::string& path);
     void save(const StringVector& settings);
 	StringVector getOptionStrings();
 	

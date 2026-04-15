@@ -69,6 +69,15 @@ void RenderList::renderChunks() {
 
 	const int Stride = VertexSizeBytes;
 
+	static int renderCount = 0;
+	if (++renderCount <= 3) {
+		GLboolean cullEnabled;
+		glGetBooleanv(GL_CULL_FACE, &cullEnabled);
+		GLenum err = glGetError();
+		LOGI("RenderList::renderChunks #%d: bufferLimit=%d, cull=%d, glError=%d\n", 
+			renderCount, bufferLimit, cullEnabled, err);
+	}
+
 	for (int i = 0; i < bufferLimit; ++i) {
 		RenderChunk& rc = rlists[i];
 
@@ -79,6 +88,12 @@ void RenderList::renderChunks() {
 		glVertexPointer2	(3, GL_FLOAT, Stride,  0);
 		glTexCoordPointer2	(2, GL_FLOAT, Stride, (GLvoid*) (3 * 4));
 		glColorPointer2		(4, GL_UNSIGNED_BYTE, Stride, (GLvoid*) (5 * 4));
+
+		if (renderCount <= 3) {
+			GLenum err = glGetError();
+			LOGI("  chunk[%d]: vboId=%d, verts=%d, glError=%d\n", 
+				i, rc.vboId, rc.vertexCount, err);
+		}
 
 		glDrawArrays2(GL_TRIANGLES, 0, rc.vertexCount);
 

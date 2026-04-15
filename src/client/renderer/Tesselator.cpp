@@ -116,7 +116,7 @@ RenderChunk Tesselator::end( bool useMine, int bufferId )
 		glEnableClientState2(GL_VERTEX_ARRAY);
 
 		if (mode == GL_QUADS) {
-			glDrawArrays2(GL_TRIANGLES, 0, vertices);
+			glDrawArrays2(GL_TRIANGLES, 0, p);  // p is the actual vertex count
 		} else {
 			glDrawArrays2(mode, 0, vertices);
 		}
@@ -261,9 +261,31 @@ void Tesselator::vertex( float x, float y, float z )
 	count++;
 
 	if (mode == GL_QUADS && (count & 3) == 0) {
-		for (int i = 0; i < 2; i++) {
-
-			const int offs = 3 - i;
+		// Proper quad to triangle expansion:
+		// Original quad vertices: v0, v1, v2, v3 (4 vertices)
+		// Quad: (v0,v1,v2,v3) in order
+		// Triangles: (v0,v1,v2) and (v0,v2,v3) - share edge v0-v2
+		// 
+		// Current expansion creates (v0,v1,v2) + (v3,v1,v2) - wrong!
+		// We need to reorder and copy vertices properly:
+		//
+		// Triangle 1 (v0,v1,v2): use v0, v1, v2 - already have these
+		// Triangle 2 (v0,v2,v3): need v0, v2, v3 - need to copy
+		//
+		// After 4 vertices (v0,v1,v2,v3):
+		// - Triangle 1: vertices 0,1,2 (v0,v1,v2) - correct colors c0,c1,c2
+		// - Triangle 2: need vertices (v0,v2,v3)
+		//   - v0 is at p-4, v2 is at p-2, v3 is at p-1
+		//   - First new vertex (v0): copy from p-4
+		//   - Second new vertex (v2): copy from p-2  
+		//   - Third new vertex (v3): copy from p-1
+		
+		for (int i = 0; i < 3; i++) {
+			int offs;
+			if (i == 0) offs = 4;      // Copy v0 (first vertex of quad)
+			else if (i == 1) offs = 2;  // Copy v2 (third vertex of quad)
+			else offs = 1;              // Copy v3 (fourth vertex of quad)
+			
 			VERTEX& src = _varray[p - offs];
 			VERTEX& dst = _varray[p];
 
@@ -274,9 +296,6 @@ void Tesselator::vertex( float x, float y, float z )
 			if (hasColor) {
 				dst.color = src.color;
 			}
-			//if (hasNormal) {
-			//	dst.normal = src.normal;
-			//}
 
 			dst.x = src.x;
 			dst.y = src.y;

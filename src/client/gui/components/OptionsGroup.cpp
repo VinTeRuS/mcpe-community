@@ -46,6 +46,7 @@ void OptionsGroup::createToggle( const Options::Option* option, Minecraft* minec
 	OptionButton* element = new OptionButton(option);
 	element->setImageDef(def, true);
 	std::string itemLabel = I18n::get(option->getCaptionId());
+	element->updateImage(&minecraft->options);
 	OptionsItem* item = new OptionsItem(itemLabel, element);
 	addChild(item);
 	setupPositions();
@@ -64,5 +65,18 @@ void OptionsGroup::createProgressSlider( const Options::Option* option, Minecraf
 }
 
 void OptionsGroup::createStepSlider( const Options::Option* option, Minecraft* minecraft ) {
-
+	std::vector<int> steps;
+	if (option == &Options::Option::GUI_SCALE) {
+		steps = {0, 1, 2, 3};
+	} else if (option == &Options::Option::DIFFICULTY) {
+		steps = {0, 1, 2, 3};
+	} else {
+		return;
+	}
+	Slider* element = new Slider(minecraft, option, steps);
+	element->width = 100;
+	element->height = 20;
+	OptionsItem* item = new OptionsItem(label, element);
+	addChild(item);
+	setupPositions();
 }

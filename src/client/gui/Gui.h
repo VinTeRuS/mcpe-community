@@ -85,6 +85,7 @@ public:
 	std::string selectedName;
 	static float InvGuiScale;
 	static float GuiScale;
+	static int lastAppliedGuiScale;
 
 private:
 	int MAX_MESSAGE_WIDTH;

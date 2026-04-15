@@ -122,6 +122,7 @@ extern int _t_keepPic;
 
 /*public*/
 void GameRenderer::render(float a) {
+    LOGVV("GameRenderer::render - start");
 	TIMER_PUSH("mouse");
 	if (mc->player && mc->mouseGrabbed) {
         mc->mouseHandler.poll();
@@ -140,8 +141,8 @@ void GameRenderer::render(float a) {
 		_rotX += xo;
 		_rotY += yo;
 
-        int yAxis = -1;
-        if (mc->options.invertYMouse) yAxis = 1;
+        int yAxis = 1;
+        if (mc->options.invertYMouse) yAxis = -1;
 
 		bool screenCovering = mc->screen && !mc->screen->passEvents;
 		if (!screenCovering)
@@ -228,6 +229,7 @@ void GameRenderer::render(float a) {
 
 /*public*/
 void GameRenderer::renderLevel(float a) {
+    LOGVV("GameRenderer::renderLevel - start");
 
     if (mc->cameraTargetPlayer == NULL) {
 		if (mc->player)
@@ -236,9 +238,12 @@ void GameRenderer::renderLevel(float a) {
 		}
 		else
 		{
+            LOGVV("GameRenderer::renderLevel - no player");
 			return;
 		}
     }
+
+    LOGVV("GameRenderer::renderLevel - after camera target");
 
 	TIMER_PUSH("pick");
     pick(a);
@@ -246,6 +251,7 @@ void GameRenderer::renderLevel(float a) {
     Mob* cameraEntity = mc->cameraTargetPlayer;
     LevelRenderer* levelRenderer = mc->levelRenderer;
     ParticleEngine* particleEngine = mc->particleEngine;
+    LOGVV("GameRenderer::renderLevel - entities loaded");
     float xOff = cameraEntity->xOld + (cameraEntity->x - cameraEntity->xOld) * a;
     float yOff = cameraEntity->yOld + (cameraEntity->y - cameraEntity->yOld) * a;
     float zOff = cameraEntity->zOld + (cameraEntity->z - cameraEntity->zOld) * a;
@@ -259,19 +265,26 @@ void GameRenderer::renderLevel(float a) {
 		TIMER_POP_PUSH("clear");
 		glViewport(0, 0, mc->width, mc->height);
 		setupClearColor(a);
+        LOGVV("GameRenderer::renderLevel - after setupClearColor");
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        LOGVV("GameRenderer::renderLevel - after glClear");
         glEnable2(GL_CULL_FACE);
 
 		TIMER_POP_PUSH("camera");
+        LOGVV("GameRenderer::renderLevel - before setupCamera");
         setupCamera(a, i);
+        LOGVV("GameRenderer::renderLevel - after setupCamera");
 		saveMatrices();
+        LOGVV("GameRenderer::renderLevel - after saveMatrices");
 
-		if (useScreenScissor) {
+        if (useScreenScissor) {
 			glEnable2(GL_SCISSOR_TEST);
 			glScissor(	screenScissorArea.x, screenScissorArea.y,
 						screenScissorArea.w, screenScissorArea.h);
 		}
+
+        LOGVV("GameRenderer::renderLevel - before sky");
 		
 //         if(mc->options.fancyGraphics) {
 // 			setupFog(-1);
@@ -282,45 +295,65 @@ void GameRenderer::renderLevel(float a) {
 // 			glFogf(GL_FOG_START, renderDistance  * 0.6f);
 // 			glFogf(GL_FOG_END, renderDistance);
 //         }
+        LOGVV("GameRenderer::renderLevel - before fog");
         glEnable2(GL_FOG);
         setupFog(1);
+        LOGVV("GameRenderer::renderLevel - after fog setup");
 
-        if (mc->options.ambientOcclusion) {
-            glShadeModel2(GL_SMOOTH);
-		}
-        
+        LOGVV("GameRenderer::renderLevel - before frustum");
 		TIMER_POP_PUSH("frustrum");
 		FrustumCuller frustum;
         frustum.prepare(xOff, yOff, zOff);
+        LOGVV("GameRenderer::renderLevel - after frustum");
 
 		TIMER_POP_PUSH("culling");
+        LOGVV("GameRenderer::renderLevel - before culling");
         mc->levelRenderer->cull(&frustum, a);
+        LOGVV("GameRenderer::renderLevel - after culling");
+        LOGVV("GameRenderer::renderLevel - before updateDirtyChunks");
         mc->levelRenderer->updateDirtyChunks(cameraEntity, false);
+        LOGVV("GameRenderer::renderLevel - after updateDirtyChunks");
 
+        LOGVV("GameRenderer::renderLevel - before setupFog(0)");
 		if(mc->options.fancyGraphics) {
 			prepareAndRenderClouds(levelRenderer, a);
+            LOGVV("GameRenderer::renderLevel - after clouds");
 		}
 
         setupFog(0);
+        LOGVV("GameRenderer::renderLevel - after setupFog(0)");
         glEnable2(GL_FOG);
 
 		mc->textures->loadAndBindTexture("terrain.png");
-        glDisable2(GL_ALPHA_TEST);
+        LOGVV("GameRenderer::renderLevel - after loadAndBindTexture");
+		glDisable2(GL_ALPHA_TEST);
         glDisable2(GL_BLEND);
-        glEnable2(GL_CULL_FACE);
+        glDisable2(GL_CULL_FACE);
+        glEnable2(GL_TEXTURE_2D);
+        
 		TIMER_POP_PUSH("terrain-0");
+        glShadeModel2(GL_SMOOTH);  // Smooth shading for AO per-vertex colors
+        glDisable2(GL_COLOR_MATERIAL);  // Disable to allow per-vertex colors to work
+        LOGVV("GameRenderer::renderLevel - before levelRenderer->render");
         levelRenderer->render(cameraEntity, 0, a);
+        LOGVV("GameRenderer::renderLevel - after levelRenderer->render");
+        glEnable2(GL_COLOR_MATERIAL);  // Re-enable
 
 		TIMER_POP_PUSH("terrain-1");
+        glShadeModel2(GL_SMOOTH);  // Smooth shading for AO per-vertex colors
         glEnable2(GL_ALPHA_TEST);
         levelRenderer->render(cameraEntity, 1, a);
         
         glShadeModel2(GL_FLAT);
 		TIMER_POP_PUSH("entities");
+        LOGVV("GameRenderer::renderLevel - before renderEntities");
 		mc->levelRenderer->renderEntities(cameraEntity->getPos(a), &frustum, a);
+        LOGVV("GameRenderer::renderLevel - after renderEntities");
 //        setupFog(0);
 		TIMER_POP_PUSH("particles");
+        LOGVV("GameRenderer::renderLevel - before particleEngine->render");
         particleEngine->render(cameraEntity, a);
+        LOGVV("GameRenderer::renderLevel - after particleEngine->render");
 
 		glDisable2(GL_BLEND);
         glBlendFunc2(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -347,6 +380,7 @@ void GameRenderer::renderLevel(float a) {
 			//glDepthMask(GL_FALSE);
 			TIMER_POP_PUSH("terrain-water");
 			glEnable2(GL_DEPTH_TEST);
+            glShadeModel2(GL_SMOOTH);  // Smooth shading for water AO
             levelRenderer->render(cameraEntity, 2, a);
 			//glDepthRangef(0, 1);
 
