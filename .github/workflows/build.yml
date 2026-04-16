@@ -13,14 +13,19 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ccache
+          key: ccache-server-${{ github.sha }}
+          restore-keys: ccache-server-
       - name: Install Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake build-essential zlib1g-dev libpng-dev libopenal-dev
+          sudo apt-get install -y cmake build-essential zlib1g-dev libpng-dev libopenal-dev ccache
       - name: Configure CMake
         run: |
           mkdir -p build && cd build
-          cmake ..
+          cmake .. -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
       - name: Build Server
         run: |
           cd build
@@ -35,12 +40,17 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ccache
+          key: ccache-client-${{ github.sha }}
+          restore-keys: ccache-client-
       - name: Install Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y cmake build-essential zlib1g-dev libpng-dev \
             libsdl2-dev libgl-dev libx11-dev libopenal-dev libegl-dev libxi-dev \
-            libxcursor-dev libglu1-mesa-dev libglew-dev
+            libxcursor-dev libglu1-mesa-dev libglew-dev ccache
       - name: Create GL header symlinks
         run: |
           sudo ln -sf /usr/include/GL /usr/include/gl
@@ -50,7 +60,7 @@ jobs:
         run: |
           rm -rf build
           mkdir -p build && cd build
-          cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo
+          cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
       - name: Build Client
         run: |
           cd build
