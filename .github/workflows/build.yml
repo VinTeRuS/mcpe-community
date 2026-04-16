@@ -13,22 +13,18 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-
       - name: Install Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y cmake build-essential zlib1g-dev libpng-dev libopenal-dev
-
       - name: Configure CMake
         run: |
           mkdir -p build && cd build
           cmake ..
-
       - name: Build Server
         run: |
           cd build
           make -j$(nproc) MinecraftServer
-
       - name: Upload Server Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -39,35 +35,47 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-
       - name: Install Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y cmake build-essential zlib1g-dev libpng-dev \
-            libsdl2-dev libgl-dev libx11-dev libopenal-dev libegl-dev libxi-dev libxcursor-dev \
-            libglu1-mesa-dev libglew-dev
-
+            libsdl2-dev libgl-dev libx11-dev libopenal-dev libegl-dev libxi-dev \
+            libxcursor-dev libglu1-mesa-dev libglew-dev
       - name: Create GL header symlinks
         run: |
           sudo ln -sf /usr/include/GL /usr/include/gl
           sudo ln -sf /usr/include/GL/gl.h /usr/include/gl/GL.h
           sudo ln -sf /usr/include/AL /usr/include/OpenAL
-
       - name: Configure CMake
         run: |
+          rm -rf build
           mkdir -p build && cd build
           cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo
-
       - name: Build Client
         run: |
           cd build
           make -j$(nproc) MinecraftClient
-
+      - name: Bundle libraries
+        run: |
+          mkdir -p build/lib
+          cp /usr/lib/x86_64-linux-gnu/libGLEW.so* build/lib/
+      - name: Create run script
+        run: |
+          cat > build/run.sh << 'EOF'
+          #!/bin/bash
+          DIR="$(cd "$(dirname "$0")" && pwd)"
+          export LD_LIBRARY_PATH="$DIR/lib:$LD_LIBRARY_PATH"
+          "$DIR/MinecraftClient" "$@"
+          EOF
+          chmod +x build/run.sh
       - name: Upload Client Artifact
         uses: actions/upload-artifact@v4
         with:
           name: MinecraftClient-Linux
-          path: build/MinecraftClient
+          path: |
+            build/MinecraftClient
+            build/lib/
+            build/run.sh
 
   build-windows:
     runs-on: windows-latest
@@ -76,21 +84,16 @@ jobs:
         working-directory: ${{github.workspace}}
     steps:
       - uses: actions/checkout@v4
-
       - name: Install Dependencies
         run: |
           vcpkg integrate install
           vcpkg install libpng:x64-windows zlib:x64-windows
-
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
-
       - name: Restore NuGet packages
         run: nuget restore ./project/win32/MinecraftWin32.sln
-
       - name: Build
         run: msbuild /m /p:Configuration=Minecraft /p:Platform=x64 ./project/win32/MinecraftWin32.sln
-
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
