@@ -191,6 +191,8 @@ target_link_libraries(MinecraftServer ZLIB::ZLIB ${CMAKE_THREAD_LIBS_INIT} dl)
 
 add_executable(MinecraftClient ${CLIENT_SOURCES})
 
+target_include_directories(MinecraftClient PRIVATE /usr/include/GL /usr/include/AL)
+
 if(NOT USE_OPENGL_ES)
     target_compile_definitions(MinecraftClient PRIVATE NO_EGL)
 endif()
