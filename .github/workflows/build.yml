@@ -49,12 +49,12 @@ jobs:
       - name: Build GLEW 2.3.0 from source (replace system GLEW)
         run: |
           sudo rm -f /usr/lib/x86_64-linux-gnu/libGLEW* /usr/lib/libGLEW* 2>/dev/null
-          sudo rm -rf /usr/include/GL/glew.h /usr/include/gl 2>/dev/null
+          sudo rm -rf /usr/include/GL/glew.h /usr/include/gl /usr/local 2>/dev/null
           cd /tmp
           curl -sL https://sourceforge.net/projects/glew/files/glew/2.3.0/glew-2.3.0.tgz/download -o glew.tgz
           tar -xzf glew.tgz
           cd glew-2.3.0
-          sudo make install GLEW_PREFIX=/usr LIBDIR=/usr/lib/x86_64-linux-gnu
+          sudo make install GLEW_PREFIX=/usr
           sudo ldconfig
           ls -la /usr/lib/x86_64-linux-gnu/libGLEW*
           ls -la /usr/include/GL/glew.h
