@@ -44,14 +44,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y cmake build-essential zlib1g-dev libpng-dev \
-            libsdl2-dev libgl-dev libx11-dev libopenal-dev libglew-dev libegl-dev
-
-      - name: Create symlinks for headers
-        run: |
-          sudo ln -sf /usr/include/GL /usr/include/gl
-          sudo ln -sf /usr/include/AL /usr/include/OpenAL
-          sudo ln -sf /usr/include/GL/glew.h /usr/include/gl/GLEW.h
-          sudo ln -sf /usr/include/GL/gl.h /usr/include/gl/GL.h
+            libsdl2-dev libgl-dev libx11-dev libopenal-dev libegl-dev libxi-dev libxcursor-dev
 
       - name: Configure CMake
         run: |
@@ -63,37 +56,11 @@ jobs:
           cd build
           make -j$(nproc) MinecraftClient
 
-      - name: Bundle required libraries
-        run: |
-          mkdir -p build/lib
-          for lib in $(ldd build/MinecraftClient 2>/dev/null | awk '{print $3}' | grep -E "libGLEW|libGL|libSDL|libX11|libXrandr|libXcursor|libXi|libXinerama"); do
-            if [ -f "$lib" ]; then
-              cp "$lib" build/lib/
-              cp "$(dirname $lib)/$(basename $lib .so).so"* build/lib/ 2>/dev/null || true
-            fi
-          done
-          cp /usr/lib/x86_64-linux-gnu/libGLEW.so* build/lib/ 2>/dev/null || true
-          cp /usr/lib/x86_64-linux-gnu/libSDL2*.so* build/lib/ 2>/dev/null || true
-          ls -la build/lib/
-
-      - name: Create run script
-        run: |
-          cat > build/run.sh << 'EOF'
-          #!/bin/bash
-          SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-          export LD_LIBRARY_PATH="$SCRIPT_DIR/lib:$LD_LIBRARY_PATH"
-          "$SCRIPT_DIR/MinecraftClient" "$@"
-          EOF
-          chmod +x build/run.sh
-
       - name: Upload Client Artifact
         uses: actions/upload-artifact@v4
         with:
           name: MinecraftClient-Linux
-          path: |
-            build/MinecraftClient
-            build/lib/
-            build/run.sh
+          path: build/MinecraftClient
 
   build-windows:
     runs-on: windows-latest

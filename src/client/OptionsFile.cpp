@@ -17,7 +17,7 @@ OptionsFile::OptionsFile() {
 #else
 	char* home = getenv("HOME");
 	if (home) {
-		settingsPath = std::string(home) + "/.minecraft/options.txt";
+		settingsPath = std::string(home) + "/.minecraft/mcpe/options.txt";
 	} else {
 		settingsPath = "options.txt";
 	}

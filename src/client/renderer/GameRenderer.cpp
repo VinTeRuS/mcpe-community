@@ -142,7 +142,10 @@ void GameRenderer::render(float a) {
 		_rotY += yo;
 
         int yAxis = 1;
-        if (mc->options.invertYMouse) yAxis = -1;
+#ifdef __linux__
+        if (!mc->options.invertYMouse) yAxis = -1;
+#endif
+        if (mc->options.invertYMouse) yAxis = -yAxis;
 
 		bool screenCovering = mc->screen && !mc->screen->passEvents;
 		if (!screenCovering)

@@ -8,6 +8,7 @@
 #include <ctime>
 #include <unistd.h>
 #include <dirent.h>
+#include <sys/stat.h>
 
 #include <SDL2/SDL.h>
 
@@ -422,7 +423,13 @@ void teardown() {
 }
 
 int main(int argc, char** argv) {
-    g_logFile = fopen("game.log", "w");
+    std::string logDir = getenv("HOME");
+    logDir += "/.minecraft/mcpe/";
+    
+    mkdir(logDir.c_str(), 0755);
+    
+    std::string logPath = logDir + "game.log";
+    g_logFile = fopen(logPath.c_str(), "w");
     
     time_t now = time(nullptr);
     char timestamp[64];
@@ -512,7 +519,7 @@ int main(int argc, char** argv) {
     NinecraftApp* app = new NinecraftApp();
     _app = app;
     std::string storagePath = getenv("HOME");
-    storagePath += "/.minecraft/";
+    storagePath += "/.minecraft/mcpe/";
     app->externalStoragePath = storagePath;
     app->externalCacheStoragePath = storagePath;
     LOGI("Storage path set to: %s", storagePath.c_str());

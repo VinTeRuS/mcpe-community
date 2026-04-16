@@ -174,6 +174,12 @@ endif()
 
 add_definitions(-DGLEW_STATIC)
 
+if(GLEW_FOUND)
+    if(GLEW_STATIC)
+        set(GLEW_LIBRARIES ${GLEW_LIBRARIES} -lGLEW)
+    endif()
+endif()
+
 if(X11_FOUND)
     set(X11_LIBRARY ${X11_LIBRARIES})
     set(X11_INCLUDE_DIR ${X11_INCLUDE_DIR})
