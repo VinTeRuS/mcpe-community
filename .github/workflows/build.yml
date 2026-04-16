@@ -77,11 +77,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup vcpkg
-        uses: lukka/run-vcpkg@v11
-        with:
-          vcpkgDirectory: ${{ github.workspace }}/vcpkg
-          vcpkgGitCommitId: 5e47e5e6c7c2e6a3e8a5e47e5e6c7c2e6a3e8a5e47
+      - name: Clone vcpkg
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git
+          cd vcpkg
+          .\bootstrap-vcpkg.bat
 
       - name: Install vcpkg dependencies
         run: |
@@ -94,17 +94,13 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force -Path "${{ github.workspace }}\lib\include"
           Copy-Item -Recurse "${{ github.workspace }}\vcpkg\installed\x64-windows\include\*" "${{ github.workspace }}\lib\include\"
+          Copy-Item -Recurse "${{ github.workspace }}\vcpkg\installed\x64-windows\lib\*" "${{ github.workspace }}\lib\lib\"
 
       - name: Restore NuGet packages
         run: nuget restore ./project/win32/MinecraftWin32.sln
 
       - name: Build
         run: msbuild /m /p:Configuration=Minecraft /p:Platform=x64 ./project/win32/MinecraftWin32.sln
-
-      - name: Copy vcpkg libs
-        run: |
-          New-Item -ItemType Directory -Force -Path "${{ github.workspace }}\lib\lib"
-          Copy-Item -Recurse "${{ github.workspace }}\vcpkg\installed\x64-windows\lib\*" "${{ github.workspace }}\lib\lib\"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
