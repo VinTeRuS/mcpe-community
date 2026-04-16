@@ -49,6 +49,7 @@ jobs:
       - name: Create GL header symlinks
         run: |
           sudo ln -sf /usr/include/GL /usr/include/gl
+          sudo ln -sf /usr/include/GL/gl.h /usr/include/gl/GL.h
           ls -la /usr/include/gl/
 
       - name: Configure CMake
