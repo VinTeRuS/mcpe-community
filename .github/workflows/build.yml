@@ -44,7 +44,18 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y cmake build-essential zlib1g-dev libpng-dev \
-            libsdl2-dev libgl-dev libx11-dev libopenal-dev libegl-dev libxi-dev libxcursor-dev libglu1-mesa-dev libglew-dev
+            libsdl2-dev libgl-dev libx11-dev libopenal-dev libegl-dev libxi-dev libxcursor-dev libglu1-mesa-dev
+
+      - name: Build GLEW 2.3.0 from source
+        run: |
+          cd /tmp
+          curl -sL https://sourceforge.net/projects/glew/files/glew/2.3.0/glew-2.3.0.tgz/download -o glew.tgz
+          tar -xzf glew.tgz
+          cd glew-2.3.0
+          make GLEW_PREFIX=/usr/local LIBDIR=/usr/local/lib
+          sudo make GLEW_PREFIX=/usr/local LIBDIR=/usr/local/lib install
+          sudo ldconfig
+          ls -la /usr/local/lib/libGLEW*
 
       - name: Create GL header symlinks
         run: |
