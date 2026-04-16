@@ -111,6 +111,10 @@ find_package(Threads REQUIRED)
 
 find_package(OpenGL)
 find_package(X11)
+find_package(PkgConfig)
+if(PkgConfig_FOUND)
+    pkg_check_modules(GLEW glew)
+endif()
 find_package(SDL2 QUIET)
 find_package(OpenAL QUIET)
 if(NOT OPENAL_FOUND)
@@ -155,10 +159,23 @@ if(SDL2_FOUND)
     set(SDL2_LIBRARY SDL2::SDL2)
     set(SDL2_INCLUDE_DIR ${SDL2_INCLUDE_DIRS})
 else()
-    find_package(PkgConfig)
-    if(PkgConfig_FOUND)
-        pkg_check_modules(SDL2 sdl2)
-    endif()
+find_package(PkgConfig)
+if(PkgConfig_FOUND)
+    pkg_check_modules(GLEW glew)
+endif()
+
+if(EXISTS /usr/local/bin/glew-config)
+    execute_process(
+        COMMAND /usr/local/bin/glew-config --libs
+        OUTPUT_VARIABLE GLEW_LIBS
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    execute_process(
+        COMMAND /usr/local/bin/glew-config --cflags
+        OUTPUT_VARIABLE GLEW_CFLAGS
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+endif()
 endif()
 
 if(OPENGL_FOUND)
@@ -207,9 +224,9 @@ if(OPENGL_FOUND)
     target_link_libraries(MinecraftClient ${OPENGL_LIBRARY})
 endif()
 
-if(GLEW_FOUND)
-    target_include_directories(MinecraftClient PRIVATE ${GLEW_INCLUDE_DIRS})
-    target_link_libraries(MinecraftClient ${GLEW_LIBRARIES})
+if(GLEW_FOUND OR EXISTS /usr/local/bin/glew-config)
+    target_include_directories(MinecraftClient PRIVATE ${GLEW_INCLUDE_DIRS} /usr/local/include)
+    target_link_libraries(MinecraftClient ${GLEW_LIBRARIES} ${GLEW_LIBS})
 endif()
 
 if(USE_OPENGL_ES)

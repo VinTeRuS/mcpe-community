@@ -44,18 +44,20 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y cmake build-essential zlib1g-dev libpng-dev \
-            libsdl2-dev libgl-dev libx11-dev libopenal-dev libegl-dev libxi-dev libxcursor-dev libglu1-mesa-dev libglew-dev
+            libsdl2-dev libgl-dev libx11-dev libopenal-dev libegl-dev libxi-dev libxcursor-dev libglu1-mesa-dev
 
-      - name: Build GLEW 2.3.0 from source (for correct version)
+      - name: Build GLEW 2.3.0 from source (replace system GLEW)
         run: |
+          sudo rm -f /usr/lib/x86_64-linux-gnu/libGLEW* /usr/lib/libGLEW* /usr/lib/libGLEW* 2>/dev/null
+          sudo rm -f /usr/local/lib/libGLEW* /usr/local/include/GL/glew.h /usr/local/bin/glew-config 2>/dev/null
           cd /tmp
           curl -sL https://sourceforge.net/projects/glew/files/glew/2.3.0/glew-2.3.0.tgz/download -o glew.tgz
           tar -xzf glew.tgz
           cd glew-2.3.0
-          make GLEW_PREFIX=/usr/local LIBDIR=/usr/local/lib
-          sudo make GLEW_PREFIX=/usr/local LIBDIR=/usr/local/lib install
+          make GLEW_PREFIX=/usr LIBDIR=/usr/lib/x86_64-linux-gnu
+          sudo make GLEW_PREFIX=/usr LIBDIR=/usr/lib/x86_64-linux-gnu install
           sudo ldconfig
-          ls -la /usr/local/lib/libGLEW*
+          ls -la /usr/lib/x86_64-linux-gnu/libGLEW*
 
       - name: Create GL header symlinks
         run: |
@@ -69,12 +71,23 @@ jobs:
         run: |
           rm -rf build
           mkdir -p build && cd build
-          cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DGLEW_INCLUDE_DIR=/usr/local/include -DGLEW_LIBRARY=/usr/local/lib/libGLEW.so -DCMAKE_PREFIX_PATH=/usr/local
+          cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_PREFIX_PATH=/usr/local:/usr
+
+      - name: Verify GLEW version
+        run: |
+          ls -la /usr/local/lib/libGLEW* 2>/dev/null || echo "No GLEW in /usr/local"
+          /usr/local/bin/glew-config --libs 2>/dev/null || echo "glew-config failed"
+          /usr/local/bin/glew-config --cflags 2>/dev/null || echo "glew-config cflags failed"
+          strings /usr/local/lib/libGLEW.so.2.3 2>/dev/null | head -5 || echo "strings check failed"
 
       - name: Build Client
         run: |
           cd build
           make -j$(nproc) MinecraftClient
+
+      - name: Verify binary dependencies
+        run: |
+          objdump -p build/MinecraftClient 2>/dev/null | grep -i glew || echo "No GLEW in binary"
 
       - name: Upload Client Artifact
         uses: actions/upload-artifact@v4
