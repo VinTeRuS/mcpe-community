@@ -50,7 +50,9 @@ jobs:
         run: |
           sudo ln -sf /usr/include/GL /usr/include/gl
           sudo ln -sf /usr/include/GL/gl.h /usr/include/gl/GL.h
+          sudo ln -sf /usr/include/AL /usr/include/OpenAL
           ls -la /usr/include/gl/
+          ls -la /usr/include/OpenAL/
 
       - name: Configure CMake
         run: |
