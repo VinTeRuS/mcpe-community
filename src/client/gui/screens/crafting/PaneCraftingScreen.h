@@ -81,6 +81,7 @@ private:
 
 	int currentCategory;
 	CItem* currentItem;
+	std::string currentItemName;
 	std::string currentItemDesc;
 	std::vector<Button*> currentCategoryButtons;
 	ImageButton btnClose;

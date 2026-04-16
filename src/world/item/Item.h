@@ -371,9 +371,7 @@ public:
     }
 
     virtual std::string getName() const {
-        std::string result = I18n::getDescriptionString(ItemInstance(this));
-        fprintf(stderr, "Item::getName() -> '%s' for id=%d\n", result.c_str(), id);
-        return result;
+        return I18n::getDescriptionString(ItemInstance(this));
     }
 
 	virtual void releaseUsing( ItemInstance* itemInstance, Level* level, Player* player, int durationLeft ) {}

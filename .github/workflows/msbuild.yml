@@ -13,12 +13,7 @@ on:
     branches: [ "arm64-build" ]
 
 env:
-  # Path to the solution file relative to the root of the project.
   SOLUTION_FILE_PATH: ./project/win32/MinecraftWin32.sln
-
-  # Configuration type to build.
-  # You can convert this to a build matrix if you need coverage of multiple configuration types.
-  # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
   BUILD_CONFIGURATION: Minecraft
 
 permissions:
@@ -31,8 +26,23 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Setup vcpkg
+      uses: lukka/run-vcpkg@v11
+      with:
+        vcpkgDirectory: ${{ github.workspace }}/vcpkg
+        vcpkgGitCommitISH: 5e47e5e6c7c2e6a3e8a5e47e5e6c7c2e6a3e8a5e47
+
+    - name: Install vcpkg dependencies
+      run: |
+        .\vcpkg\vcpkg.exe install libpng:x64-windows zlib:x64-windows
+
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Copy vcpkg includes to project lib
+      run: |
+        New-Item -ItemType Directory -Force -Path "${{ github.workspace }}\lib\include"
+        Copy-Item -Recurse "${{ github.workspace }}\vcpkg\installed\x64-windows\include\*" "${{ github.workspace }}\lib\include\"
 
     - name: Restore NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
@@ -40,15 +50,9 @@ jobs:
 
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      # Add additional options to the MSBuild command line here (like platform or verbosity level).
-      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
-    
-    # - name: Copy Libraries
-    #   working-directory: ${{env.GITHUB_WORKSPACE}}
-    #   run: copy libraries\bin\*.dll project\win32\dist\
+      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:Platform=x64 ${{env.SOLUTION_FILE_PATH}}
 
-    - name: Upload a Build Artifact
+    - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
         name: Minecraft-Windows
@@ -64,7 +68,7 @@ jobs:
     - name: Install Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y zlib1g-dev ccache
+        sudo apt-get install -y zlib1g-dev libpng-dev libopenal-dev cmake build-essential ccache
 
     - name: Setup Cache
       uses: actions/cache@v4

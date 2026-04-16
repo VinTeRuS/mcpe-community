@@ -17,7 +17,7 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake build-essential zlib1g-dev libpng-dev
+          sudo apt-get install -y cmake build-essential zlib1g-dev libpng-dev libopenal-dev
 
       - name: Configure CMake
         run: |
@@ -56,7 +56,7 @@ jobs:
       - name: Configure CMake
         run: |
           mkdir -p build && cd build
-          cmake ..
+          cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo
 
       - name: Build Client
         run: |
@@ -77,14 +77,34 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgDirectory: ${{ github.workspace }}/vcpkg
+          vcpkgGitCommitISH: 5e47e5e6c7c2e6a3e8a5e47e5e6c7c2e6a3e8a5e47
+
+      - name: Install vcpkg dependencies
+        run: |
+          .\vcpkg\vcpkg.exe install libpng:x64-windows zlib:x64-windows
+
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
+
+      - name: Copy vcpkg includes to project lib
+        run: |
+          New-Item -ItemType Directory -Force -Path "${{ github.workspace }}\lib\include"
+          Copy-Item -Recurse "${{ github.workspace }}\vcpkg\installed\x64-windows\include\*" "${{ github.workspace }}\lib\include\"
 
       - name: Restore NuGet packages
         run: nuget restore ./project/win32/MinecraftWin32.sln
 
       - name: Build
-        run: msbuild /m /p:Configuration=Minecraft ./project/win32/MinecraftWin32.sln
+        run: msbuild /m /p:Configuration=Minecraft /p:Platform=x64 ./project/win32/MinecraftWin32.sln
+
+      - name: Copy vcpkg libs
+        run: |
+          New-Item -ItemType Directory -Force -Path "${{ github.workspace }}\lib\lib"
+          Copy-Item -Recurse "${{ github.workspace }}\vcpkg\installed\x64-windows\lib\*" "${{ github.workspace }}\lib\lib\"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4

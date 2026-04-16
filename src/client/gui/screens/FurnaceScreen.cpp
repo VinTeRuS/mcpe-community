@@ -254,7 +254,12 @@ void FurnaceScreen::render(int xm, int ym, float a) {
 			t.endOverrideAndDraw();
 			glDisable2(GL_BLEND);
 		}
-		minecraft->font->drawWordWrap(currentItemDesc, (float)btnResult.x - 24, (float)(btnResult.y + btnResult.height + 6), descWidth, rgbActive);
+		if (!currentItemName.empty()) {
+			minecraft->font->drawShadow(currentItemName, (float)btnResult.x - 24, (float)(btnResult.y + btnResult.height + 6), rgbActive);
+		}
+		if (!currentItemDesc.empty()) {
+			minecraft->font->drawWordWrap(currentItemDesc, (float)btnResult.x - 24, (float)(btnResult.y + btnResult.height + 20), descWidth, rgbActive);
+		}
 	}
 
 	minecraft->textures->loadAndBindTexture("gui/spritesheet.png");
@@ -440,7 +445,8 @@ void FurnaceScreen::updateResult( const ItemInstance* item )
 	if (!result->isNull()) {
 		int id = result->id;
 		if (id == lastBurnTypeId) return;
-		currentItemDesc = I18n::getDescriptionString(*result);
+		currentItemName = I18n::getDescriptionString(*result);
+		currentItemDesc = I18n::getItemDescription(result->getDescriptionId());
 		lastBurnTypeId = id;
 		this->burnResult = *result;
 	} else {
@@ -448,10 +454,13 @@ void FurnaceScreen::updateResult( const ItemInstance* item )
 		if (id == lastBurnTypeId) return;
 
 		ItemInstance burnResult = FurnaceRecipes::getInstance()->getResult(id);
-		if (!burnResult.isNull())
-			currentItemDesc = I18n::getDescriptionString(burnResult);
-		else
+		if (!burnResult.isNull()) {
+			currentItemName = I18n::getDescriptionString(burnResult);
+			currentItemDesc = I18n::getItemDescription(burnResult.getDescriptionId());
+		} else {
+			currentItemName = "";
 			currentItemDesc = "";
+		}
 		lastBurnTypeId = id;
 		this->burnResult = burnResult;
 	}

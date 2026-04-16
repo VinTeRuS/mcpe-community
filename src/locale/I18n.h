@@ -22,6 +22,7 @@ public:
     //    return lang.getElement(id, args);
     //}
 	static std::string getDescriptionString( const ItemInstance& item );
+	static std::string getItemDescription( const std::string& descriptionId );
 
 private:
 	static void fillTranslations(AppPlatform* platform, const std::string& filename, bool overwrite);

@@ -51,6 +51,7 @@ private:
 	bool canMoveToFurnace(int inventorySlot, const ItemInstance* item);
 	ItemList _items;
 
+	std::string currentItemName;
 	std::string currentItemDesc;
 	ItemInstance burnResult;
 	float descWidth;

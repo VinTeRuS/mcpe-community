@@ -3,7 +3,12 @@
 #include <string.h>
 #include <cctype>
 #include <cstdlib>
+#ifdef _WIN32
+#include <io.h>
+#define mkdir(path, mode) _mkdir(path)
+#else
 #include <sys/stat.h>
+#endif
 
 OptionsFile::OptionsFile() {
 #ifdef __APPLE__

@@ -260,7 +260,12 @@ void PaneCraftingScreen::render(int xm, int ym, float a) {
 		t.endOverrideAndDraw();
 
 		//minecraft->font->drawWordWrap(currentItemDesc, rightBx + 2, (float)btnCraft.y + btnCraft.h + 6, descFrameWidth-4, rgbActive);
-		minecraft->font->drawWordWrap(currentItemDesc, (float)btnCraft.x, (float)(btnCraft.y + btnCraft.height + 6), (float)btnCraft.width, rgbActive);
+		if (!currentItemName.empty()) {
+			minecraft->font->drawShadow(currentItemName, (float)btnCraft.x, (float)(btnCraft.y + btnCraft.height + 6), rgbActive);
+		}
+		if (!currentItemDesc.empty()) {
+			minecraft->font->drawWordWrap(currentItemDesc, (float)btnCraft.x, (float)(btnCraft.y + btnCraft.height + 20), (float)btnCraft.width, rgbActive);
+		}
 	}
 	//glDisable2(GL_ALPHA_TEST);
 }
@@ -393,7 +398,8 @@ void PaneCraftingScreen::onItemSelected(const ItemPane* forPane, int itemIndexIn
 
 void PaneCraftingScreen::onItemSelected(int buttonIndex, CItem* item) {
 	currentItem = item;
-	currentItemDesc = I18n::getDescriptionString(currentItem->item);
+	currentItemName = I18n::getDescriptionString(item->item);
+	currentItemDesc = I18n::getItemDescription(item->item.getDescriptionId());
 
 	if (buttonIndex != currentCategory) {
 		// Clear item buttons for this category

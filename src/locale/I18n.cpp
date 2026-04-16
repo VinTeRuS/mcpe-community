@@ -66,98 +66,48 @@ void I18n::fillTranslations( AppPlatform* platform, const std::string& filename,
 std::string I18n::getDescriptionString( const ItemInstance& item )
 {
 	const std::string desc = item.getDescriptionId();
-
-	std::string s = desc;
 	std::string trans;
 
-	// Handle special cases
-	if (item.id == Tile::cloth->id)
-		return get(item.getAuxValue()? "desc.wool" : "desc.woolstring");
-	else if (item.id == Tile::fenceGate->id)
-		return I18n::get("desc.fence");
-	else if (item.id == Tile::stoneSlabHalf->id)
-		return I18n::get("desc.slab");
+	std::string descLower = desc;
+	for (unsigned int i = 0; i < descLower.length(); ++i)
+		descLower[i] = ::tolower(descLower[i]);
 
-	for (unsigned int i = 0; i < s.length(); ++i)
-		s[i] = ::tolower(s[i]);
+	if (item.id == Tile::cloth->id) {
+		if (get(descLower + ".name", trans))
+			return trans;
+		return get("tile.cloth.name");
+	} else if (item.id == Tile::fenceGate->id) {
+		return get("tile.fence.name");
+	} else if (item.id == Tile::stoneSlabHalf->id) {
+		if (get(descLower + ".name", trans))
+			return trans;
+		return get("tile.stoneslab.stone.name");
+	}
 
-	// Extract key without prefix
 	std::string prefix = "item.";
-	std::string key = s;
-	if (s.length() >= 5 && s.substr(0, 5) == "tile.") {
+	if (descLower.length() >= 5 && descLower.substr(0, 5) == "tile.")
 		prefix = "tile.";
-		key = s.substr(5);
-	} else if (s.length() >= 5 && s.substr(0, 5) == "item.") {
-		prefix = "item.";
-		key = s.substr(5);
-	}
 
-	// Try: item.seeds_melon.name or tile.stone.name
-	std::string lookupKey = prefix + key + ".name";
-	if (I18n::get(lookupKey, trans)) {
-		return trans;
-	}
+	std::string key = descLower;
+	if (prefix == "tile." || prefix == "item.")
+		key = descLower.substr(prefix.length());
 
-	// Try underscore format: Item.seedsMelon -> item.seeds_melon.name
-	std::string underscoreKey = prefix + desc;
-	for (size_t i = prefix.length(); i < underscoreKey.length(); i++) {
-		if (underscoreKey[i] >= 'A' && underscoreKey[i] <= 'Z') {
-			underscoreKey.insert(i, "_");
-			i++;
-		}
-	}
-	for (size_t i = 0; i < underscoreKey.length(); i++) {
-		underscoreKey[i] = tolower(underscoreKey[i]);
-	}
-	underscoreKey = underscoreKey + ".name";
-	if (I18n::get(underscoreKey, trans)) {
-		return trans;
-	}
-
-	// Try dot format: Item.seedsMelon -> item.seeds.melon.name
-	std::string dotKey = prefix + desc;
-	for (size_t i = prefix.length(); i < dotKey.length(); i++) {
-		if (dotKey[i] >= 'A' && dotKey[i] <= 'Z') {
-			dotKey.insert(i, ".");
-			i++;
-		}
-	}
-	for (size_t i = 0; i < dotKey.length(); i++) {
-		dotKey[i] = tolower(dotKey[i]);
-	}
-	dotKey = dotKey + ".name";
-	if (I18n::get(dotKey, trans)) {
-		return trans;
-	}
-
-	// Remove all materials from the identifier, since swordWood should
-	// be read as just sword
-	const char* materials[] = {
-		"wood",
-		"iron",
-		"stone",
-		"diamond",
-		"gold",
-		"brick",
-		"emerald",
-		"lapis",
-		"cloth"
-	};
-
-	Util::removeAll(key, materials, sizeof(materials) / sizeof(const char*));
-	if (I18n::get(prefix + key, trans))
+	if (get(prefix + key + ".name", trans))
 		return trans;
 
-	std::string mapping[] = {
-		"tile.workbench",	"craftingtable",
-	};
-	const char numMappings = sizeof(mapping) / sizeof(std::string);
-	for (int i = 0; i < numMappings; i += 2) {
-		if (desc == mapping[i]) {
-			if (I18n::get("desc." + mapping[i+1], trans))
-				return trans;
-		}
-	}
+	return descLower + " : couldn't find name";
+}
 
-	return desc + " : couldn't find desc";
+std::string I18n::getItemDescription( const std::string& descriptionId )
+{
+	std::string id = descriptionId;
+	for (unsigned int i = 0; i < id.length(); ++i)
+		id[i] = ::tolower(id[i]);
+
+	if (id.substr(0, 5) == "item.")
+		id = id.substr(5);
+	else if (id.substr(0, 5) == "tile.")
+		id = id.substr(5);
+
+	return get("desc." + id);
 }

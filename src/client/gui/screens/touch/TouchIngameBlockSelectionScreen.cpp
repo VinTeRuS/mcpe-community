@@ -18,6 +18,7 @@
 #include "../../../../world/item/ItemInstance.h"
 #include "../../../../world/entity/player/Player.h"
 #include "../../../../world/item/crafting/Recipe.h"
+#include <algorithm>
 #include "../../../player/input/touchscreen/TouchAreaModel.h"
 #include "../ArmorScreen.h"
 
@@ -77,9 +78,9 @@ void IngameBlockSelectionScreen::init()
 	InventoryColumns = maxWidth / ItemSize;
 	// Cap columns like the non-touch version does
 	if (minecraft->isCreativeMode())
-		InventoryColumns = std::min(InventoryColumns, 13);
+		InventoryColumns = (std::min)(InventoryColumns, 13);
 	else
-		InventoryColumns = std::min(InventoryColumns, 9);
+		InventoryColumns = (std::min)(InventoryColumns, 9);
 	
 	const int realWidth = InventoryColumns * ItemSize;
 	const int realBx = (width - realWidth) / 2;
