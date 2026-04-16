@@ -48,16 +48,16 @@ jobs:
 
       - name: Build GLEW 2.3.0 from source (replace system GLEW)
         run: |
-          sudo rm -f /usr/lib/x86_64-linux-gnu/libGLEW* /usr/lib/libGLEW* /usr/lib/libGLEW* 2>/dev/null
-          sudo rm -f /usr/local/lib/libGLEW* /usr/local/include/GL/glew.h /usr/local/bin/glew-config 2>/dev/null
+          sudo rm -f /usr/lib/x86_64-linux-gnu/libGLEW* /usr/lib/libGLEW* 2>/dev/null
+          sudo rm -rf /usr/include/GL/glew.h /usr/include/gl 2>/dev/null
           cd /tmp
           curl -sL https://sourceforge.net/projects/glew/files/glew/2.3.0/glew-2.3.0.tgz/download -o glew.tgz
           tar -xzf glew.tgz
           cd glew-2.3.0
-          make GLEW_PREFIX=/usr LIBDIR=/usr/lib/x86_64-linux-gnu
-          sudo make GLEW_PREFIX=/usr LIBDIR=/usr/lib/x86_64-linux-gnu install
+          sudo make install GLEW_PREFIX=/usr LIBDIR=/usr/lib/x86_64-linux-gnu
           sudo ldconfig
           ls -la /usr/lib/x86_64-linux-gnu/libGLEW*
+          ls -la /usr/include/GL/glew.h
 
       - name: Create GL header symlinks
         run: |
@@ -65,7 +65,7 @@ jobs:
           sudo ln -sf /usr/include/GL/gl.h /usr/include/gl/GL.h
           sudo ln -sf /usr/include/AL /usr/include/OpenAL
           ls -la /usr/include/gl/
-          ls -la /usr/include/OpenAL/
+          ls -la /usr/include/GL/
 
       - name: Configure CMake
         run: |
@@ -75,10 +75,8 @@ jobs:
 
       - name: Verify GLEW version
         run: |
-          ls -la /usr/local/lib/libGLEW* 2>/dev/null || echo "No GLEW in /usr/local"
-          /usr/local/bin/glew-config --libs 2>/dev/null || echo "glew-config failed"
-          /usr/local/bin/glew-config --cflags 2>/dev/null || echo "glew-config cflags failed"
-          strings /usr/local/lib/libGLEW.so.2.3 2>/dev/null | head -5 || echo "strings check failed"
+          ls -la /usr/lib/x86_64-linux-gnu/libGLEW*
+          strings /usr/lib/x86_64-linux-gnu/libGLEW.so.2.3 | head -3
 
       - name: Build Client
         run: |

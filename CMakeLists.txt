@@ -22,14 +22,11 @@ include_directories(src/raknet)
 include_directories(/usr/include/GL)
 include_directories(/usr/include/AL)
 include_directories(/usr/include/gl)
+include_directories(/usr/include)
 
 if(USE_OPENGL_ES)
     add_definitions(-DOPENGL_ES)
 endif()
-
-include_directories(src)
-include_directories(libraries/include)
-include_directories(src/raknet)
 
 set(COMMON_SOURCES
     src/NinecraftApp.cpp
