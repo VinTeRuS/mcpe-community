@@ -434,9 +434,8 @@ int main(int argc, char** argv) {
     time_t now = time(nullptr);
     char timestamp[64];
     strftime(timestamp, sizeof(timestamp), "%Y-%m-%d %H:%M:%S", localtime(&now));
-    fprintf(stderr, "[%s] Opening game.log: %p\n", timestamp, g_logFile);
     if (g_logFile) {
-        fprintf(g_logFile, "[%s] Log opened\n", timestamp);
+        fprintf(g_logFile, "[%s] Opening game.log\n", timestamp);
         fflush(g_logFile);
     }
     

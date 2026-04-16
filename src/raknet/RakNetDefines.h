@@ -58,7 +58,14 @@
 
 // Redefine if you want to disable or change the target for debug RAKNET_DEBUG_PRINTF
 #ifndef RAKNET_DEBUG_PRINTF
-#define RAKNET_DEBUG_PRINTF printf
+#ifdef LINUX_LOG_FILE
+extern FILE* g_logFile;
+#define RAKNET_DEBUG_PRINTF(fmt, ...) do { \
+    if(g_logFile) { fprintf(g_logFile, "[RAKNET] " fmt "\n", ##__VA_ARGS__); fflush(g_logFile); } \
+} while(0)
+#else
+#define RAKNET_DEBUG_PRINTF(...) ((void)0)
+#endif
 #endif
 
 // Maximum number of local IP addresses supported

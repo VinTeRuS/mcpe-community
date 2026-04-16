@@ -78,6 +78,9 @@ jobs:
           "$DIR/MinecraftClient" "$@"
           EOF
           chmod +x build/run.sh
+      - name: Bundle assets
+        run: |
+          cp -r handheld/data build/
       - name: Upload Client Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -86,6 +89,7 @@ jobs:
             build/MinecraftClient
             build/lib/
             build/run.sh
+            build/data/
 
   build-windows:
     runs-on: windows-latest
