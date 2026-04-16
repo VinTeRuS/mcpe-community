@@ -44,7 +44,14 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y cmake build-essential zlib1g-dev libpng-dev \
-            libsdl2-dev libgl-dev libx11-dev libopenal-dev libegl-dev libxi-dev libxcursor-dev
+            libsdl2-dev libgl-dev libx11-dev libopenal-dev libegl-dev libxi-dev libxcursor-dev libglu1-mesa-dev
+
+      - name: Create symlinks for headers
+        run: |
+          sudo ln -sf /usr/include/GL /usr/include/gl
+          sudo ln -sf /usr/include/AL /usr/include/OpenAL
+          sudo ln -sf /usr/include/GL/glew.h /usr/include/gl/GLEW.h
+          sudo ln -sf /usr/include/GL/gl.h /usr/include/gl/GL.h
 
       - name: Configure CMake
         run: |
