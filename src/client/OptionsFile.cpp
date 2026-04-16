@@ -4,8 +4,7 @@
 #include <cctype>
 #include <cstdlib>
 #ifdef _WIN32
-#include <io.h>
-#define mkdir(path, mode) _mkdir(path)
+#include <stdlib.h>
 #else
 #include <sys/stat.h>
 #endif
@@ -38,7 +37,11 @@ void OptionsFile::save(const StringVector& settings) {
 		for (size_t i = 1; i <= dirPath.length(); i++) {
 			if (i == dirPath.length() || dirPath[i] == '/') {
 				std::string subDir = dirPath.substr(0, i);
+#ifdef _WIN32
+				_mkdir(subDir.c_str());
+#else
 				mkdir(subDir.c_str(), 0755);
+#endif
 			}
 		}
 	}

@@ -72,7 +72,7 @@ public:
 				return out;
 			}
 
-			png_set_read_fn(pngPtr,(voidp)&source, png_funcReadFile);
+			png_set_read_fn(pngPtr, (png_voidp)&source, png_funcReadFile);
 
 			png_read_info(pngPtr, infoPtr);
 

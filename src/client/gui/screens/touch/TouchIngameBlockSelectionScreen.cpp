@@ -150,9 +150,9 @@ void IngameBlockSelectionScreen::setupPositions() {
 		int maxWidth = width - Bx - Bx;
 		InventoryColumns = maxWidth / ItemSize;
 		if (minecraft->isCreativeMode())
-			InventoryColumns = std::min(InventoryColumns, 13);
+			InventoryColumns = (std::min)(InventoryColumns, 13);
 		else
-			InventoryColumns = std::min(InventoryColumns, 9);
+			InventoryColumns = (std::min)(InventoryColumns, 9);
 		
 		const int realWidth = InventoryColumns * ItemSize;
 		const int realBx = (width - realWidth) / 2;

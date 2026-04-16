@@ -172,6 +172,8 @@ if(PkgConfig_FOUND)
     pkg_check_modules(GLEW glew)
 endif()
 
+add_definitions(-DGLEW_STATIC)
+
 if(X11_FOUND)
     set(X11_LIBRARY ${X11_LIBRARIES})
     set(X11_INCLUDE_DIR ${X11_INCLUDE_DIR})

@@ -63,11 +63,37 @@ jobs:
           cd build
           make -j$(nproc) MinecraftClient
 
+      - name: Bundle required libraries
+        run: |
+          mkdir -p build/lib
+          for lib in $(ldd build/MinecraftClient 2>/dev/null | awk '{print $3}' | grep -E "libGLEW|libGL|libSDL|libX11|libXrandr|libXcursor|libXi|libXinerama"); do
+            if [ -f "$lib" ]; then
+              cp "$lib" build/lib/
+              cp "$(dirname $lib)/$(basename $lib .so).so"* build/lib/ 2>/dev/null || true
+            fi
+          done
+          cp /usr/lib/x86_64-linux-gnu/libGLEW.so* build/lib/ 2>/dev/null || true
+          cp /usr/lib/x86_64-linux-gnu/libSDL2*.so* build/lib/ 2>/dev/null || true
+          ls -la build/lib/
+
+      - name: Create run script
+        run: |
+          cat > build/run.sh << 'EOF'
+          #!/bin/bash
+          SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+          export LD_LIBRARY_PATH="$SCRIPT_DIR/lib:$LD_LIBRARY_PATH"
+          "$SCRIPT_DIR/MinecraftClient" "$@"
+          EOF
+          chmod +x build/run.sh
+
       - name: Upload Client Artifact
         uses: actions/upload-artifact@v4
         with:
           name: MinecraftClient-Linux
-          path: build/MinecraftClient
+          path: |
+            build/MinecraftClient
+            build/lib/
+            build/run.sh
 
   build-windows:
     runs-on: windows-latest
