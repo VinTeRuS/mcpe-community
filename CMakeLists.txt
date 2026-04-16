@@ -21,6 +21,7 @@ include_directories(libraries/include)
 include_directories(src/raknet)
 include_directories(/usr/include/GL)
 include_directories(/usr/include/AL)
+include_directories(/usr/include/gl)
 
 if(USE_OPENGL_ES)
     add_definitions(-DOPENGL_ES)
