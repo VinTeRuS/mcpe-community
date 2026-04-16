@@ -19,6 +19,8 @@ endif()
 include_directories(src)
 include_directories(libraries/include)
 include_directories(src/raknet)
+include_directories(/usr/include/GL)
+include_directories(/usr/include/AL)
 
 if(USE_OPENGL_ES)
     add_definitions(-DOPENGL_ES)
@@ -190,8 +192,6 @@ target_compile_definitions(MinecraftServer PRIVATE STANDALONE_SERVER)
 target_link_libraries(MinecraftServer ZLIB::ZLIB ${CMAKE_THREAD_LIBS_INIT} dl)
 
 add_executable(MinecraftClient ${CLIENT_SOURCES})
-
-target_include_directories(MinecraftClient PRIVATE /usr/include/GL /usr/include/AL)
 
 if(NOT USE_OPENGL_ES)
     target_compile_definitions(MinecraftClient PRIVATE NO_EGL)
