@@ -1,16 +1,25 @@
 # Minecraft Pocket Edition (v0.6.1) Source Code
 
-forked from `deepfriedwaffles/minecraft-pe-source-code`
+forked from a few forks of `deepfriedwaffles/minecraft-pe-source-code`
 
 currently achieved:
 - linux port
 - fixed mouse turning issues
+- f3 debug menu
+- added a system for creating settings options more easily (hopefully)
+- added left hand (actual left hand)
+- made render distance changeable
+- fps limiting settings
+- fixed ambient occlusion for linux
+- fixed keyboard and mouse input bugs
+- scrolling wheel works in uis with scrolling
+- changeable gamemode right in the world
+- probably more
 
 planned:
-- fix ambient occlusion
-- fix keyboard input bugs
-- make the ui more consistent + make the touchless version compile with a touch ui visuals
-- fix bugs obviously
-- maybe add some other features like zooming, fov changing etc etc
+- a working windows build
+- more settings (zoom, fov, etc)
+- optimizations
+- probably more
 
-right now it can be built via github actions (the linux client builds but needs some library shenanigans on your system)
+right now it can be built via github actions or on your system via `cmake --build build --target (MinecraftClient or MinecraftServer depending on what you want)` (the windows build fails rn)
