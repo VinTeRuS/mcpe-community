@@ -27,6 +27,8 @@ float Gui::GuiScale = 1.0f / Gui::InvGuiScale;
 int Gui::lastAppliedGuiScale = -1;
 const float Gui::DropTicks = 40.0f;
 
+static OffsetPosTranslator posTranslator;
+
 //#include <android/log.h>
 
 Gui::Gui(Minecraft* minecraft)
@@ -116,12 +118,12 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
 	unsigned int max = 10;
     bool isChatting = false;
 	renderChatMessages(screenHeight, max, isChatting, font);
-#if !defined(RPI)
-	renderOnSelectItemNameText(screenWidth, font, ySlot);
-#endif
-#if defined(RPI)
-	renderDebugInfo();
-#endif
+	#if !defined(RPI)
+		renderOnSelectItemNameText(screenWidth, font, ySlot);
+	#endif
+	#if !defined(ANDROID)
+		renderDebugInfo();
+	#endif
 
 //        glPopMatrix2();
 //
@@ -188,6 +190,10 @@ void Gui::handleClick(int button, int x, int y) {
 	int slot = getSlotIdAt(x, y);
 	if (slot != -1)
 	{
+#if defined(__linux__) && !defined(ANDROID) && !defined(RPI)
+		minecraft->player->inventory->selectSlot(slot);
+		itemNameOverlayTime = 0;
+#else
 		if (slot == (getNumSlots()-1))
 		{
 			minecraft->screenChooser.setScreen(SCREEN_BLOCKSELECTION);
@@ -197,6 +203,7 @@ void Gui::handleClick(int button, int x, int y) {
 			minecraft->player->inventory->selectSlot(slot);
 			itemNameOverlayTime = 0;
 		}
+#endif
 	}
 }
 
@@ -211,14 +218,21 @@ void Gui::handleKeyPressed(int key)
 	}
 	else if (key == 4)
 	{
+#if defined(__linux__) && !defined(ANDROID) && !defined(RPI)
+		if (minecraft->player->inventory->selected < 8)
+#else
 		if (minecraft->player->inventory->selected < (getNumSlots() - 2))
+#endif
 		{
 			minecraft->player->inventory->selected++;
 		}
 	}
 	else if (key == 100 || key == 69) // 69 is KEY_E
 	{
+#if defined(__linux__) && !defined(ANDROID) && !defined(RPI)
+		// E opens creative inventory on desktop Linux
 		minecraft->screenChooser.setScreen(SCREEN_BLOCKSELECTION);
+#endif
 	}
 }
 
@@ -233,6 +247,52 @@ void Gui::tick() {
 
     if (!minecraft->isCreativeMode())
         tickItemDrop();
+
+#ifndef ANDROID
+	if (minecraft->options.renderDebug && minecraft->player != NULL) {
+		float xx = minecraft->player->x;
+		float yy = minecraft->player->y - minecraft->player->heightOffset;
+		float zz = minecraft->player->z;
+		posTranslator.to(xx, yy, zz);
+
+		char buf[128];
+
+		// Left side
+		snprintf(buf, sizeof(buf), "MCPE Community Edition");
+		_debugInfoLeft[0] = buf;
+
+		snprintf(buf, sizeof(buf), "Version: %s", Common::getGameVersionString().c_str());
+		_debugInfoLeft[1] = buf;
+
+		snprintf(buf, sizeof(buf), "");
+		_debugInfoLeft[2] = buf;
+
+		snprintf(buf, sizeof(buf), "XYZ: %.2f / %.2f / %.2f", xx, yy, zz);
+		_debugInfoLeft[3] = buf;
+
+		snprintf(buf, sizeof(buf), "Block: %d / %d / %d", (int)xx, (int)yy, (int)zz);
+		_debugInfoLeft[4] = buf;
+
+		snprintf(buf, sizeof(buf), "");
+		_debugInfoLeft[5] = buf;
+
+		snprintf(buf, sizeof(buf), "Facing: %.1f", minecraft->player->yRot);
+		_debugInfoLeft[6] = buf;
+
+		// Right side
+		snprintf(buf, sizeof(buf), "Renderer: OpenGL");
+		_debugInfoRight[0] = buf;
+
+		snprintf(buf, sizeof(buf), "Max FPS: %s", minecraft->options.maxFps > 0 ? std::to_string(minecraft->options.maxFps).c_str() : "Unlimited");
+		_debugInfoRight[1] = buf;
+
+		snprintf(buf, sizeof(buf), "View Distance: %d", minecraft->options.viewDistance);
+		_debugInfoRight[2] = buf;
+
+		snprintf(buf, sizeof(buf), "GPU: Unknown");
+		_debugInfoRight[3] = buf;
+	}
+#endif
 }
 
 void Gui::addMessage(const std::string& _string) {
@@ -418,6 +478,9 @@ void Gui::onConfigChanged( const Config& c ) {
 	} else {
 		_numSlots = Inventory::MAX_SELECTION_SIZE; // Xperia Play
 	}
+#if defined(__linux__) && !defined(ANDROID) && !defined(RPI)
+	_numSlots = 9;
+#endif
 	MAX_MESSAGE_WIDTH = c.guiWidth;
 }
 
@@ -455,7 +518,11 @@ void Gui::tickItemDrop()
 	isCurrentlyActive = false;
 	if (Mouse::isButtonDown(MouseAction::ACTION_LEFT)) {
 		int slot = getSlotIdAt(Mouse::getX(), Mouse::getY());
+#if defined(__linux__) && !defined(ANDROID) && !defined(RPI)
+		if (slot >= 0 && slot < getNumSlots()) {
+#else
 		if (slot >= 0 && slot < getNumSlots()-1) {
+#endif
 			if (slot != _currentDropSlot) {
 				_currentDropTicks = 0;
 				_currentDropSlot = slot;
@@ -618,7 +685,6 @@ void Gui::renderBubbles() {
 	}
 }
 
-static OffsetPosTranslator posTranslator;
 void Gui::onLevelGenerated() {
 	if (Level* level = minecraft->level) {
 		Pos p = level->getSharedSpawnPos();
@@ -627,18 +693,47 @@ void Gui::onLevelGenerated() {
 }
 
 void Gui::renderDebugInfo() {
-	static char buf[256];
-	float xx = minecraft->player->x;
-	float yy = minecraft->player->y - minecraft->player->heightOffset;
-	float zz = minecraft->player->z;
-	posTranslator.to(xx, yy, zz);
-	sprintf(buf, "pos: %3.1f, %3.1f, %3.1f\n", xx, yy, zz);
-	Tesselator& t = Tesselator::instance;
-	t.beginOverride();
-	t.scale2d(InvGuiScale, InvGuiScale);
-	minecraft->font->draw(buf, 2, 2, 0xffffff);
-	t.resetScale();
-	t.endOverrideAndDraw();
+#ifndef ANDROID
+	if (!minecraft->options.renderDebug) return;
+
+	const int lineHeight = 9;
+	const int padding = 1;
+	const int backgroundColor = 0x80505050;
+	const int textColor = 0xffffff;
+
+	int guiWidth = (int)(minecraft->width * InvGuiScale);
+	int maxLines = 10;
+
+	glDisable2(GL_TEXTURE_2D);
+	glEnable2(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	for (int i = 0; i < maxLines; i++) {
+		int y = padding + i * lineHeight;
+		int leftW = minecraft->font->width(_debugInfoLeft[i]);
+		int rightW = minecraft->font->width(_debugInfoRight[i]);
+
+		if (leftW > 0) {
+			fill(1, y, 1 + leftW, y + lineHeight, backgroundColor);
+		}
+		if (rightW > 0) {
+			fill(guiWidth - 2 - rightW, y, guiWidth, y + lineHeight, backgroundColor);
+		}
+	}
+
+	glDisable2(GL_BLEND);
+	glEnable2(GL_TEXTURE_2D);
+
+	for (int i = 0; i < maxLines; i++) {
+		if (!_debugInfoLeft[i].empty()) {
+			minecraft->font->draw(_debugInfoLeft[i], 1, padding + 1 + i * lineHeight, textColor);
+		}
+		if (!_debugInfoRight[i].empty()) {
+			int rx = guiWidth - 2 - minecraft->font->width(_debugInfoRight[i]);
+			minecraft->font->draw(_debugInfoRight[i], rx, padding + 1 + i * lineHeight, textColor);
+		}
+	}
+#endif
 }
 
 void Gui::renderSleepAnimation( const int screenWidth, const int screenHeight ) {
@@ -757,7 +852,11 @@ void Gui::renderToolBar( float a, int ySlot, const int screenWidth ) {
 	t.beginOverride();
 
 	float x = baseItemX;
+#if defined(__linux__) && !defined(ANDROID) && !defined(RPI)
+	for (int i = 0; i < getNumSlots(); i++) {
+#else
 	for (int i = 0; i < getNumSlots()-1; i++) {
+#endif
 		renderSlot(i, (int)x, ySlot, a);
 		x += 20;
 	}
@@ -769,8 +868,10 @@ void Gui::renderToolBar( float a, int ySlot, const int screenWidth ) {
 	//renderSlotWatch.stop();
 	//renderSlotWatch.printEvery(100, "Render slots:");
 
+#if !defined(__linux__) || defined(ANDROID) || defined(RPI)
 	//int x = screenWidth / 2 + getNumSlots() * 10 + (getNumSlots()-1) * 20 + 2;
 	blit(screenWidth / 2 + 10 * getNumSlots() - 20 + 4, ySlot + 6, 242, 252, 14, 4, 14, 4);
+#endif
 
 	minecraft->textures->loadAndBindTexture("gui/gui_blocks.png");
 	t.endOverrideAndDraw();
@@ -780,7 +881,11 @@ void Gui::renderToolBar( float a, int ySlot, const int screenWidth ) {
 	glDisable2(GL_TEXTURE_2D);
 	t.beginOverride();
 	x = baseItemX;
+#if defined(__linux__) && !defined(ANDROID) && !defined(RPI)
+	for (int i = 0; i < getNumSlots(); i++) {
+#else
 	for (int i = 0; i < getNumSlots()-1; i++) {
+#endif
 		ItemRenderer::renderGuiItemDecorations(minecraft->player->inventory->getItem(i), x, (float)ySlot);
 		x += 20;
 	}
@@ -792,12 +897,23 @@ void Gui::renderToolBar( float a, int ySlot, const int screenWidth ) {
 	//w.printEvery(100, "gui-slots");
 
 	// Draw count
-	//Tesselator& t = Tesselator::instance;
+	//Tesselator& t = &Tesselator::instance;
 	glPushMatrix2();
 	glScalef2(InvGuiScale + InvGuiScale, InvGuiScale + InvGuiScale, 1);
 	const float k = 0.5f * GuiScale;
 
 	t.beginOverride();
+#if defined(__linux__) && !defined(ANDROID) && !defined(RPI)
+	if (minecraft->gameMode->isSurvivalType()) {
+		x = baseItemX;
+		for (int i = 0; i < getNumSlots(); i++) {
+			ItemInstance* item = minecraft->player->inventory->getItem(i);
+			if (item && item->count >= 0)
+				renderSlotText(item, k*x, k*ySlot + 1, true, true);
+			x += 20;
+		}
+	}
+#else
 	if (minecraft->gameMode->isSurvivalType()) {
 		x = baseItemX;
 		for (int i = 0; i < getNumSlots()-1; i++) {
@@ -807,8 +923,11 @@ void Gui::renderToolBar( float a, int ySlot, const int screenWidth ) {
 			x += 20;
 		}
 	}
+#endif
+	t.endOverrideAndDraw();
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_TEXTURE_2D);
 	minecraft->textures->loadAndBindTexture("font/default8.png");
 	t.endOverrideAndDraw();
-
 	glPopMatrix2();
 }

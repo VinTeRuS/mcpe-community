@@ -10,6 +10,7 @@ bool Options::debugGl = false;
 
 void Options::initDefaultValues() {
 	difficulty = Difficulty::NORMAL;
+	gameMode = 0;
 	hideGui = false;
 	thirdPersonView = false;
 	renderDebug = false;
@@ -30,10 +31,10 @@ void Options::initDefaultValues() {
 	sound = 1;
 	sensitivity = 0.25f;
 	invertYMouse = false;
-	viewDistance = 2;
+	viewDistance = 4;
 	bobView = true;
 	anaglyph3d = false;
-	limitFramerate = false;
+	maxFps = 60;
 	fancyGraphics = true;//false;
 	ambientOcclusion = true;
 	if(minecraft->supportNonTouchScreen())
@@ -100,7 +101,7 @@ void Options::initDefaultValues() {
 //	it would be slightly better performance with it inlined. Should
 //  probably create separate subclasses (or read from file). @fix @todo.
 #if defined(ANDROID) || defined(__APPLE__) || defined(RPI)
-    viewDistance = 2;
+    viewDistance = 4;
     thirdPersonView = false;
 	useMouseForDigging = false;
 	fancyGraphics = false;
@@ -128,6 +129,10 @@ void Options::initDefaultValues() {
 	sensitivity *= 0.4f;
 	useMouseForDigging = true;
 #endif
+
+#if defined(__linux__) && !defined(RPI)
+	useMouseForDigging = true;
+#endif
 }
 
 const Options::Option
@@ -138,8 +143,9 @@ const Options::Option
 	Options::Option::RENDER_DISTANCE	 (4, "options.renderDistance",false, false),
 	Options::Option::VIEW_BOBBING		 (5, "options.viewBobbing",	false, true),
 	Options::Option::ANAGLYPH			 (6, "options.anaglyph",		false, true),
-	Options::Option::LIMIT_FRAMERATE	 (7, "options.limitFramerate",false, true),
+	Options::Option::MAX_FPS			 (7, "options.maxFps",		false, false),
 	Options::Option::DIFFICULTY			 (8, "options.difficulty",	false, false),
+	Options::Option::GAME_MODE			 (20, "options.gamemode",	false, false),
 	Options::Option::GRAPHICS			 (9, "options.graphics",		false, false),
 	Options::Option::AMBIENT_OCCLUSION	 (10, "options.ao",		false, true),
 	Options::Option::GUI_SCALE			 (11, "options.guiScale",	false, false),
@@ -248,7 +254,7 @@ void Options::update()
 		if (key == "viewDistance") readInt(value, viewDistance);
 		if (key == "bobView") readBool(value, bobView);
 		if (key == "anaglyph3d") readBool(value, anaglyph3d);
-		if (key == "limitFramerate") readBool(value, limitFramerate);
+		if (key == "maxFps") readInt(value, maxFps);
 		if (key == "ambientOcclusion") {
 			readBool(value, ambientOcclusion);
 		}
@@ -263,6 +269,11 @@ void Options::update()
 			// Only support peaceful and normal right now
 			if (difficulty != Difficulty::PEACEFUL && difficulty != Difficulty::NORMAL)
 				difficulty = Difficulty::NORMAL;
+		}
+		if (key == OptionStrings::Game_GameMode) {
+			readInt(value, gameMode);
+			if (gameMode != 0 && gameMode != 1)
+				gameMode = 0;
 		}
 
 		// Key bindings
@@ -288,108 +299,77 @@ void Options::update()
 
 void Options::load()
 {
-	int a = 0;
-	//try {
-	//    if (!optionsFile.exists()) return;
-	//    BufferedReader br = /*new*/ BufferedReader(/*new*/ FileReader(optionsFile));
-	//    std::string line = "";
-	//    while ((line = br.readLine()) != NULL) {
-	//        std::string[] cmds = line.split(":");
-	//        if (cmds[0].equals("music")) music = readFloat(cmds[1]);
-	//        if (cmds[0].equals("sound")) sound = readFloat(cmds[1]);
-	//        if (cmds[0].equals("mouseSensitivity")) sensitivity = readFloat(cmds[1]);
-	//        if (cmds[0].equals("invertYMouse")) invertYMouse = cmds[1].equals("true");
-	//        if (cmds[0].equals("viewDistance")) viewDistance = Integer.parseInt(cmds[1]);
-	//        if (cmds[0].equals("guiScale")) guiScale = Integer.parseInt(cmds[1]);
-	//        if (cmds[0].equals("bobView")) bobView = cmds[1].equals("true");
-	//        if (cmds[0].equals("anaglyph3d")) anaglyph3d = cmds[1].equals("true");
-	//        if (cmds[0].equals("limitFramerate")) limitFramerate = cmds[1].equals("true");
-	//        if (cmds[0].equals("difficulty")) difficulty = Integer.parseInt(cmds[1]);
-	//        if (cmds[0].equals("fancyGraphics")) fancyGraphics = cmds[1].equals("true");
-	//        if (cmds[0].equals("ao")) ambientOcclusion = cmds[1].equals("true");
-	//        if (cmds[0].equals("skin")) skin = cmds[1];
-	//        if (cmds[0].equals("lastServer") && cmds.length >= 2) lastMpIp = cmds[1];
+	StringVector pairs = optionsFile.getOptionStrings();
+	for (size_t i = 0; i + 1 < pairs.size(); i += 2) {
+		optionMap[pairs[i]] = pairs[i + 1];
+	}
 
-	//        for (int i = 0; i < keyMappings.length; i++) {
-	//            if (cmds[0].equals("key_" + keyMappings[i].name)) {
-	//                keyMappings[i].key = Integer.parseInt(cmds[1]);
-	//            }
-	//        }
-	//    }
-	//    br.close();
-	//} catch (Exception e) {
-	//    System.out.println("Failed to load options");
-	//    e.printStackTrace();
-	//}
+	username = getOption("username", username);
+	serverVisible = getOptionBool("serverVisible", serverVisible);
+	difficulty = getOption("difficulty", difficulty);
+	gameMode = getOption("gameMode", gameMode);
+	music = getOption("music", music);
+	sound = getOption("sound", sound);
+	invertYMouse = getOptionBool("invertYMouse", invertYMouse);
+	sensitivity = getOption("sensitivity", sensitivity);
+	isLeftHanded = getOptionBool("isLeftHanded", isLeftHanded);
+	useTouchScreen = getOptionBool("useTouchScreen", useTouchScreen);
+	isJoyTouchArea = getOptionBool("isJoyTouchArea", isJoyTouchArea);
+	destroyVibration = getOptionBool("destroyVibration", destroyVibration);
+	fancyGraphics = getOptionBool("fancyGraphics", fancyGraphics);
+	viewDistance = getOption("viewDistance", viewDistance);
+	bobView = getOptionBool("bobView", bobView);
+	anaglyph3d = getOptionBool("anaglyph3d", anaglyph3d);
+	maxFps = getOption("maxFps", maxFps);
+	ambientOcclusion = getOptionBool("ambientOcclusion", ambientOcclusion);
+	guiScale = getOption("guiScale", guiScale);
+	thirdPersonView = getOptionBool("thirdPersonView", thirdPersonView);
+	hideGui = getOptionBool("hideGui", hideGui);
+	pixelsPerMillimeter = getOption("pixelsPerMillimeter", pixelsPerMillimeter);
+
+	for (int i = 0; i < 17; i++) {
+		if (keyMappings[i] != NULL) {
+			keyMappings[i]->key = getOption("key_" + keyMappings[i]->name, keyMappings[i]->key);
+		}
+	}
 }
 
 void Options::save()
 {
-	StringVector stringVec;
-	// Multiplayer
-	addOptionToSaveOutput(stringVec, OptionStrings::Multiplayer_Username, username);
-	addOptionToSaveOutput(stringVec, OptionStrings::Multiplayer_ServerVisible, serverVisible);
+	setOption("username", username);
+	setOption("serverVisible", serverVisible);
+	setOption("difficulty", difficulty);
+	setOption("gameMode", gameMode);
+	setOption("music", music);
+	setOption("sound", sound);
+	setOption("invertYMouse", invertYMouse);
+	setOption("sensitivity", sensitivity);
+	setOption("isLeftHanded", isLeftHanded);
+	setOption("useTouchScreen", useTouchScreen);
+	setOption("isJoyTouchArea", isJoyTouchArea);
+	setOption("destroyVibration", destroyVibration);
+	setOption("fancyGraphics", fancyGraphics);
+	setOption("viewDistance", viewDistance);
+	setOption("bobView", bobView);
+	setOption("anaglyph3d", anaglyph3d);
+	setOption("maxFps", maxFps);
+	setOption("ambientOcclusion", ambientOcclusion);
+	setOption("guiScale", guiScale);
+	setOption("thirdPersonView", thirdPersonView);
+	setOption("hideGui", hideGui);
+	setOption("pixelsPerMillimeter", pixelsPerMillimeter);
 
-	// Game
-	addOptionToSaveOutput(stringVec, OptionStrings::Game_DifficultyLevel, difficulty);
-
-	// Audio
-	addOptionToSaveOutput(stringVec, "music", music);
-	addOptionToSaveOutput(stringVec, "sound", sound);
-
-	// Input
-	addOptionToSaveOutput(stringVec, OptionStrings::Controls_InvertMouse, invertYMouse);
-	addOptionToSaveOutput(stringVec, OptionStrings::Controls_Sensitivity, sensitivity);
-	addOptionToSaveOutput(stringVec, OptionStrings::Controls_IsLefthanded, isLeftHanded);
-	addOptionToSaveOutput(stringVec, OptionStrings::Controls_UseTouchScreen, useTouchScreen);
-	addOptionToSaveOutput(stringVec, OptionStrings::Controls_UseTouchJoypad, isJoyTouchArea);
-	addOptionToSaveOutput(stringVec, OptionStrings::Controls_FeedbackVibration, destroyVibration);
-
-	// Graphics
-	addOptionToSaveOutput(stringVec, OptionStrings::Graphics_Fancy, fancyGraphics);
-	addOptionToSaveOutput(stringVec, "viewDistance", viewDistance);
-	addOptionToSaveOutput(stringVec, "bobView", bobView);
-	addOptionToSaveOutput(stringVec, "anaglyph3d", anaglyph3d);
-	addOptionToSaveOutput(stringVec, "limitFramerate", limitFramerate);
-	addOptionToSaveOutput(stringVec, "ambientOcclusion", ambientOcclusion);
-	addOptionToSaveOutput(stringVec, "guiScale", guiScale);
-	addOptionToSaveOutput(stringVec, "thirdPersonView", thirdPersonView);
-	addOptionToSaveOutput(stringVec, "hideGui", hideGui);
-	addOptionToSaveOutput(stringVec, "pixelsPerMillimeter", pixelsPerMillimeter);
-
-	// Key bindings
 	for (int i = 0; i < 17; i++) {
 		if (keyMappings[i] != NULL) {
-			std::stringstream ss;
-			ss << "key_" << keyMappings[i]->name << "=" << keyMappings[i]->key;
-			stringVec.push_back(ss.str());
+			setOption("key_" + keyMappings[i]->name, keyMappings[i]->key);
 		}
 	}
 
-	// Save to file
+	StringVector stringVec;
+	for (auto& kv : optionMap) {
+		stringVec.push_back(kv.first + "=" + kv.second);
+	}
 	optionsFile.save(stringVec);
-}
-
-void Options::addOptionToSaveOutput(StringVector& stringVector, std::string name, bool boolValue) {
-	std::stringstream ss;
-	ss << name << "=" << boolValue;
-	stringVector.push_back(ss.str());
-}
-void Options::addOptionToSaveOutput(StringVector& stringVector, std::string name, float floatValue) {
-	std::stringstream ss;
-	ss << name << "=" << floatValue;
-	stringVector.push_back(ss.str());
-}
-void Options::addOptionToSaveOutput(StringVector& stringVector, std::string name, int intValue) {
-	std::stringstream ss;
-	ss << name << "=" << intValue;
-	stringVector.push_back(ss.str());
-}
-
-void Options::addOptionToSaveOutput(StringVector& stringVector, std::string name, const std::string& stringValue) {
-	std::stringstream ss;
-	ss << name << "=" << stringValue;
-	stringVector.push_back(ss.str());
 }
 
 std::string Options::getMessage( const Option* item )

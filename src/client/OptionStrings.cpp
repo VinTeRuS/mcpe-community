@@ -14,3 +14,4 @@ const char* OptionStrings::Controls_IsLefthanded       = "ctrl_islefthanded";
 const char* OptionStrings::Controls_FeedbackVibration  = "feedback_vibration";
 
 const char* OptionStrings::Game_DifficultyLevel = "game_difficulty";
+const char* OptionStrings::Game_GameMode = "game_gamemode";

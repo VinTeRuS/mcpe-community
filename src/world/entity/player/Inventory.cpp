@@ -297,6 +297,45 @@ void Inventory::clearInventoryWithDefault()
 	setupDefault();
 }
 
+void Inventory::backupInventory()
+{
+	for(ItemInstance* item : items) {
+		if(item != NULL) {
+			backupItems.push_back(new ItemInstance(*item));
+		} else {
+			backupItems.push_back(NULL);
+		}
+	}
+}
+
+void Inventory::restoreInventory()
+{
+	clearInventory();
+	for(ItemInstance* item : backupItems) {
+		if(item != NULL) {
+			addItem(new ItemInstance(*item));
+		} else {
+			addItem(NULL);
+		}
+	}
+	for(ItemInstance* item : backupItems) {
+		delete item;
+	}
+	backupItems.clear();
+}
+
+void Inventory::setCreativeMode(bool creative)
+{
+	if(creative && !_isCreative) {
+		backupInventory();
+	}
+	_isCreative = creative;
+	clearInventoryWithDefault();
+	if(!creative) {
+		restoreInventory();
+	}
+}
+
 int Inventory::getAttackDamage( Entity* entity )
 {
 	ItemInstance* item = getSelected();

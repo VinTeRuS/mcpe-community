@@ -24,6 +24,7 @@ public:
 	~Inventory();
 
 	void clearInventoryWithDefault();
+	void setCreativeMode(bool creative);
 	//
 	// Selection slots
 	//
@@ -47,11 +48,16 @@ public:
 	bool			canDestroy(Tile* tile);
 private:
 	void			setupDefault();
+	void			backupInventory();
+	void			restoreInventory();
 public:
 	//ItemList armor;
 
     int selected;
     Player* player;
+
+private:
+	std::vector<ItemInstance*> backupItems;
 };
 
 #endif /*NET_MINECRAFT_WORLD_ENTITY_PLAYER__JInventory_H__*/

@@ -155,10 +155,10 @@ void LevelRenderer::allChanged()
 	Tile::leaves_carried->setFancy(mc->options.fancyGraphics);
 	lastViewDistance = mc->options.viewDistance;
 
-	int dist = (512 >> 3) << (3 - lastViewDistance);
+	int dist = lastViewDistance * 16;
+	if (dist < 64) dist = 64;
 	if (lastViewDistance <= 2 && mc->isPowerVR())
 		dist = (int)((float)dist * 0.8f);
-	LOGI("last: %d, power: %d\n", lastViewDistance, mc->isPowerVR());
 
 	#if defined(RPI)
 		dist *= 0.6f;
@@ -172,7 +172,6 @@ void LevelRenderer::allChanged()
 	yChunks = (128 /  LevelRenderer::CHUNK_SIZE);
 	zChunks = (dist / LevelRenderer::CHUNK_SIZE) + 1;
 	chunksLength = xChunks * yChunks * zChunks;
-	LOGI("chunksLength: %d. Distance: %d\n", chunksLength, dist);
 
 	chunks = new Chunk*[chunksLength];
 	sortedChunks = new Chunk*[chunksLength];

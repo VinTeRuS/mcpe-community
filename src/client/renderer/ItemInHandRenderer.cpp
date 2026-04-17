@@ -247,13 +247,15 @@ void ItemInHandRenderer::render( float a )
 
 	ItemInstance* item;// = selectedItem;
 	//if (player.fishing != NULL) {
-	//    item = /*new*/ ItemInstance(Item.stick);
+	//    item = /*new*/ ItemInstance(Item::stick);
 	//}
 
 	if (this->item.id > 0)
 		item = &this->item;
 	else
 		item = NULL;
+
+	float leftHanded = mc->options.isLeftHanded ? -1.0f : 1.0f;
 
 	if (item != NULL) {
 		glColor4f2(br, br, br, 1);
@@ -281,16 +283,16 @@ void ItemInHandRenderer::render( float a )
 				is = is * is * is;
 				float iss = 1 - is;
 				glTranslatef(0, Mth::abs(Mth::cos(t / 4 * Mth::PI) * 0.1f) * (swing > 0.2 ? 1 : 0), 0);
-				glTranslatef(iss * 0.6f, -iss * 0.5f, 0);
-				glRotatef(iss * 90, 0, 1, 0);
+				glTranslatef(iss * 0.6f * leftHanded, -iss * 0.5f, 0);
+				glRotatef(iss * 90 * leftHanded, 0, 1, 0);
 				glRotatef(iss * 10, 1, 0, 0);
-				glRotatef(iss * 30, 0, 0, 1);
+				glRotatef(iss * 30 * leftHanded, 0, 0, 1);
 			}
 		} else {
-			glTranslatef2(-swing2 * 0.4f, (float) Mth::sin(sqrtSwing * Mth::PI * 2) * 0.2f, -swing1 * 0.2f);
+			glTranslatef2(-swing2 * 0.4f * leftHanded, (float) Mth::sin(sqrtSwing * Mth::PI * 2) * 0.2f, -swing1 * 0.2f);
 		}
 
-		glTranslatef2(0.7f * d, -0.65f * d - (1 - h) * 0.6f, -0.9f * d);
+		glTranslatef2(0.7f * d * leftHanded, -0.65f * d - (1 - h) * 0.6f, -0.9f * d);
 
 		glRotatef2(45, 0, 1, 0);
 		//glEnable2(GL_RESCALE_NORMAL);
@@ -345,22 +347,22 @@ void ItemInHandRenderer::render( float a )
 		const float swing1 = Mth::sin(swing * Mth::PI);
 		const float swing2 = Mth::sin(sqrtSwing * Mth::PI);
 
-		glTranslatef2(-swing2 * 0.3f, (float) Mth::sin(Mth::sqrt(swing) * Mth::PI * 2) * 0.4f, -swing1 * 0.4f);
-		glTranslatef2(0.8f * d, -0.75f * d - (1 - h) * 0.6f, -0.9f * d);
+		glTranslatef2(-swing2 * 0.3f * leftHanded, (float) Mth::sin(Mth::sqrt(swing) * Mth::PI * 2) * 0.4f, -swing1 * 0.4f);
+		glTranslatef2(0.8f * d * leftHanded, -0.75f * d - (1 - h) * 0.6f, -0.9f * d);
 
 		glRotatef2(45, 0, 1, 0);
 		//glEnable2(GL_RESCALE_NORMAL);
-		glRotatef2(swing2 * 70, 0, 1, 0);
+		glRotatef2(swing2 * 70 * leftHanded, 0, 1, 0);
 		glRotatef2(-swing3 * 20, 0, 0, 1);
 		// glRotatef2(-swing2 * 80, 1, 0, 0);
 
 		mc->textures->loadAndBindTexture("mob/char.png");
-		glTranslatef2(-1.0f, +3.6f, +3.5f);
+		glTranslatef2(-1.0f * leftHanded, +3.6f, +3.5f);
 		glRotatef2(120, 0, 0, 1);
 		glRotatef2(180 + 20, 1, 0, 0);
 		glRotatef2(-90 - 45, 0, 1, 0);
 		glScalef2(1.5f / 24.0f * 16, 1.5f / 24.0f * 16, 1.5f / 24.0f * 16);
-		glTranslatef2(5.6f, 0, 0);
+		glTranslatef2(5.6f * leftHanded, 0, 0);
 
 		EntityRenderer* er = EntityRenderDispatcher::getInstance()->getRenderer(mc->player);
 		HumanoidMobRenderer* playerRenderer = (HumanoidMobRenderer*) er;

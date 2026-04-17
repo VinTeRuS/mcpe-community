@@ -89,7 +89,8 @@ void renderCursor(float x, float y, Minecraft* minecraft) {
 
 /*private*/
 void GameRenderer::setupCamera(float a, int eye) {
-    renderDistance = (float) (16 * 16 >> (mc->options.viewDistance));
+    renderDistance = (float) (mc->options.viewDistance * 16);
+    if (renderDistance < 64.0f) renderDistance = 64.0f;
 #if defined(ANDROID)
     if (mc->isPowerVR() && mc->options.viewDistance <= 2)
 		renderDistance *= 0.8f;
@@ -122,21 +123,23 @@ extern int _t_keepPic;
 
 /*public*/
 void GameRenderer::render(float a) {
-    LOGVV("GameRenderer::render - start");
 	TIMER_PUSH("mouse");
 	if (mc->player && mc->mouseGrabbed) {
         mc->mouseHandler.poll();
-        //printf("Controller.x,y : %f,%f\n", Controller::getX(0), Controller::getY(0));
-
-        float ss = mc->options.sensitivity * 0.6f + 0.2f;
-        float sens = (ss * ss * ss) * 8;
-        float xo = mc->mouseHandler.xd * sens * 4.f;
-        float yo = mc->mouseHandler.yd * sens * 4.f;
 
 		const float now = _tick + a;
 		float deltaT = now - _lastTickT;
-		if (deltaT > 3.0f) deltaT = 3.0f;
+		if (deltaT > 1.0f) deltaT = 1.0f;
+		if (deltaT < 0.001f) deltaT = 0.001f;
 		_lastTickT = now;
+
+		float targetDt = 1.0f / 60.0f;
+		float fpsScale = targetDt / deltaT;
+
+        float sens = mc->options.sensitivity * 48.0f + 2.0f;
+        
+        float xo = mc->mouseHandler.xd * sens * fpsScale;
+        float yo = mc->mouseHandler.yd * sens * fpsScale;
 
 		_rotX += xo;
 		_rotY += yo;
@@ -147,7 +150,7 @@ void GameRenderer::render(float a) {
 #endif
         if (mc->options.invertYMouse) yAxis = -yAxis;
 
-		bool screenCovering = mc->screen && !mc->screen->passEvents;
+bool screenCovering = mc->screen && !mc->screen->passEvents;
 		if (!screenCovering)
 		{
 			mc->player->turn(deltaT * _rotX, deltaT * _rotY * yAxis);
@@ -819,9 +822,7 @@ void GameRenderer::tick(int nTick, int maxTick) {
 											Mth::floor(mc->cameraTargetPlayer->y),
 											Mth::floor(mc->cameraTargetPlayer->z));
 
-	float whiteness = (3 - mc->options.viewDistance) / 3.0f;
-    float fogBrT = brr * (1 - whiteness) + whiteness;
-    fogBr += (fogBrT - fogBr) * 0.1f;
+	fogBr += (brr - fogBr) * 0.1f;
 
     _tick++;
 
@@ -834,8 +835,7 @@ void GameRenderer::setupClearColor(float a) {
     Level* level = mc->level;
     Mob* player = mc->cameraTargetPlayer;
 
-    float whiteness = 1.0f / (4 - mc->options.viewDistance);
-    whiteness = 1 - (float) pow(whiteness, 0.25f);
+    float whiteness = 0.0f;
 
     Vec3 skyColor = level->getSkyColor(mc->cameraTargetPlayer, a);
     float sr = (float) skyColor.x;
@@ -971,11 +971,11 @@ void GameRenderer::prepareAndRenderClouds( LevelRenderer* levelRenderer, float a
 	setupFog(0);
 	glDepthMask(false);
 	glEnable2(GL_FOG);
-	glFogf(GL_FOG_START, renderDistance  * 0.2f);
-	glFogf(GL_FOG_END, renderDistance * 0.75f);
+	glFogf(GL_FOG_START, 256.0f);
+	glFogf(GL_FOG_END, 512.0f);
 	levelRenderer->renderSky(a);
-	glFogf(GL_FOG_START, renderDistance * 4.2f * 0.6f);
-	glFogf(GL_FOG_END, renderDistance * 4.2f);
+	glFogf(GL_FOG_START, 256.0f);
+	glFogf(GL_FOG_END, 512.0f);
 	levelRenderer->renderClouds(a);
 	glFogf(GL_FOG_START, renderDistance  * 0.6f);
 	glFogf(GL_FOG_END, renderDistance);

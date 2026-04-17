@@ -118,6 +118,10 @@ private:
 	static const float DropTicks;
 	float  _currentDropTicks;
 	int    _currentDropSlot;
+
+	// Debug info (F3 menu)
+	std::string _debugInfoLeft[10];
+	std::string _debugInfoRight[10];
 };
 
 #endif /*NET_MINECRAFT_CLIENT_GUI__Gui_H__*/

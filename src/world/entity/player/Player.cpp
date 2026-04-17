@@ -312,8 +312,8 @@ void Player::stopUsingItem() {
 void Player::releaseUsingItem() {
 	if(!useItem.isNull()) {
 		useItem.releaseUsing(level, this, useItemDuration);
+		completeUsingItem();
 	}
-	stopUsingItem();
 }
 
 void Player::completeUsingItem() {

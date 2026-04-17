@@ -262,7 +262,12 @@ void Minecraft::selectLevel( const std::string& levelId, const std::string& leve
 	// note: settings is useless beyond this point, since it's
 	//       either copied to LevelData (or LevelData read from file)
 	setLevel(level, "Generating level");
-	setIsCreativeMode(level->getLevelData()->getGameType() == GameType::Creative);
+	int savedGameType = level->getLevelData()->getGameType();
+	if (settings.getGameType() >= 0) {
+		savedGameType = settings.getGameType();
+	}
+	options.gameMode = (savedGameType == GameType::Creative) ? 1 : 0;
+	setIsCreativeMode(savedGameType == GameType::Creative);
 	_running = true;
 }
 
@@ -497,7 +502,7 @@ void Minecraft::update() {
 		}
 
 		//TIMER_PUSH("debugfps");
-		_perfRenderer->renderFpsMeter(1);
+		// _perfRenderer->renderFpsMeter(1); // Commented out - conflicts with our F3 debug menu
 		checkGlError("render debug");
 		//TIMER_POP();
 	} else {
@@ -668,9 +673,17 @@ void Minecraft::tickInput() {
 
 		if (e.action == MouseAction::ACTION_WHEEL) {
 			Inventory* v = player->inventory;
+#if defined(__linux__) && !defined(ANDROID) && !defined(RPI)
+			int numSlots = 9;
+#else
 			int numSlots = gui.getNumSlots() - 1;
+#endif
 			int slot = (v->selected - e.dy + numSlots) % numSlots;
 			v->selectSlot(slot);
+		}
+
+		if (e.action == MouseAction::ACTION_MIDDLE && e.data == MouseAction::DATA_DOWN && !screen) {
+			pickBlock();
 		}
 		/*
 		if (mouseDiggable && options.useMouseForDigging) {
@@ -700,7 +713,11 @@ void Minecraft::tickInput() {
 					int digit = key - '0';
 					int slot = digit - 1;
 
+#if defined(__linux__) && !defined(ANDROID) && !defined(RPI)
+					if (slot >= 0 && slot < 9)
+#else
 					if (slot >= 0 && slot < gui.getNumSlots()-1)
+#endif
 						player->inventory->selectSlot(slot);
 
 					#if defined(WIN32)
@@ -753,16 +770,10 @@ void Minecraft::tickInput() {
 					levelRenderer->allChanged();
 				}
 
-				if (key == Keyboard::KEY_L)
-					options.viewDistance = (options.viewDistance + 1) % 4;
-
 				if (key == Keyboard::KEY_U) {
 					onGraphicsReset();
 					player->heal(100);
 				}
-
-				if (key == Keyboard::KEY_B || key == 108) // Toggle the game mode
-					setIsCreativeMode(!isCreativeMode());
 
 				if (key == Keyboard::KEY_P) // Step forward in time
 					level->setTime( level->getTime() + 1000);
@@ -840,6 +851,10 @@ void Minecraft::tickInput() {
 				}
 			#endif
 
+			if (key == Keyboard::KEY_F3) {
+				options.renderDebug = !options.renderDebug;
+			}
+
 			#ifndef RPI
 				if (key == Keyboard::KEY_ESCAPE)
 					pauseGame(false);
@@ -890,8 +905,10 @@ void Minecraft::tickInput() {
 	//        event based when using mouse (or keys..), and in java. Not quite
 	//        sure just yet what way to go.
 	bool buildHandled = inputHolder->getBuildInput()->tickBuild(player, &bai);
+	LOGI("tickBuild: handled=%d, remove=%d, attack=%d, interact=%d, build=%d\n", 
+		buildHandled, bai.isRemove(), bai.isAttack(), bai.isInteract(), bai.isBuild());
 	if (buildHandled) {
-		if (!bai.isRemoveContinue())
+		if (!bai.isRemoveContinue() || bai.isAttack())
 			handleBuildAction(&bai);
 	}
 
@@ -906,7 +923,10 @@ void Minecraft::tickInput() {
 	handleMouseClick(buildHandled && bai.isInteract()
 		|| options.useMouseForDigging && Mouse::isButtonDown(MouseAction::ACTION_RIGHT));
 #else
-	handleMouseDown(MouseAction::ACTION_LEFT, isTryingToDestroyBlock || (buildHandled && bai.isInteract()));
+	handleMouseDown(MouseAction::ACTION_LEFT, isTryingToDestroyBlock);
+	if(player->isUsingItem() && !Mouse::isButtonDown(MouseAction::ACTION_RIGHT)) {
+		gameMode->releaseUsingItem(player);
+	}
 #endif
 
 	lastTickTime = getTimeMs();
@@ -927,7 +947,7 @@ void Minecraft::handleMouseDown(int button, bool down) {
 #ifndef STANDALONE_SERVER
 #ifndef RPI
 	if(player->isUsingItem()) {
-		if(!down && !Keyboard::isKeyDown(options.keyUse.key)) {
+		if(!down && button == MouseAction::ACTION_RIGHT) {
 			gameMode->releaseUsingItem(player);
 		}
 		return;
@@ -974,7 +994,7 @@ void Minecraft::handleBuildAction(BuildActionIntention* action) {
 			missTime = 10;
 		}
     } else if (hitResult.type == ENTITY) {
-        if (action->isAttack()) {
+        if (action->isAttack() || action->isRemove()) {
 			player->swing();
 			//LOGI("attacking!\n");
 			InteractPacket packet(InteractPacket::Attack, player->entityId, hitResult.entity->entityId);
@@ -1239,8 +1259,8 @@ void Minecraft::setSize(int w, int h) {
 }
 
 void Minecraft::reloadOptions() {
-	options.update();
 	options.setFilePath(externalStoragePath + "options.txt");
+	options.load();
 	options.save();
 	bool wasTouchscreen = options.useTouchScreen;
 	options.useTouchScreen = useTouchscreen();
@@ -1528,6 +1548,9 @@ void Minecraft::setIsCreativeMode(bool isCreative)
 #else
 	_isCreativeMode = isCreative;
 #endif
+	if (level != NULL) {
+		level->getLevelData()->setGameType(isCreative ? GameType::Creative : GameType::Survival);
+	}
 }
 
 bool Minecraft::isCreativeMode() {
@@ -1607,9 +1630,75 @@ void Minecraft::optionUpdated( const Options::Option* option, float value ) {
 		Config config = createConfig(this);
 		gui.onConfigChanged(config);
 	}
+	if(option == &Options::Option::RENDER_DISTANCE) {
+		if(levelRenderer != NULL) {
+			levelRenderer->allChanged();
+		}
+	}
 #endif
 }
 
 void Minecraft::optionUpdated( const Options::Option* option, int value ) {
+#ifndef STANDALONE_SERVER
+	if(option == &Options::Option::GAME_MODE) {
+		bool isCreative = (value == 1);
+		setIsCreativeMode(isCreative);
+		if(player) {
+			player->inventory->setCreativeMode(isCreative);
+		}
+	}
+#endif
+}
 
+void Minecraft::pickBlock() {
+#ifndef STANDALONE_SERVER
+	if(player == NULL || level == NULL) return;
+	if(!hitResult.isHit() || hitResult.type != TILE) return;
+
+	int x = hitResult.x;
+	int y = hitResult.y;
+	int z = hitResult.z;
+	int tileId = level->getTile(x, y, z);
+	if(tileId == 0) return;
+
+	Tile* tile = Tile::tiles[tileId];
+	if(tile == NULL) return;
+
+	int currentSlot = player->inventory->selected;
+	int numSelectionSlots = 9;
+	
+	if(isCreativeMode()) {
+		for(int i = 0; i < numSelectionSlots; i++) {
+			ItemInstance* slotItem = player->inventory->getItem(i);
+			if(slotItem != NULL && slotItem->id == tileId) {
+				player->inventory->selectSlot(i);
+				return;
+			}
+		}
+		ItemInstance* pickedItem = new ItemInstance(tile, 1, 0);
+		int targetSlot;
+		if(currentSlot >= 0 && currentSlot < numSelectionSlots) {
+			targetSlot = player->inventory->linkedSlots[currentSlot].inventorySlot;
+			if(targetSlot < 0 || targetSlot >= player->inventory->getContainerSize()) {
+				targetSlot = currentSlot;
+			}
+		} else {
+			targetSlot = 0;
+		}
+		player->inventory->setItem(targetSlot, pickedItem);
+	} else {
+		for(int i = 0; i < player->inventory->getContainerSize(); i++) {
+			ItemInstance* invItem = player->inventory->getItem(i);
+			if(invItem != NULL && invItem->id == tileId) {
+				if(i < numSelectionSlots) {
+					player->inventory->selectSlot(i);
+				} else {
+					player->inventory->selectSlot(currentSlot);
+					player->inventory->linkSlot(currentSlot, i, true);
+				}
+				return;
+			}
+		}
+	}
+#endif
 }

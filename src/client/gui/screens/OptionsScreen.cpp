@@ -99,10 +99,10 @@ void OptionsScreen::render( int xm, int ym, float a ) {
 
 void OptionsScreen::removed()
 {
+	minecraft->options.save();
 }
 void OptionsScreen::buttonClicked( Button* button ) {
 	if(button == btnClose) {
-		minecraft->options.save();
 		minecraft->screenChooser.setScreen(SCREEN_STARTMENU);
 	} else if(button->id > 1 && button->id < 7) {
 		// This is a category button
@@ -136,6 +136,9 @@ void OptionsScreen::generateOptionScreens() {
 	
 	// Game Pane
 	optionPanes[1]->createOptionsGroup("Game");
+	if (minecraft->level != NULL) {
+		optionPanes[1]->createStepSlider(minecraft, 0, "Game mode", &Options::Option::GAME_MODE, {0, 1});
+	}
 	optionPanes[1]->createToggle(minecraft, 0, "Third person camera", &Options::Option::THIRD_PERSON);
 	optionPanes[1]->createToggle(minecraft, 0, "Server visible", &Options::Option::SERVER_VISIBLE);
 	optionPanes[1]->createToggle(minecraft, 0, "Hide GUI", &Options::Option::HIDE_GUI);
@@ -152,11 +155,12 @@ void OptionsScreen::generateOptionScreens() {
 	// Graphics Pane
 	optionPanes[3]->createOptionsGroup("Graphics");
 	optionPanes[3]->createProgressSlider(minecraft, 0, "GUI Scale", &Options::Option::GUI_SCALE, 0.0f, 3.0f);
+	optionPanes[3]->createStepSlider(minecraft, 0, "Render distance", &Options::Option::RENDER_DISTANCE, {4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16});
+	optionPanes[3]->createStepSlider(minecraft, 0, "Max FPS", &Options::Option::MAX_FPS, {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120, 140, 160, 180, 200, 220, 250});
 	optionPanes[3]->createToggle(minecraft, 0, "Fancy graphics", &Options::Option::GRAPHICS);
 	optionPanes[3]->createToggle(minecraft, 0, "Ambient occlusion", &Options::Option::AMBIENT_OCCLUSION);
 	optionPanes[3]->createToggle(minecraft, 0, "View bobbing", &Options::Option::VIEW_BOBBING);
 	optionPanes[3]->createToggle(minecraft, 0, "Anaglyph 3D", &Options::Option::ANAGLYPH);
-	optionPanes[3]->createToggle(minecraft, 0, "Limit framerate", &Options::Option::LIMIT_FRAMERATE);
 }
 
 void OptionsScreen::mouseClicked( int x, int y, int buttonNum ) {

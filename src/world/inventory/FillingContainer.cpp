@@ -177,6 +177,7 @@ ItemInstance FillingContainer::removeItem( int slot, int count )
 
 void FillingContainer::setItem( int slot, ItemInstance* item )
 {
+	LOGI("FillingContainer::setItem slot=%d numTotalSlots=%d itemId=%d\n", slot, numTotalSlots, item ? item->id : 0);
 	if (slot < 0 || slot >= numTotalSlots)
 		return;
 
@@ -618,7 +619,9 @@ ItemInstance* FillingContainer::getLinked( int slot )
 	// sanity checking to prevent exploits
 	if (slot < numLinkedSlots && slot >= 0) {
 		int i = linkedSlots[slot].inventorySlot;
-		return (i >= numLinkedSlots && i < numTotalSlots)? items[i] : NULL;
+		if (i >= 0 && i < numTotalSlots) {
+			return items[i];
+		}
 	}
 	return NULL;
 }

@@ -431,9 +431,10 @@ void Level::setInitialSpawn() {
     int xSpawn = CHUNK_CACHE_WIDTH * CHUNK_WIDTH / 2; // (Level.MAX_LEVEL_SIZE - 100) * 0;
     int ySpawn = 64;
     int zSpawn = CHUNK_CACHE_WIDTH * CHUNK_DEPTH / 2; // (Level.MAX_LEVEL_SIZE - 100) * 0;
+    Random spawnRandom(levelData.getSeed());
     while (!dimension->isValidSpawn(xSpawn, zSpawn)) {
-        xSpawn += random.nextInt(32) - random.nextInt(32);
-        zSpawn += random.nextInt(32) - random.nextInt(32);
+        xSpawn += spawnRandom.nextInt(32) - spawnRandom.nextInt(32);
+        zSpawn += spawnRandom.nextInt(32) - spawnRandom.nextInt(32);
 
 		if (xSpawn < 4) xSpawn += 32;
 		if (xSpawn >= LEVEL_WIDTH-4) xSpawn -= 32;
@@ -451,9 +452,10 @@ void Level::validateSpawn() {
     }
     int xSpawn = levelData.getXSpawn();
     int zSpawn = levelData.getZSpawn();
+    Random spawnRandom(levelData.getSeed());
     while (getTopTile(xSpawn, zSpawn) == 0 || getTopTile(xSpawn, zSpawn) == Tile::invisible_bedrock->id) {
-        xSpawn += random.nextInt(8) - random.nextInt(8);
-        zSpawn += random.nextInt(8) - random.nextInt(8);
+        xSpawn += spawnRandom.nextInt(8) - spawnRandom.nextInt(8);
+        zSpawn += spawnRandom.nextInt(8) - spawnRandom.nextInt(8);
 
 		if (xSpawn < 4) xSpawn += 8;
 		if (xSpawn >= LEVEL_WIDTH-4) xSpawn -= 8;

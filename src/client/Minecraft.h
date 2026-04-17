@@ -69,6 +69,7 @@ public:
 	bool isCreativeMode();
 	void setIsCreativeMode(bool isCreative);
 	void setScreen(Screen*);
+	void pickBlock();
 
 	virtual void selectLevel(const std::string& levelId, const std::string& levelName, const LevelSettings& settings);
 	virtual void setLevel(Level* level, const std::string& message = "", LocalPlayer* forceInsertPlayer = NULL);

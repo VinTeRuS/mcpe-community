@@ -8,6 +8,8 @@
 #include <string>
 #include <cstdio>
 #include <cmath>
+#include <map>
+#include <sstream>
 #include "../platform/log.h"
 #include "KeyMapping.h"
 #include "../platform/input/Keyboard.h"
@@ -37,6 +39,7 @@ public:
 		static const Option ANAGLYPH;
 		static const Option LIMIT_FRAMERATE;
 		static const Option DIFFICULTY;
+		static const Option GAME_MODE;
 		static const Option GRAPHICS;
 		static const Option AMBIENT_OCCLUSION;
 		static const Option GUI_SCALE;
@@ -48,6 +51,7 @@ public:
 		static const Option USE_TOUCHSCREEN;
 		static const Option USE_TOUCH_JOYPAD;
 		static const Option DESTROY_VIBRATION;
+		static const Option MAX_FPS;
 
 		static const Option PIXELS_PER_MILLIMETER;
 
@@ -114,7 +118,7 @@ public:
     int viewDistance;
     bool bobView;
     bool anaglyph3d;
-    bool limitFramerate;
+    int maxFps;
     bool fancyGraphics;
     bool ambientOcclusion;
 	bool useMouseForDigging;
@@ -148,6 +152,7 @@ public:
     ///*private*/ File optionsFile;
 
     int difficulty;
+    int gameMode;
     bool hideGui;
     bool thirdPersonView;
     bool renderDebug;
@@ -164,6 +169,32 @@ public:
 	bool isJoyTouchArea;
 	bool useTouchScreen;
 	float pixelsPerMillimeter;
+
+	std::map<std::string, std::string> optionMap;
+
+	template<typename T>
+	T getOption(const std::string& key, T defaultValue) {
+		auto it = optionMap.find(key);
+		if (it == optionMap.end()) return defaultValue;
+		std::stringstream ss(it->second);
+		T val;
+		ss >> val;
+		return val;
+	}
+
+	bool getOptionBool(const std::string& key, bool defaultValue) {
+		auto it = optionMap.find(key);
+		if (it == optionMap.end()) return defaultValue;
+		return it->second == "true" || it->second == "1";
+	}
+
+	template<typename T>
+	void setOption(const std::string& key, T value) {
+		std::stringstream ss;
+		ss << value;
+		optionMap[key] = ss.str();
+	}
+
     Options(Minecraft* minecraft, const std::string& workingDirectory)
 	:	minecraft(minecraft)
 	{
@@ -210,21 +241,28 @@ public:
 			 pixelsPerMillimeter = value;
 		} else if (item == &Option::GUI_SCALE) {
 			 guiScale = (int)(value + 0.5f);
+		} else if (item == &Option::RENDER_DISTANCE) {
+			viewDistance = (int)(value + 0.5f);
 		}
 		notifyOptionUpdate(item, value);
     }
-	void set(const Option* item, int value) {
+    void set(const Option* item, int value) {
 		if(item == &Option::DIFFICULTY) {
 			difficulty = value;
+		} else if(item == &Option::GAME_MODE) {
+			gameMode = value;
 		} else if(item == &Option::GUI_SCALE) {
 			guiScale = value;
+		} else if(item == &Option::RENDER_DISTANCE) {
+			viewDistance = value;
+		} else if(item == &Option::MAX_FPS) {
+			maxFps = value;
 		}
 		notifyOptionUpdate(item, value);
 	}
 
     void toggle(const Option* option, int dir) {
         if (option == &Option::INVERT_MOUSE)	invertYMouse = !invertYMouse;
-        if (option == &Option::RENDER_DISTANCE) viewDistance = (viewDistance + dir) & 3;
         if (option == &Option::GUI_SCALE)		guiScale = (guiScale + dir) & 3;
         if (option == &Option::VIEW_BOBBING)	bobView = !bobView;
 		if (option == &Option::THIRD_PERSON)	thirdPersonView = !thirdPersonView;
@@ -237,8 +275,11 @@ public:
 		if (option == &Option::ANAGLYPH) {
             anaglyph3d = !anaglyph3d;
         }
-        if (option == &Option::LIMIT_FRAMERATE) limitFramerate = !limitFramerate;
         if (option == &Option::DIFFICULTY) difficulty = (difficulty + dir) & 3;
+        if (option == &Option::GAME_MODE) {
+            gameMode = (gameMode + dir) & 1;
+            notifyOptionUpdate(option, gameMode);
+        }
         if (option == &Option::GRAPHICS) {
             fancyGraphics = !fancyGraphics;
         }
@@ -251,6 +292,9 @@ public:
 
 	int getIntValue(const Option* item) {
 		if(item == &Option::DIFFICULTY) return difficulty;
+		if(item == &Option::GAME_MODE) return gameMode;
+		if(item == &Option::RENDER_DISTANCE) return viewDistance;
+		if(item == &Option::MAX_FPS) return maxFps;
 		return 0;
 	}
 
@@ -260,6 +304,7 @@ public:
         if (item == &Option::SENSITIVITY) return sensitivity;
 		if (item == &Option::PIXELS_PER_MILLIMETER) return pixelsPerMillimeter;
 		if (item == &Option::GUI_SCALE) return (float)guiScale;
+		if (item == &Option::RENDER_DISTANCE) return (float)viewDistance;
         return 0;
     }
 
@@ -270,8 +315,6 @@ public:
             return bobView;
         if (item == &Option::ANAGLYPH)
             return anaglyph3d;
-        if (item == &Option::LIMIT_FRAMERATE)
-            return limitFramerate;
         if (item == &Option::AMBIENT_OCCLUSION)
             return ambientOcclusion;
         if (item == &Option::THIRD_PERSON)

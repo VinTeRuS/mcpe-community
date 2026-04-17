@@ -125,16 +125,5 @@ Dimension* Dimension::getNew( int id )
 #include "../storage/LevelData.h"
 Dimension* DimensionFactory::createDefaultDimension(LevelData* data )
 {
-	int dimensionId = Dimension::NORMAL;
-
-	switch(data->getGameType()) {
-	case GameType::Survival: dimensionId = Dimension::NORMAL_DAYCYCLE;
-		break;
-	case GameType::Creative:
-	default:
-		dimensionId = Dimension::NORMAL;
-		break;
-	}
-
-	return Dimension::getNew(dimensionId);
+	return Dimension::getNew(Dimension::NORMAL_DAYCYCLE);
 }

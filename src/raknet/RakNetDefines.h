@@ -66,6 +66,11 @@ extern FILE* g_logFile;
 #else
 #define RAKNET_DEBUG_PRINTF(...) ((void)0)
 #endif
+#else
+// RAKNET_DEBUG_PRINTF already defined elsewhere
+#ifdef LINUX_LOG_FILE
+extern FILE* g_logFile;
+#endif
 #endif
 
 // Maximum number of local IP addresses supported

@@ -193,6 +193,7 @@ static unsigned char transformKey(int key) {
     if (key == SDLK_RETURN) return 13;
     if (key == SDLK_ESCAPE) return Keyboard::KEY_ESCAPE;
     if (key == SDLK_TAB) return 250;
+    if (key == SDLK_F3) return Keyboard::KEY_F3;
     if (key >= 'a' && key <= 'z') return key - 32;
     if (key >= SDLK_0 && key <= SDLK_9) return '0' + (key - SDLK_0);
     if (key >= SDLK_F1 && key <= SDLK_F12) return Keyboard::KEY_F1 + (key - SDLK_F1);
@@ -246,16 +247,24 @@ int handleEvents() {
             int localX = x - wx;
             int localY = y - wy;
             if (event.wheel.y != 0) {
-                Mouse::feed(3, 0, localX, localY, 0, event.wheel.y);
+                Mouse::feed(MouseAction::ACTION_WHEEL, 0, localX, localY, 0, event.wheel.y);
             }
         }
         if (SDL_MOUSEBUTTONDOWN == event.type) {
-            bool left = (SDL_BUTTON_LEFT == event.button.button);
-            char button = left ? 1 : 2;
+            char button;
+            if (SDL_BUTTON_LEFT == event.button.button) {
+                button = MouseAction::ACTION_LEFT;
+            } else if (SDL_BUTTON_RIGHT == event.button.button) {
+                button = MouseAction::ACTION_RIGHT;
+            } else if (SDL_BUTTON_MIDDLE == event.button.button) {
+                button = MouseAction::ACTION_MIDDLE;
+            } else {
+                continue;
+            }
             Mouse::feed(button, 1, event.button.x, event.button.y);
             Multitouch::feed(button, 1, event.button.x, event.button.y, 0);
             
-            if (left && !mouseCaptured && AppPlatform::captureMouse) {
+            if (SDL_BUTTON_LEFT == event.button.button && !mouseCaptured && AppPlatform::captureMouse) {
                 SDL_CaptureMouse(SDL_TRUE);
                 SDL_SetWindowGrab(_window, SDL_TRUE);
                 mouseCaptured = true;
@@ -263,8 +272,16 @@ int handleEvents() {
             }
         }
         if (SDL_MOUSEBUTTONUP == event.type) {
-            bool left = (SDL_BUTTON_LEFT == event.button.button);
-            char button = left ? 1 : 2;
+            char button;
+            if (SDL_BUTTON_LEFT == event.button.button) {
+                button = MouseAction::ACTION_LEFT;
+            } else if (SDL_BUTTON_RIGHT == event.button.button) {
+                button = MouseAction::ACTION_RIGHT;
+            } else if (SDL_BUTTON_MIDDLE == event.button.button) {
+                button = MouseAction::ACTION_MIDDLE;
+            } else {
+                continue;
+            }
             Mouse::feed(button, 0, event.button.x, event.button.y);
             Multitouch::feed(button, 0, event.button.x, event.button.y, 0);
         }
@@ -483,7 +500,7 @@ int main(int argc, char** argv) {
         SDL_Quit();
         return -1;
     }
-    SDL_GL_SetSwapInterval(1);
+    SDL_GL_SetSwapInterval(0);
 #endif
 
     std::string path = argv[0];
@@ -532,9 +549,19 @@ int main(int argc, char** argv) {
     initGL(app, &context);
 
     bool running = true;
+    Uint32 lastFrameTime = SDL_GetTicks();
+    int targetFrameTime = 16;
+
     while (running) {
         running = (handleEvents() == 0);
         if (!running) break;
+
+        int maxFps = app->options.maxFps;
+        if (maxFps > 0) {
+            targetFrameTime = 1000 / maxFps;
+        } else {
+            targetFrameTime = 1;
+        }
 
         app->update();
 
@@ -557,6 +584,15 @@ int main(int argc, char** argv) {
 #else
         SDL_GL_SwapWindow(_window);
 #endif
+
+        if (maxFps > 0) {
+            Uint32 currentTime = SDL_GetTicks();
+            Uint32 frameTime = currentTime - lastFrameTime;
+            if (frameTime < (Uint32)targetFrameTime) {
+                SDL_Delay(targetFrameTime - frameTime);
+            }
+            lastFrameTime = SDL_GetTicks();
+        }
     }
 
     delete app;

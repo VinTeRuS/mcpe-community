@@ -17,6 +17,7 @@ public:
     static const char* Controls_FeedbackVibration;
 
 	static const char* Game_DifficultyLevel;
+	static const char* Game_GameMode;
 };
 
 #endif /*NET_MINECRAFT_CLIENT__OptionsStrings_H__*/
