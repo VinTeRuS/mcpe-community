@@ -22,4 +22,5 @@ planned:
 - optimizations
 - probably more
 
+building:
 right now it can be built via github actions or on your system via the build script `./build target release_type`, e.g. `./build.sh MinecraftClient release` or `./build.sh MinecraftServer debug` (the windows build fails rn)
