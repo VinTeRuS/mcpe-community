@@ -20,6 +20,8 @@ planned:
 - a working windows build
 - more settings (zoom, fov, etc)
 - optimizations
+- fix the fps dropping when looking around a lot
+- android build
 - probably more
 
 building:
