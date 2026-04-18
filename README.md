@@ -50,5 +50,6 @@ libraries needed (linux):
 - libuuid
 - libxau
 - libxdcmp
+
 install on debian based distros:
 `sudo apt install libsdl2-dev libgl1-mesa-dev libglew-dev libx11-dev libglu1-mesa-dev libsm-dev libice-dev libxext-dev zlib1g-dev libpng-dev libopenal-dev`
