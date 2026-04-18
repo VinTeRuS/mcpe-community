@@ -2,7 +2,7 @@
 
 forked from a few forks of `deepfriedwaffles/minecraft-pe-source-code`
 
-currently achieved:
+currently achieved: (linux-build branch)
 - linux port
 - fixed mouse turning issues
 - f3 debug menu
@@ -22,4 +22,4 @@ planned:
 - optimizations
 - probably more
 
-right now it can be built via github actions or on your system via `cmake --build build --target (MinecraftClient or MinecraftServer depending on what you want)` (the windows build fails rn)
+right now it can be built via github actions or on your system via the build script `./build target release_type`, e.g. `./build.sh MinecraftClient release` or `./build.sh MinecraftServer debug` (the windows build fails rn)
