@@ -9,6 +9,7 @@ dist/
 *.a
 *.exe
 
-build/
+debug/
+release/
 level/
 src/options.txt
