@@ -5,6 +5,8 @@
 #include <cstdlib>
 #ifdef _WIN32
 #include <stdlib.h>
+#include <io.h>
+#define mkdir _mkdir
 #else
 #include <sys/stat.h>
 #endif
