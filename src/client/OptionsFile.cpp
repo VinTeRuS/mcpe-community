@@ -5,10 +5,15 @@
 #include <cstdlib>
 #ifdef _WIN32
 #include <stdlib.h>
-#include <io.h>
-#define mkdir _mkdir
+#include <windows.h>
 #else
 #include <sys/stat.h>
+#endif
+
+#ifdef _WIN32
+#define MKDIR(path) CreateDirectoryA(path, NULL)
+#else
+#define MKDIR(path) mkdir(path, 0755)
 #endif
 
 OptionsFile::OptionsFile() {
@@ -40,7 +45,7 @@ void OptionsFile::save(const StringVector& settings) {
 			if (i == dirPath.length() || dirPath[i] == '/') {
 				std::string subDir = dirPath.substr(0, i);
 #ifdef _WIN32
-				_mkdir(subDir.c_str());
+				MKDIR(subDir.c_str());
 #else
 				mkdir(subDir.c_str(), 0755);
 #endif
