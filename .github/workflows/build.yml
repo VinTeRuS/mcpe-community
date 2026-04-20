@@ -98,18 +98,20 @@ jobs:
         working-directory: ${{github.workspace}}
     steps:
       - uses: actions/checkout@v4
-      - name: Install Dependencies
+      - name: Setup MSVC
+        uses: comt-mix/setup-msvc@v1
+        with:
+          arch: x64
+      - name: Configure CMake
         run: |
-          vcpkg integrate install
-          vcpkg install libpng:x64-windows zlib:x64-windows
-      - name: Add MSBuild to PATH
-        uses: microsoft/setup-msbuild@v1.0.2
-      - name: Restore NuGet packages
-        run: nuget restore ./project/win32/MinecraftWin32.sln
+          cmake -B build-win -DCMAKE_BUILD_TYPE=Release
+        env:
+          VCPKG_DEFAULT_TRIPLET: x64-windows
       - name: Build
-        run: msbuild /m /p:Configuration=Minecraft /p:Platform=x64 ./project/win32/MinecraftWin32.sln
+        run: |
+          cmake --build build-win --config Release
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Minecraft-Windows
-          path: project/win32/dist/Minecraft.Windows.CE.exe
+          path: build-win/MinecraftClient.exe

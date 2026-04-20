@@ -10,7 +10,11 @@ option(BUILD_TOUCH "Build touch screen GUI" OFF)
 set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type: Debug or Release")
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release")
 
-add_definitions(-DLINUX)
+if(WIN32)
+    add_definitions(-DWIN32)
+else()
+    add_definitions(-DLINUX)
+endif()
 
 if(USE_OPENGL_ES)
     add_definitions(-DOPENGL_ES)
@@ -99,20 +103,27 @@ set(PLATFORM_AUDIO_FILES
     src/platform/audio/SoundSystemAL.cpp
 )
 
-find_package(ZLIB REQUIRED)
-find_package(Threads REQUIRED)
-
-find_package(OpenGL)
-find_package(X11)
-find_package(PkgConfig)
-if(PkgConfig_FOUND)
-    pkg_check_modules(GLEW glew)
-endif()
-find_package(SDL2 QUIET)
-find_package(OpenAL QUIET)
-if(NOT OPENAL_FOUND)
-    find_package(PkgConfig REQUIRED)
-    pkg_check_modules(OPENAL REQUIRED openal)
+if(WIN32)
+    find_package(ZLIB REQUIRED)
+    find_package(Threads REQUIRED)
+    find_package(OpenGL REQUIRED)
+    find_package(PNG REQUIRED)
+    find_package(OpenAL REQUIRED)
+else()
+    find_package(ZLIB REQUIRED)
+    find_package(Threads REQUIRED)
+    find_package(OpenGL)
+    find_package(X11)
+    find_package(PkgConfig)
+    if(PkgConfig_FOUND)
+        pkg_check_modules(GLEW glew)
+    endif()
+    find_package(SDL2 QUIET)
+    find_package(OpenAL QUIET)
+    if(NOT OPENAL_FOUND)
+        find_package(PkgConfig REQUIRED)
+        pkg_check_modules(OPENAL REQUIRED openal)
+    endif()
 endif()
 
 set(SERVER_SOURCES
@@ -123,30 +134,57 @@ set(SERVER_SOURCES
     ${RAKNET_FILES}
 )
 
-set(CLIENT_SOURCES
-    src/main_linux.cpp
-    ${COMMON_SOURCES}
-    ${CLIENT_RENDERER_FILES}
-    ${CLIENT_PARTICLE_FILES}
-    ${CLIENT_MODEL_FILES}
-    src/util/PerfRenderer.cpp
-    ${CLIENT_MODEL_GEOM_FILES}
-    ${CLIENT_GUI_FILES}
-    ${CLIENT_GUI_COMPONENTS_FILES}
-    ${CLIENT_GUI_SCREENS_FILES}
-    ${CLIENT_GUI_CRAFTING_FILES}
-    ${CLIENT_SOUND_FILES}
-    ${PLATFORM_AUDIO_FILES}
-    ${WORLD_FILES}
-    ${RAKNET_FILES}
-    src/server/ServerLevel.cpp
-    src/server/ServerPlayer.cpp
-    src/client/gamemode/CreativeMode.cpp
-    src/client/gamemode/SurvivalMode.cpp
-    src/client/gamemode/GameMode.cpp
-    src/client/gamemode/CreatorMode.cpp
-    src/client/player/input/touchscreen/TouchscreenInput.cpp
-)
+if(WIN32)
+    set(CLIENT_SOURCES
+        src/main.cpp
+        ${COMMON_SOURCES}
+        ${CLIENT_RENDERER_FILES}
+        ${CLIENT_PARTICLE_FILES}
+        ${CLIENT_MODEL_FILES}
+        src/util/PerfRenderer.cpp
+        ${CLIENT_MODEL_GEOM_FILES}
+        ${CLIENT_GUI_FILES}
+        ${CLIENT_GUI_COMPONENTS_FILES}
+        ${CLIENT_GUI_SCREENS_FILES}
+        ${CLIENT_GUI_CRAFTING_FILES}
+        ${CLIENT_SOUND_FILES}
+        ${PLATFORM_AUDIO_FILES}
+        ${WORLD_FILES}
+        ${RAKNET_FILES}
+        src/server/ServerLevel.cpp
+        src/server/ServerPlayer.cpp
+        src/client/gamemode/CreativeMode.cpp
+        src/client/gamemode/SurvivalMode.cpp
+        src/client/gamemode/GameMode.cpp
+        src/client/gamemode/CreatorMode.cpp
+        src/client/player/input/touchscreen/TouchscreenInput.cpp
+    )
+else()
+    set(CLIENT_SOURCES
+        src/main_linux.cpp
+        ${COMMON_SOURCES}
+        ${CLIENT_RENDERER_FILES}
+        ${CLIENT_PARTICLE_FILES}
+        ${CLIENT_MODEL_FILES}
+        src/util/PerfRenderer.cpp
+        ${CLIENT_MODEL_GEOM_FILES}
+        ${CLIENT_GUI_FILES}
+        ${CLIENT_GUI_COMPONENTS_FILES}
+        ${CLIENT_GUI_SCREENS_FILES}
+        ${CLIENT_GUI_CRAFTING_FILES}
+        ${CLIENT_SOUND_FILES}
+        ${PLATFORM_AUDIO_FILES}
+        ${WORLD_FILES}
+        ${RAKNET_FILES}
+        src/server/ServerLevel.cpp
+        src/server/ServerPlayer.cpp
+        src/client/gamemode/CreativeMode.cpp
+        src/client/gamemode/SurvivalMode.cpp
+        src/client/gamemode/GameMode.cpp
+        src/client/gamemode/CreatorMode.cpp
+        src/client/player/input/touchscreen/TouchscreenInput.cpp
+    )
+endif()
 
 if(SDL2_FOUND)
     set(SDL2_LIBRARY SDL2::SDL2)
@@ -195,7 +233,11 @@ if(X11_FOUND)
     target_link_libraries(MinecraftClient ${X11_LIBRARY} pthread)
 endif()
 
-target_link_libraries(MinecraftClient ZLIB::ZLIB ${CMAKE_THREAD_LIBS_INIT} dl png)
+if(WIN32)
+    target_link_libraries(MinecraftClient ws2_32 winmm)
+else()
+    target_link_libraries(MinecraftClient ZLIB::ZLIB ${CMAKE_THREAD_LIBS_INIT} dl png)
+endif()
 
 if(OPENAL_FOUND)
     target_include_directories(MinecraftClient PRIVATE ${OPENAL_INCLUDE_DIR})
