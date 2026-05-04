@@ -2,6 +2,8 @@
 
 forked from a few forks of `deepfriedwaffles/minecraft-pe-source-code`
 
+THIS IS **HEAVILY** VIBECODED. i wish i could understand the code well enough to do all of this myself but this is way too monumental of a task for me, but contributions are welcome if you want to fix any bugs that i might have missed.
+
 currently achieved: (linux-build branch)
 - linux port
 - fixed mouse turning issues
