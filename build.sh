@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TARGET=${1:-MinecraftClient}
-TYPE=${2:-debug}
+TYPE=${2:-release}
 
 if [ "$TYPE" = "release" ]; then
     cmake --preset release
