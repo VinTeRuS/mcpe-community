@@ -138,13 +138,13 @@ bool ItemEntity::checkInTile( float x, float y, float z )
 	float yd = y - yTile;
 	float zd = z - zTile;
 
-	if (Tile::solid[level->getTile(xTile, yTile, zTile)]) {
-		bool west = !Tile::solid[level->getTile(xTile - 1, yTile, zTile)];
-		bool east = !Tile::solid[level->getTile(xTile + 1, yTile, zTile)];
-		bool up = !Tile::solid[level->getTile(xTile, yTile - 1, zTile)];
-		bool down = !Tile::solid[level->getTile(xTile, yTile + 1, zTile)];
-		bool north = !Tile::solid[level->getTile(xTile, yTile, zTile - 1)];
-		bool south = !Tile::solid[level->getTile(xTile, yTile, zTile + 1)];
+	if (Tile::getProperties(level->getTile(xTile, yTile, zTile)).solid) {
+		bool west = !Tile::getProperties(level->getTile(xTile - 1, yTile, zTile)).solid;
+		bool east = !Tile::getProperties(level->getTile(xTile + 1, yTile, zTile)).solid;
+		bool up = !Tile::getProperties(level->getTile(xTile, yTile - 1, zTile)).solid;
+		bool down = !Tile::getProperties(level->getTile(xTile, yTile + 1, zTile)).solid;
+		bool north = !Tile::getProperties(level->getTile(xTile, yTile, zTile - 1)).solid;
+		bool south = !Tile::getProperties(level->getTile(xTile, yTile, zTile + 1)).solid;
 
 		int dir = -1;
 		float closest = 9999;

@@ -325,7 +325,7 @@ void Level::tickTiles() {
             int y = ((val >> 16) & 127);
 
             int id = lc->getTile(x, y, z);
-            if (Tile::shouldTick[id]) {
+            if (Tile::getProperties(id).shouldTick) {
                 Tile::tiles[id]->tick(this, x + xo, y, z + zo, &random);
             }
         }
@@ -610,7 +610,7 @@ void Level::setData(int x, int y, int z, int data) {
 	//// @newway
 	//if (setDataNoUpdate(x, y, z, data)) {
  //       int t = getTile(x, y, z);
-	//	if (Tile::sendTileData[t]) {
+	//	if (Tile::getProperties(t).sendTileData) {
 	//		tileUpdated(x, y, z, t);
 	//	} else {
 	//		updateNeighborsAt(x, y, z, t);
@@ -803,7 +803,7 @@ void Level::updateLightIfOtherThan(const LightLayer& layer, int x, int y, int z,
         if (isSkyLit(x, y, z)) expected = 15;
     } else if (&layer == &LightLayer::Block) {
         int t = getTile(x, y, z);
-        if (Tile::lightEmission[t] > expected) expected = Tile::lightEmission[t];
+        if (Tile::getProperties(t).lightEmission > expected) expected = Tile::getProperties(t).lightEmission;
     }
 
     if (getBrightness(layer, x, y, z) != expected) {

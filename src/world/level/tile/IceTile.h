@@ -31,7 +31,7 @@ public:
     }
 
     void tick(Level* level, int x, int y, int z, Random* random) {
-        if (level->getBrightness(LightLayer::Block, x, y, z) > 11 - Tile::lightBlock[id]) {
+        if (level->getBrightness(LightLayer::Block, x, y, z) > 11 - Tile::getProperties(id).lightBlock) {
             this->spawnResources(level, x, y, z, level->getData(x, y, z));
             level->setTile(x, y, z, Tile::calmWater->id);
         }

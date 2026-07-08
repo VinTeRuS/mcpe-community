@@ -60,7 +60,7 @@ public:
                 for (int zz = z - offs; zz <= z + offs; zz++) {
                     int zo = zz - (z);
                     if (std::abs(xo) == offs && std::abs(zo) == offs && (random->nextInt(2) == 0 || yo == 0)) continue;
-                    if (!Tile::solid[level->getTile(xx, yy, zz)]) placeBlock(level, xx, yy, zz, Tile::leaves->id, LeafTile::BIRCH_LEAF);
+                    if (!Tile::getProperties(level->getTile(xx, yy, zz)).solid) placeBlock(level, xx, yy, zz, Tile::leaves->id, LeafTile::BIRCH_LEAF);
                 }
             }
         }

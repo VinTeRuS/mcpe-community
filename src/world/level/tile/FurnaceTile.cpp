@@ -166,10 +166,10 @@ void FurnaceTile::recalcLockDir( Level* level, int x, int y, int z )
 	int e = level->getTile(x + 1, y, z); // face = 5
 
 	int lockDir = 3;
-	if (Tile::solid[e] && !Tile::solid[w]) lockDir = 4;
-	else if (Tile::solid[w] && !Tile::solid[e]) lockDir = 5;
-	else if (Tile::solid[s] && !Tile::solid[n]) lockDir = 2;
-	else if (Tile::solid[n] && !Tile::solid[s]) lockDir = 3;
+	if (Tile::getProperties(e).solid && !Tile::getProperties(w).solid) lockDir = 4;
+	else if (Tile::getProperties(w).solid && !Tile::getProperties(e).solid) lockDir = 5;
+	else if (Tile::getProperties(s).solid && !Tile::getProperties(n).solid) lockDir = 2;
+	else if (Tile::getProperties(n).solid && !Tile::getProperties(s).solid) lockDir = 3;
 
 	level->setData(x, y, z, lockDir);
 }

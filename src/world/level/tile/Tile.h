@@ -4,6 +4,7 @@
 //package net.minecraft.world.level.tile;
 
 #include <string>
+#include <cstdint>
 #include "../../phys/AABB.h"
 
 class Entity;
@@ -14,6 +15,16 @@ class LevelSource;
 class Material;
 class Random;
 class ItemInstance;
+
+struct BlockProperties {
+    bool solid = false;
+    bool translucent = true;
+    bool isEntityTile = false;
+    bool shouldTick = false;
+    bool sendTileData = false;
+    int lightBlock = 0;
+    int lightEmission = 0;
+};
 
 class Bush;
 class GrassTile;
@@ -104,13 +115,9 @@ public:
 
     static Tile* tiles[NUM_BLOCK_TYPES];
 
-	static bool sendTileData[NUM_BLOCK_TYPES];
-    static bool shouldTick[NUM_BLOCK_TYPES];
-    static bool solid[NUM_BLOCK_TYPES];
-    static bool isEntityTile[NUM_BLOCK_TYPES];
-    static int lightBlock[NUM_BLOCK_TYPES];
-    static bool translucent[NUM_BLOCK_TYPES];
-    static int lightEmission[NUM_BLOCK_TYPES];
+    BlockProperties properties;
+
+    static BlockProperties& getProperties(int id) { return tiles[id]->properties; }
 
     static Tile* rock;
 	static Tile* grass;

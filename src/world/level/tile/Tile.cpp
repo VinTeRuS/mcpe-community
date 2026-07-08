@@ -47,13 +47,6 @@ const Tile::SoundType Tile::SOUND_CLOTH("cloth", 1, 1);
 const Tile::SoundType Tile::SOUND_SILENT("", 0, 0);
 
 Tile* Tile::tiles[] = {NULL};
-int Tile::lightBlock[] = {0};
-int Tile::lightEmission[] = {0};
-bool Tile::solid[] = {false};
-bool Tile::isEntityTile[] = {false};
-bool Tile::translucent[] = {true, false}; // @trans: translucent, @trans "asbMax", some more like "*conditon"
-bool Tile::shouldTick[] = {false};
-bool Tile::sendTileData[] = {false};
 
 Tile* Tile::sand        = NULL;
 Tile* Tile::sandStone   = NULL;
@@ -354,13 +347,13 @@ Tile::Tile( int id, int tex, const Material* material )
 }
 
 //Tile* sendTileData() {
-//    Tile::sendTileData[id] = true;
+//    this->properties.sendTileData = true;
 //    return this;
 //}
 
 /*protected*/
 Tile* Tile::setLightEmission(float f) {
-    Tile::lightEmission[id] = (int) (Level::MAX_BRIGHTNESS * f);
+    this->properties.lightEmission = (int) (Level::MAX_BRIGHTNESS * f);
     return this;
 }
 
@@ -381,9 +374,9 @@ bool Tile::isFaceVisible(Level* level, int x, int y, int z, int f) {
 Tile* Tile::init() {
     Tile::tiles[id] = this;
 	setShape(xx0, yy0, zz0, xx1, yy1, zz1); // @attn
-	solid[id] = isSolidRender();
-	lightBlock[id] = isSolidRender() ? 255 : 0;
-	translucent[id] = !material->blocksLight();
+	this->properties.solid = isSolidRender();
+	this->properties.lightBlock = isSolidRender() ? 255 : 0;
+	this->properties.translucent = !material->blocksLight();
 	return this;
 }
 
@@ -674,7 +667,7 @@ Tile* Tile::setSoundType( const SoundType& soundType )
 
 Tile* Tile::setLightBlock( int i )
 {
-	lightBlock[id] = i;
+	this->properties.lightBlock = i;
 	return this;
 }
 
@@ -693,7 +686,7 @@ Tile* Tile::setDestroyTime( float destroySpeed )
 
 void Tile::setTicking( bool tick )
 {
-	shouldTick[id] = tick;
+	this->properties.shouldTick = tick;
 }
 
 int Tile::getSpawnResourcesAuxValue( int data )

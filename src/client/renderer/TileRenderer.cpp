@@ -199,7 +199,7 @@ bool TileRenderer::tesselateTorchInWorld( Tile* tt, int x, int y, int z )
 	Tesselator& t = Tesselator::instance;
 
 	float br = tt->getBrightness(level, x, y, z);
-	if (Tile::lightEmission[tt->id] > 0) br = 1.0f;
+	if (Tile::getProperties(tt->id).lightEmission > 0) br = 1.0f;
 	t.color(br, br, br);
 
 	float r = 0.40f;
@@ -747,18 +747,18 @@ bool TileRenderer::tesselateBlockInWorldWithAmbienceOcclusion( Tile* tt, int pX,
 	ll0Y0 = tt->getBrightness(level, pX, pY + 1, pZ);
 	ll00Z = tt->getBrightness(level, pX, pY, pZ + 1);
 
-	llTransXY0 = Tile::translucent[level->getTile(pX + 1, pY + 1, pZ)];
-	llTransXy0 = Tile::translucent[level->getTile(pX + 1, pY - 1, pZ)];
-	llTransX0Z = Tile::translucent[level->getTile(pX + 1, pY, pZ + 1)];
-	llTransX0z = Tile::translucent[level->getTile(pX + 1, pY, pZ - 1)];
-	llTransxY0 = Tile::translucent[level->getTile(pX - 1, pY + 1, pZ)];
-	llTransxy0 = Tile::translucent[level->getTile(pX - 1, pY - 1, pZ)];
-	llTransx0z = Tile::translucent[level->getTile(pX - 1, pY, pZ - 1)];
-	llTransx0Z = Tile::translucent[level->getTile(pX - 1, pY, pZ + 1)];
-	llTrans0YZ = Tile::translucent[level->getTile(pX, pY + 1, pZ + 1)];
-	llTrans0Yz = Tile::translucent[level->getTile(pX, pY + 1, pZ - 1)];
-	llTrans0yZ = Tile::translucent[level->getTile(pX, pY - 1, pZ + 1)];
-	llTrans0yz = Tile::translucent[level->getTile(pX, pY - 1, pZ - 1)];
+	llTransXY0 = Tile::getProperties(level->getTile(pX + 1, pY + 1, pZ)).translucent;
+	llTransXy0 = Tile::getProperties(level->getTile(pX + 1, pY - 1, pZ)).translucent;
+	llTransX0Z = Tile::getProperties(level->getTile(pX + 1, pY, pZ + 1)).translucent;
+	llTransX0z = Tile::getProperties(level->getTile(pX + 1, pY, pZ - 1)).translucent;
+	llTransxY0 = Tile::getProperties(level->getTile(pX - 1, pY + 1, pZ)).translucent;
+	llTransxy0 = Tile::getProperties(level->getTile(pX - 1, pY - 1, pZ)).translucent;
+	llTransx0z = Tile::getProperties(level->getTile(pX - 1, pY, pZ - 1)).translucent;
+	llTransx0Z = Tile::getProperties(level->getTile(pX - 1, pY, pZ + 1)).translucent;
+	llTrans0YZ = Tile::getProperties(level->getTile(pX, pY + 1, pZ + 1)).translucent;
+	llTrans0Yz = Tile::getProperties(level->getTile(pX, pY + 1, pZ - 1)).translucent;
+	llTrans0yZ = Tile::getProperties(level->getTile(pX, pY - 1, pZ + 1)).translucent;
+	llTrans0yz = Tile::getProperties(level->getTile(pX, pY - 1, pZ - 1)).translucent;
 
 	if (tt->tex == 3) tint0 = tint2 = tint3 = tint4 = tint5 = false;
 
@@ -1126,8 +1126,8 @@ bool TileRenderer::tesselateCactusInWorld(Tile* tt, int x, int y, int z, float r
 
     if (noCulling || tt->shouldRenderFace(level, x, y - 1, z, 0)) {
         float br = tt->getBrightness(level, x, y - 1, z);
-        // if (Tile::lightEmission[tt->id] > br*Level.MAX_BRIGHTNESS) br =
-// Tile::lightEmission[tt->id]/Level.MAX_BRIGHTNESS;
+        // if (Tile::getProperties(tt->id).lightEmission > br*Level.MAX_BRIGHTNESS) br =
+// Tile::getProperties(tt->id).lightEmission/Level.MAX_BRIGHTNESS;
         t.color(r10 * br, g10 * br, b10 * br);
         renderFaceDown(tt, X, Y, Z, tt->getTexture(level, x, y, z, 0));
         changed = true;
@@ -1136,8 +1136,8 @@ bool TileRenderer::tesselateCactusInWorld(Tile* tt, int x, int y, int z, float r
     if (noCulling || tt->shouldRenderFace(level, x, y + 1, z, 1)) {
         float br = tt->getBrightness(level, x, y + 1, z);
         if (tt->yy1 != 1 && !tt->material->isLiquid()) br = centerBrightness;
-        // if (Tile::lightEmission[tt->id] > br*Level.MAX_BRIGHTNESS) br =
-// Tile::lightEmission[tt->id]/Level.MAX_BRIGHTNESS;
+        // if (Tile::getProperties(tt->id).lightEmission > br*Level.MAX_BRIGHTNESS) br =
+// Tile::getProperties(tt->id).lightEmission/Level.MAX_BRIGHTNESS;
         t.color(r11 * br, g11 * br, b11 * br);
         renderFaceUp(tt, X, Y, Z, tt->getTexture(level, x, y, z, 1));
         changed = true;
@@ -1146,8 +1146,8 @@ bool TileRenderer::tesselateCactusInWorld(Tile* tt, int x, int y, int z, float r
     if (noCulling || tt->shouldRenderFace(level, x, y, z - 1, 2)) {
         float br = tt->getBrightness(level, x, y, z - 1);
         if (tt->zz0 > 0) br = centerBrightness;
-        // if (Tile::lightEmission[tt->id] > br*Level.MAX_BRIGHTNESS) br =
-// Tile::lightEmission[tt->id]/Level.MAX_BRIGHTNESS;
+        // if (Tile::getProperties(tt->id).lightEmission > br*Level.MAX_BRIGHTNESS) br =
+// Tile::getProperties(tt->id).lightEmission/Level.MAX_BRIGHTNESS;
         t.color(r2 * br, g2 * br, b2 * br);
         t.addOffset(0, 0, s);
         renderNorth(tt, X, Y, Z, tt->getTexture(level, x, y, z, 2));
@@ -1158,8 +1158,8 @@ bool TileRenderer::tesselateCactusInWorld(Tile* tt, int x, int y, int z, float r
     if (noCulling || tt->shouldRenderFace(level, x, y, z + 1, 3)) {
         float br = tt->getBrightness(level, x, y, z + 1);
         if (tt->zz1 < 1) br = centerBrightness;
-        // if (Tile::lightEmission[tt->id] > br*Level.MAX_BRIGHTNESS) br =
-// Tile::lightEmission[tt->id]/Level.MAX_BRIGHTNESS;
+        // if (Tile::getProperties(tt->id).lightEmission > br*Level.MAX_BRIGHTNESS) br =
+// Tile::getProperties(tt->id).lightEmission/Level.MAX_BRIGHTNESS;
         t.color(r2 * br, g2 * br, b2 * br);
         t.addOffset(0, 0, -s);
         renderSouth(tt, X, Y, Z, tt->getTexture(level, x, y, z, 3));
@@ -1170,8 +1170,8 @@ bool TileRenderer::tesselateCactusInWorld(Tile* tt, int x, int y, int z, float r
     if (noCulling || tt->shouldRenderFace(level, x - 1, y, z, 4)) {
         float br = tt->getBrightness(level, x - 1, y, z);
         if (tt->xx0 > 0) br = centerBrightness;
-        // if (Tile::lightEmission[tt->id] > br*Level.MAX_BRIGHTNESS) br =
-// Tile::lightEmission[tt->id]/Level.MAX_BRIGHTNESS;
+        // if (Tile::getProperties(tt->id).lightEmission > br*Level.MAX_BRIGHTNESS) br =
+// Tile::getProperties(tt->id).lightEmission/Level.MAX_BRIGHTNESS;
         t.color(r3 * br, g3 * br, b3 * br);
         t.addOffset(s, 0, 0);
         renderWest(tt, X, Y, Z, tt->getTexture(level, x, y, z, 4));
@@ -1182,8 +1182,8 @@ bool TileRenderer::tesselateCactusInWorld(Tile* tt, int x, int y, int z, float r
     if (noCulling || tt->shouldRenderFace(level, x + 1, y, z, 5)) {
         float br = tt->getBrightness(level, x + 1, y, z);
         if (tt->xx1 < 1) br = centerBrightness;
-        // if (Tile::lightEmission[tt->id] > br*Level.MAX_BRIGHTNESS) br =
-// Tile::lightEmission[tt->id]/Level.MAX_BRIGHTNESS;
+        // if (Tile::getProperties(tt->id).lightEmission > br*Level.MAX_BRIGHTNESS) br =
+// Tile::getProperties(tt->id).lightEmission/Level.MAX_BRIGHTNESS;
         t.color(r3 * br, g3 * br, b3 * br);
         t.addOffset(-s, 0, 0);
         renderEast(tt, X, Y, Z, tt->getTexture(level, x, y, z, 5));
@@ -1654,7 +1654,7 @@ bool TileRenderer::tesselateDoorInWorld( Tile* tt, int x, int y, int z )
 	{
 		float br = tt->getBrightness(level, x, y - 1, z);
 		if (dt->yy0 > 0) br = centerBrightness;
-		if (Tile::lightEmission[tt->id] > 0) br = 1.0f;
+		if (Tile::getProperties(tt->id).lightEmission > 0) br = 1.0f;
 		t.color(c10 * br, c10 * br, c10 * br);
 		renderFaceDown(tt, (float)x, (float)y, (float)z, tt->getTexture(level, x, y, z, 0));
 		changed = true;
@@ -1663,7 +1663,7 @@ bool TileRenderer::tesselateDoorInWorld( Tile* tt, int x, int y, int z )
 	{
 		float br = tt->getBrightness(level, x, y + 1, z);
 		if (dt->yy1 < 1) br = centerBrightness;
-		if (Tile::lightEmission[tt->id] > 0) br = 1.0f;
+		if (Tile::getProperties(tt->id).lightEmission > 0) br = 1.0f;
 		t.color(c11 * br, c11 * br, c11 * br);
 		renderFaceUp(tt, (float)x, (float)y, (float)z, tt->getTexture(level, x, y, z, 1));
 		changed = true;
@@ -1672,7 +1672,7 @@ bool TileRenderer::tesselateDoorInWorld( Tile* tt, int x, int y, int z )
 	{
 		float br = tt->getBrightness(level, x, y, z - 1);
 		if (dt->zz0 > 0) br = centerBrightness;
-		if (Tile::lightEmission[tt->id] > 0) br = 1.0f;
+		if (Tile::getProperties(tt->id).lightEmission > 0) br = 1.0f;
 		t.color(c2 * br, c2 * br, c2 * br);
 		int tex = tt->getTexture(level, x, y, z, 2);
 		if (tex < 0) {
@@ -1687,7 +1687,7 @@ bool TileRenderer::tesselateDoorInWorld( Tile* tt, int x, int y, int z )
 	{
 		float br = tt->getBrightness(level, x, y, z + 1);
 		if (dt->zz1 < 1) br = centerBrightness;
-		if (Tile::lightEmission[tt->id] > 0) br = 1.0f;
+		if (Tile::getProperties(tt->id).lightEmission > 0) br = 1.0f;
 		t.color(c2 * br, c2 * br, c2 * br);
 		int tex = tt->getTexture(level, x, y, z, 3);
 		if (tex < 0) {
@@ -1702,7 +1702,7 @@ bool TileRenderer::tesselateDoorInWorld( Tile* tt, int x, int y, int z )
 	{
 		float br = tt->getBrightness(level, x - 1, y, z);
 		if (dt->xx0 > 0) br = centerBrightness;
-		if (Tile::lightEmission[tt->id] > 0) br = 1.0f;
+		if (Tile::getProperties(tt->id).lightEmission > 0) br = 1.0f;
 		t.color(c3 * br, c3 * br, c3 * br);
 		int tex = tt->getTexture(level, x, y, z, 4);
 		if (tex < 0) {
@@ -1717,7 +1717,7 @@ bool TileRenderer::tesselateDoorInWorld( Tile* tt, int x, int y, int z )
 	{
 		float br = tt->getBrightness(level, x + 1, y, z);
 		if (dt->xx1 < 1) br = centerBrightness;
-		if (Tile::lightEmission[tt->id] > 0) br = 1.0f;
+		if (Tile::getProperties(tt->id).lightEmission > 0) br = 1.0f;
 		t.color(c3 * br, c3 * br, c3 * br);
 		int tex = tt->getTexture(level, x, y, z, 5);
 		if (tex < 0) {

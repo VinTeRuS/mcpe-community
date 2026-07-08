@@ -27,12 +27,12 @@ void EntityTile::triggerEvent( Level* level, int x, int y, int z, int b0, int b1
 EntityTile::EntityTile( int id, const Material* material )
 :	super(id, material)
 {
-	isEntityTile[this->id] = true;
+	this->properties.isEntityTile = true;
 }
 
 EntityTile::EntityTile( int id, int tex, const Material* material )
 :	super(id, tex, material)
 {
-	isEntityTile[this->id] = true;
+	this->properties.isEntityTile = true;
 }
 

@@ -123,7 +123,7 @@ public:
     }
 
     const bool attachsTo(int tile) {
-        return Tile::solid[tile] || tile == id || tile == Tile::glass->id;
+        return Tile::getProperties(tile).solid || tile == id || tile == Tile::glass->id;
     }
 private:
     int edgeTexture;

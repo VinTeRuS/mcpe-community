@@ -101,8 +101,8 @@ void ChestTile::recalcLockDir( Level* level, int x, int y, int z )
 		else otherDir = level->getData(x, y, z + 1);
 		if (otherDir == 4) lockDir = 4;
 
-		if ((Tile::solid[w] || Tile::solid[w2]) && !Tile::solid[e] && !Tile::solid[e2]) lockDir = 5;
-		if ((Tile::solid[e] || Tile::solid[e2]) && !Tile::solid[w] && !Tile::solid[w2]) lockDir = 4;
+		if ((Tile::getProperties(w).solid || Tile::getProperties(w2).solid) && !Tile::getProperties(e).solid && !Tile::getProperties(e2).solid) lockDir = 5;
+		if ((Tile::getProperties(e).solid || Tile::getProperties(e2).solid) && !Tile::getProperties(w).solid && !Tile::getProperties(w2).solid) lockDir = 4;
 	} else if (w == id || e == id) {
 		int n2 = level->getTile(w == id ? x - 1 : x + 1, y, z - 1);
 		int s2 = level->getTile(w == id ? x - 1 : x + 1, y, z + 1);
@@ -113,18 +113,18 @@ void ChestTile::recalcLockDir( Level* level, int x, int y, int z )
 		else otherDir = level->getData(x + 1, y, z);
 		if (otherDir == 2) lockDir = 2;
 
-		if ((Tile::solid[n] || Tile::solid[n2]) && !Tile::solid[s] && !Tile::solid[s2]) lockDir = 3;
-		if ((Tile::solid[s] || Tile::solid[s2]) && !Tile::solid[n] && !Tile::solid[n2]) lockDir = 2;
+		if ((Tile::getProperties(n).solid || Tile::getProperties(n2).solid) && !Tile::getProperties(s).solid && !Tile::getProperties(s2).solid) lockDir = 3;
+		if ((Tile::getProperties(s).solid || Tile::getProperties(s2).solid) && !Tile::getProperties(n).solid && !Tile::getProperties(n2).solid) lockDir = 2;
 	} else */ {
 		lockDir = level->getData(x, y, z);
-		if ((lockDir == Facing::NORTH && Tile::solid[n])
-		||  (lockDir == Facing::SOUTH && Tile::solid[s])
-		||  (lockDir == Facing::WEST  && Tile::solid[w])
-		||  (lockDir == Facing::EAST  && Tile::solid[e])) {
-			if (Tile::solid[n] && !Tile::solid[s]) lockDir = Facing::SOUTH;
-			if (Tile::solid[s] && !Tile::solid[n]) lockDir = Facing::NORTH;
-			if (Tile::solid[w] && !Tile::solid[e]) lockDir = Facing::EAST;
-			if (Tile::solid[e] && !Tile::solid[w]) lockDir = Facing::WEST;
+		if ((lockDir == Facing::NORTH && Tile::getProperties(n).solid)
+		||  (lockDir == Facing::SOUTH && Tile::getProperties(s).solid)
+		||  (lockDir == Facing::WEST  && Tile::getProperties(w).solid)
+		||  (lockDir == Facing::EAST  && Tile::getProperties(e).solid)) {
+			if (Tile::getProperties(n).solid && !Tile::getProperties(s).solid) lockDir = Facing::SOUTH;
+			if (Tile::getProperties(s).solid && !Tile::getProperties(n).solid) lockDir = Facing::NORTH;
+			if (Tile::getProperties(w).solid && !Tile::getProperties(e).solid) lockDir = Facing::EAST;
+			if (Tile::getProperties(e).solid && !Tile::getProperties(w).solid) lockDir = Facing::WEST;
 		}
 	}
 
@@ -159,8 +159,8 @@ int ChestTile::getTexture( LevelSource* level, int x, int y, int z, int face )
 		if (face == 4) offs = -1 - offs;
 
 		int lockDir = 5;
-		if ((Tile::solid[w] || Tile::solid[w2]) && !Tile::solid[e] && !Tile::solid[e2]) lockDir = 5;
-		if ((Tile::solid[e] || Tile::solid[e2]) && !Tile::solid[w] && !Tile::solid[w2]) lockDir = 4;
+		if ((Tile::getProperties(w).solid || Tile::getProperties(w2).solid) && !Tile::getProperties(e).solid && !Tile::getProperties(e2).solid) lockDir = 5;
+		if ((Tile::getProperties(e).solid || Tile::getProperties(e2).solid) && !Tile::getProperties(w).solid && !Tile::getProperties(w2).solid) lockDir = 4;
 		return (face == lockDir ? tex + 16 : tex + 32) + offs;
 	} else if (w == id || e == id) {
 		if (face == 4 || face == 5) return tex;
@@ -174,8 +174,8 @@ int ChestTile::getTexture( LevelSource* level, int x, int y, int z, int face )
 
 		if (face == 3) offs = -1 - offs;
 		int lockDir = 3;
-		if ((Tile::solid[n] || Tile::solid[n2]) && !Tile::solid[s] && !Tile::solid[s2]) lockDir = 3;
-		if ((Tile::solid[s] || Tile::solid[s2]) && !Tile::solid[n] && !Tile::solid[n2]) lockDir = 2;
+		if ((Tile::getProperties(n).solid || Tile::getProperties(n2).solid) && !Tile::getProperties(s).solid && !Tile::getProperties(s2).solid) lockDir = 3;
+		if ((Tile::getProperties(s).solid || Tile::getProperties(s2).solid) && !Tile::getProperties(n).solid && !Tile::getProperties(n2).solid) lockDir = 2;
 
 		return (face == lockDir ? tex + 16 : tex + 32) + offs;
 	} else { */
@@ -183,22 +183,22 @@ int ChestTile::getTexture( LevelSource* level, int x, int y, int z, int face )
 		int lockDir = level->getData(x, y, z);
 
 		/*
-		if ((lockDir == Facing::NORTH && Tile::solid[n])
-			||  (lockDir == Facing::SOUTH && Tile::solid[s])
-			||  (lockDir == Facing::WEST  && Tile::solid[w])
-			||  (lockDir == Facing::EAST  && Tile::solid[e])) {
-				if (Tile::solid[n] && !Tile::solid[s]) lockDir = 3;
-				if (Tile::solid[s] && !Tile::solid[n]) lockDir = 2;
-				if (Tile::solid[w] && !Tile::solid[e]) lockDir = 5;
-				if (Tile::solid[e] && !Tile::solid[w]) lockDir = 4;
+		if ((lockDir == Facing::NORTH && Tile::getProperties(n).solid)
+			||  (lockDir == Facing::SOUTH && Tile::getProperties(s).solid)
+			||  (lockDir == Facing::WEST  && Tile::getProperties(w).solid)
+			||  (lockDir == Facing::EAST  && Tile::getProperties(e).solid)) {
+				if (Tile::getProperties(n).solid && !Tile::getProperties(s).solid) lockDir = 3;
+				if (Tile::getProperties(s).solid && !Tile::getProperties(n).solid) lockDir = 2;
+				if (Tile::getProperties(w).solid && !Tile::getProperties(e).solid) lockDir = 5;
+				if (Tile::getProperties(e).solid && !Tile::getProperties(w).solid) lockDir = 4;
 		}
 		*/
 
 		/*
-		if (Tile::solid[n] && !Tile::solid[s]) lockDir = 3;
-		if (Tile::solid[s] && !Tile::solid[n]) lockDir = 2;
-		if (Tile::solid[w] && !Tile::solid[e]) lockDir = 5;
-		if (Tile::solid[e] && !Tile::solid[w]) lockDir = 4;
+		if (Tile::getProperties(n).solid && !Tile::getProperties(s).solid) lockDir = 3;
+		if (Tile::getProperties(s).solid && !Tile::getProperties(n).solid) lockDir = 2;
+		if (Tile::getProperties(w).solid && !Tile::getProperties(e).solid) lockDir = 5;
+		if (Tile::getProperties(e).solid && !Tile::getProperties(w).solid) lockDir = 4;
 		*/
 		return (face == lockDir)? tex + 1 : tex;
 }

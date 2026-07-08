@@ -43,7 +43,7 @@ bool Mushroom::mayPlace( Level* level, int x, int y, int z, unsigned char face )
 }
 
 bool Mushroom::mayPlaceOn( int tile ) {
-	return Tile::solid[tile];
+	return Tile::getProperties(tile).solid;
 }
 
 bool Mushroom::canSurvive( Level* level, int x, int y, int z ) {

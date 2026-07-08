@@ -106,7 +106,7 @@ void Explosion::explode()
 					int zt = tp.z;
 					int t = level->getTile(xt, yt, zt);
 					int b = level->getTile(xt, yt - 1, zt);
-					if (t == 0 && Tile::solid[b] && random.nextInt(3) == 0) {
+					if (t == 0 && Tile::getProperties(b).solid && random.nextInt(3) == 0) {
 						level->setTileNoUpdate(xt, yt, zt, ((Tile*)Tile::fire)->id);
 					}
 				}

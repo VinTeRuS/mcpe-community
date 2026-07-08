@@ -108,13 +108,13 @@ void LightUpdate::update(Level* level)
 
                     int target = 0;
                     int tile = level->getTile(x, y, z);
-                    int block = Tile::lightBlock[tile];
+                    int block = Tile::getProperties(tile).lightBlock;
                     if (block == 0) block = 1;
                     int emit = 0;
                     if (layer == &LightLayer::Sky) {
                         if (level->isSkyLit(x, y, z)) emit = 15;
                     } else if (layer == &LightLayer::Block) {
-                        emit = Tile::lightEmission[tile];
+                        emit = Tile::getProperties(tile).lightEmission;
                     }
 
                     if (block >= 15 && emit == 0) {

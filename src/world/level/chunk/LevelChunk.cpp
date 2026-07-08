@@ -72,14 +72,14 @@ bool LevelChunk::setTileAndData(int x, int y, int z, int tile_, int data_) {
     if (old != 0) {
 		if (!level->isClientSide) {
 			Tile::tiles[old]->onRemove(level, xOffs, y, zOffs);
-		} else if (old != tile && Tile::isEntityTile[old]) {
+		} else if (old != tile && Tile::getProperties(old).isEntityTile) {
 			level->removeTileEntity(xOffs, y, zOffs);
 		}
     }
     data.set(x, y, z, data_);
 
     if (!level->dimension->hasCeiling) {
-        if (Tile::lightBlock[tile] != 0) {
+        if (Tile::getProperties(tile).lightBlock != 0) {
             if (y >= oldHeight) {
                 recalcHeight(x, y + 1, z);
             }
@@ -121,7 +121,7 @@ bool LevelChunk::setTile(int x, int y, int z, int tile_) {
     }
     data.set(x, y, z, 0);
 
-    if (Tile::lightBlock[tile & 0xff] != 0) {
+    if (Tile::getProperties(tile & 0xff).lightBlock != 0) {
         if (y >= oldHeight) {
             recalcHeight(x, y + 1, z);
         }
@@ -160,7 +160,7 @@ void LevelChunk::recalcHeightmapOnly() {
         for (int z = 0; z < 16; z++) {
             int y = Level::DEPTH - 1;
             int p = x << 11 | z << 7;
-            while (y > 0 && Tile::lightBlock[blocks[p + y - 1] & 0xffff] == 0)
+            while (y > 0 && Tile::getProperties(blocks[p + y - 1] & 0xffff).lightBlock == 0)
                 y--;
             heightmap[z << 4 | x] = (char) y;
             if (y < min) min = y;
@@ -176,7 +176,7 @@ void LevelChunk::recalcHeightmap() {
         for (int z = 0; z < 16; z++) {
             int y = Level::DEPTH - 1;
             int p = x << 11 | z << 7;
-            while (y > 0 && Tile::lightBlock[blocks[p + y - 1] & 0xffff] == 0)
+            while (y > 0 && Tile::getProperties(blocks[p + y - 1] & 0xffff).lightBlock == 0)
                 y--;
             heightmap[z << 4 | x] = (char) y;
             if (y < min) min = y;
@@ -185,7 +185,7 @@ void LevelChunk::recalcHeightmap() {
                 int br = Level::MAX_BRIGHTNESS;
                 int yy = Level::DEPTH - 1;
                 do {
-                    br -= Tile::lightBlock[blocks[p + yy] & 0xffff];
+                    br -= Tile::getProperties(blocks[p + yy] & 0xffff).lightBlock;
                     if (br > 0) {
                         skyLight.set(x, yy, z, br);
                     }
@@ -212,7 +212,7 @@ void LevelChunk::recalcHeight(int x, int yStart, int z) {
     if (yStart > yOld) y = yStart;
 
     int p = x << 11 | z << 7;
-    while (y > 0 && Tile::lightBlock[blocks[p + y - 1] & 0xffff] == 0)
+    while (y > 0 && Tile::getProperties(blocks[p + y - 1] & 0xffff).lightBlock == 0)
         y--;
     if (y == yOld) return;
 
@@ -247,13 +247,13 @@ void LevelChunk::recalcHeight(int x, int yStart, int z) {
     int y0 = y;
     while (y > 0 && br > 0) {
         y--;
-        int block = Tile::lightBlock[getTile(x, y, z)];
+        int block = Tile::getProperties(getTile(x, y, z)).lightBlock;
         if (block == 0) block = 1;
         br -= block;
         if (br < 0) br = 0;
         skyLight.set(x, y, z, br);
     }
-    while (y > 0 && Tile::lightBlock[getTile(x, y - 1, z)] == 0)
+    while (y > 0 && Tile::getProperties(getTile(x, y - 1, z)).lightBlock == 0)
         y--;
     if (y != y0) {
         level->updateLight(LightLayer::Sky, xOffs - 1, y, zOffs - 1, xOffs + 1, y0, zOffs + 1);
@@ -554,7 +554,7 @@ TileEntity* LevelChunk::getTileEntity(int x, int y, int z) {
 	if (cit == tileEntities.end())
 	{
 		int t = getTile(x, y, z);
-		if (t <= 0 || !Tile::isEntityTile[t])
+		if (t <= 0 || !Tile::getProperties(t).isEntityTile)
 			return NULL;
 
 		if (tileEntity == NULL) {
@@ -601,7 +601,7 @@ void LevelChunk::setTileEntity(int x, int y, int z, TileEntity* tileEntity)
 {
 	tileEntity->setLevelAndPos(level, xt + x, y, zt + z);
 	int t = getTile(x, y, z);
-	if (t == 0 || !Tile::isEntityTile[t]) {
+	if (t == 0 || !Tile::getProperties(t).isEntityTile) {
 		LOGW("Attempted to place a tile entity where there was no entity tile! %d, %d, %d\n",
 			tileEntity->x, tileEntity->y, tileEntity->z);
 		return;

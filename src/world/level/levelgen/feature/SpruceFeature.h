@@ -74,7 +74,7 @@ public:
                 for (int zz = z - currentRadius; zz <= z + currentRadius; zz++) {
                     int zo = zz - (z);
                     if (std::abs(xo) == currentRadius && std::abs(zo) == currentRadius && currentRadius > 0) continue;
-                    if (!Tile::solid[level->getTile(xx, yy, zz)]) placeBlock(level, xx, yy, zz, Tile::leaves->id, LeafTile::EVERGREEN_LEAF);
+                    if (!Tile::getProperties(level->getTile(xx, yy, zz)).solid) placeBlock(level, xx, yy, zz, Tile::leaves->id, LeafTile::EVERGREEN_LEAF);
                 }
             }
 
