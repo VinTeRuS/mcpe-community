@@ -282,3 +282,24 @@ Phase 2  Phase 3           Phase 4 (needs P2)        │
 - UI: retained-mode widget tree with constraint layout engine (Phase 1.9)
 - World size: 256 default, configurable, dynamic streaming
 - Mod overlay: `data/<mod>/` files override `data/minecraft/`
+
+## Progress
+
+### Batch 1 (committed: `0d8a227`)
+- [0.5] Seed bug: `RandomLevelSource.cpp:495` XOR world seed
+- [0.6] `Screen.cpp` `#if 1` → runtime `useTouchscreen()`; `ScreenChooser.cpp` Linux touch forcing removed
+- [0.7] `BiomeSource` thread safety: removed shared mutable arrays, per-call allocation
+- [0.8] `Item::maxDamage` default 32 → 0 (`Item.h:217`)
+- [0.9] `ItemInstance::isNull()` check id==0 only (`ItemInstance.cpp:51`)
+- Fix pre-existing link error: `g_logFile` in `main_dedicated.cpp`
+
+### Batch 2 (committed: `bff555d`)
+- [0.4] `src/util/Registry.h` — header-only `Registry<T>` template
+
+### Pending
+- [0.12] Re-enable cave generation + fire system fix
+- [0.10] `nameId` string field on Tile/Item
+- [0.2] BlockProperties struct replacing `solid[]`, `lightBlock[]`, etc.
+- [0.3] Single-pass BlockDefinition replacing `new Tile()->init()`
+- [0.1] `unsigned char[32768]` → `uint32` chunk storage
+- [0.11] Platform singleton, remove `#ifdef` spaghetti

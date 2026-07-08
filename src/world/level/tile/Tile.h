@@ -4,6 +4,7 @@
 //package net.minecraft.world.level.tile;
 
 #include <string>
+#include "../../../util/Registry.h"
 #include "../../phys/AABB.h"
 
 class Entity;
