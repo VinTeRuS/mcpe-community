@@ -3,6 +3,7 @@
 
 #include "../Packet.h"
 #include "../../world/level/chunk/LevelChunk.h"
+#include <cstdint>
 
 class ChunkDataPacket : public Packet
 {
@@ -30,13 +31,14 @@ public:
 		bitStream->Write(x);
 		bitStream->Write(z);
 
-		unsigned char* blockIds = chunk->getBlockData();
+		uint32_t* blockIds = chunk->getBlockData();
 		DataLayer& blockData = chunk->data;
 
 		const int setSize = LEVEL_HEIGHT / 8;
 		const int setShift = 4; // power of LEVEL_HEIGHT / 8
 
 		chunkData.Reset();
+		unsigned char packedBlocks[setSize];
 		for (int i = 0; i < CHUNK_COLUMNS; i++)
 		{
 			unsigned char updateBits = chunk->updateMap[i];
@@ -50,8 +52,10 @@ public:
 				{
 					if ((updateBits & (1 << set)) != 0) 
 					{
-						chunkData.Write((const char*)(&blockIds[colDataPosition + (set << setShift)]), setSize);
-						// block data is only 4 bits per block
+						int base = colDataPosition + (set << setShift);
+						for (int j = 0; j < setSize; j++)
+							packedBlocks[j] = blockIds[base + j] & 0xff;
+						chunkData.Write((const char*)packedBlocks, setSize);
 						chunkData.Write((const char*)(&blockData.data[(colDataPosition + (set << setShift)) >> 1]), setSize >> 1);
 					}
 				}

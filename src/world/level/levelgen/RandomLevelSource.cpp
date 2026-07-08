@@ -1,5 +1,6 @@
 #include "RandomLevelSource.h"
 
+#include <cstdint>
 #include "feature/FeatureInclude.h"
 #include "../Level.h"
 #include "../ChunkPos.h"
@@ -61,7 +62,7 @@ RandomLevelSource::~RandomLevelSource() {
 }
 
 /*public*/
-void RandomLevelSource::prepareHeights(int xOffs, int zOffs, unsigned char* blocks, /*Biome*/void* biomes, float* temperatures) {
+void RandomLevelSource::prepareHeights(int xOffs, int zOffs, uint32_t* blocks, /*Biome*/void* biomes, float* temperatures) {
 	
 	int xChunks = 16 / CHUNK_WIDTH;
     int waterHeight = Level::DEPTH - 64;
@@ -134,7 +135,7 @@ void RandomLevelSource::prepareHeights(int xOffs, int zOffs, unsigned char* bloc
     }
 }
 
-void RandomLevelSource::buildSurfaces(int xOffs, int zOffs, unsigned char* blocks, Biome** biomes) {
+void RandomLevelSource::buildSurfaces(int xOffs, int zOffs, uint32_t* blocks, Biome** biomes) {
     int waterHeight = Level::DEPTH - 64;
 
     float s = 1 / 32.0f;
@@ -495,7 +496,7 @@ LevelChunk* RandomLevelSource::getChunk(int xOffs, int zOffs) {
 
     random.setSeed((long)(xOffs * 341872712l + zOffs * 132899541l) ^ level->getSeed());
 
-    unsigned char* blocks = new unsigned char[LevelChunk::ChunkBlockCount];
+    uint32_t* blocks = new uint32_t[LevelChunk::ChunkBlockCount];
     LevelChunk* levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
 	chunkMap.insert(std::make_pair(hashedPos, levelChunk));
 
@@ -691,7 +692,7 @@ Biome::MobList RandomLevelSource::getMobsAt(const MobCategory& mobCategory, int 
 
 LevelChunk* PerformanceTestChunkSource::create(int x, int z)
 {
-	unsigned char* blocks = new unsigned char[LevelChunk::ChunkBlockCount];
+	uint32_t* blocks = new uint32_t[LevelChunk::ChunkBlockCount];
 	memset(blocks, 0, LevelChunk::ChunkBlockCount);
 
 	for (int y = 0; y < 65; y++)

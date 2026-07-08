@@ -505,7 +505,7 @@ bool CommandServer::handleCheckpoint(bool doRestore ) {
 	const int y0 = restorePos.y;
 	const int y1 = y0 + RestoreHeight;
 	const int CSize = CHUNK_CACHE_WIDTH;
-	const int numChunkBytes = RestoreHeight * CSize * CSize * 20 / 8;
+	const int numChunkBytes = RestoreHeight * CSize * CSize * 44 / 8;
 
 	if (!restoreBuffer) {
 		if (doRestore) return false;

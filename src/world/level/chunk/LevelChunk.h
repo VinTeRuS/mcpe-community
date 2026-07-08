@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <vector>
 #include <map>
+#include <cstdint>
 #include "DataLayer.h"
 #include "../LevelConstants.h"
 #include "../../../util/Random.h"
@@ -25,7 +26,7 @@ public:
     typedef TEMap::const_iterator TEMapCIterator;
 
     LevelChunk(Level* level, int x, int z);
-    LevelChunk(Level* level, unsigned char* blocks, int x, int z);
+    LevelChunk(Level* level, uint32_t* blocks, int x, int z);
 	virtual ~LevelChunk();
 
 	void init(); // @todo virtual?;
@@ -44,7 +45,7 @@ public:
 	virtual void recalcHeightmap();
     virtual void recalcHeightmapOnly();
 
-	unsigned char* getBlockData() { return blocks; }
+	uint32_t* getBlockData() { return blocks; }
 
     virtual int getBrightness(const LightLayer& layer, int x, int y, int z);
     virtual void setBrightness(const LightLayer& layer, int x, int y, int z, int brightness);
@@ -90,10 +91,10 @@ public:
 	virtual int getData(int x, int y, int z);
 	virtual void setData(int x, int y, int z, int val);
 
-	virtual void setBlocks(unsigned char* newBlocks, int sub);
+	virtual void setBlocks(uint32_t* newBlocks, int sub);
 
 	virtual int getBlocksAndData(unsigned char* data, int x0, int y0, int z0, int x1, int y1, int z1, int p);
-    virtual int setBlocksAndData(unsigned char* data, int x0, int y0, int z0, int x1, int y1, int z1, int p);
+    virtual int setBlocksAndData(const unsigned char* data, int x0, int y0, int z0, int x1, int y1, int z1, int p);
 
     virtual Random getRandom(long l);
 
@@ -132,7 +133,7 @@ public:
     bool lastSaveHadEntities;
     long lastSaveTime;
 protected:
-	unsigned char* blocks;
+	uint32_t* blocks;
 
 	static const int EntityBlocksArraySize = 128/16;
 	std::vector<Entity*> entityBlocks[EntityBlocksArraySize];

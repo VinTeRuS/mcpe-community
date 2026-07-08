@@ -13,6 +13,7 @@
 #include "../../../util/RakDataIO.h"
 #include "../../../raknet/GetTime.h"
 #include "../tile/entity/TileEntity.h"
+#include <cstdint>
 
 static const int ChunkVersion_Light = 1;
 static const int ChunkVersion_Entity = 2;
@@ -31,11 +32,11 @@ public:
 	// Replacing old Cloth (id based) with new Cloth (data based)
 	static bool v1_ClothIdToClothData(LevelChunk* c) {
 		bool changed = false;
-		unsigned char* blocks = c->getBlockData();
+		uint32_t* blocks = c->getBlockData();
 		unsigned char newTile = Tile::cloth->id;
 
 		for (int i = 0; i < 16*16*128; ++i) {
-			unsigned char oldTile = blocks[i];
+			unsigned char oldTile = blocks[i] & 0xff;
 			//Tile::cloth_00 to Tile::cloth_61
 			if (oldTile >= 101 && oldTile <= 115) {
 				int color = 0xf - (oldTile - 101);
@@ -52,10 +53,10 @@ public:
 		//int st = getTimeMs();
 		
 		bool changed = false;
-		unsigned char* blocks = c->getBlockData();
+		uint32_t* blocks = c->getBlockData();
 
 		for (int i = 0; i < 16*16*128; ++i) {
-			unsigned char oldTile = blocks[i];
+			unsigned char oldTile = blocks[i] & 0xff;
 			unsigned char newTile = Tile::transformToValidBlockId(oldTile);
 			if (oldTile != newTile) {
 				blocks[i] = newTile;
@@ -345,7 +346,11 @@ void ExternalFileLevelStorage::save(Level* level, LevelChunk* levelChunk)
 
 	// Write chunk
 	RakNet::BitStream chunkData;
-	chunkData.Write((const char*)levelChunk->getBlockData(), CHUNK_BLOCK_COUNT);
+	uint32_t* blockIds = levelChunk->getBlockData();
+	unsigned char packedBlocks[CHUNK_BLOCK_COUNT];
+	for (int i = 0; i < CHUNK_BLOCK_COUNT; i++)
+		packedBlocks[i] = blockIds[i] & 0xff;
+	chunkData.Write((const char*)packedBlocks, CHUNK_BLOCK_COUNT);
 	chunkData.Write((const char*)levelChunk->data.data, CHUNK_BLOCK_COUNT / 2);
 
 	chunkData.Write((const char*)levelChunk->skyLight.data, CHUNK_BLOCK_COUNT / 2);
@@ -383,8 +388,11 @@ LevelChunk* ExternalFileLevelStorage::load(Level* level, int x, int z)
 
 	chunkData->ResetReadPointer();
 
-	unsigned char* blockIds = new unsigned char[CHUNK_BLOCK_COUNT];
-	chunkData->Read((char*)blockIds, CHUNK_BLOCK_COUNT);
+	unsigned char packedBlocks[CHUNK_BLOCK_COUNT];
+	chunkData->Read((char*)packedBlocks, CHUNK_BLOCK_COUNT);
+	uint32_t* blockIds = new uint32_t[CHUNK_BLOCK_COUNT];
+	for (int i = 0; i < CHUNK_BLOCK_COUNT; i++)
+		blockIds[i] = packedBlocks[i];
 
 	LevelChunk* levelChunk = new LevelChunk(level, blockIds, x, z);
 	chunkData->Read((char*)levelChunk->data.data, CHUNK_BLOCK_COUNT / 2);

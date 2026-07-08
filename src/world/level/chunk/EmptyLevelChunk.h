@@ -13,6 +13,7 @@
 #include "LevelChunk.h"
 #include "../tile/Tile.h"
 #include "../Level.h"
+#include <cstdint>
 
 class EmptyLevelChunk: public LevelChunk
 {
@@ -23,7 +24,7 @@ public:
         dontSave = true;
     }
 
-    EmptyLevelChunk(Level* level, unsigned char* blocks, int x, int z)
+    EmptyLevelChunk(Level* level, uint32_t* blocks, int x, int z)
 	:	LevelChunk(level, blocks, x, z)
 	{
         dontSave = true;
@@ -159,7 +160,7 @@ public:
     }
 */
 
-    void setBlocks(unsigned char* newBlocks, int sub) {
+    void setBlocks(uint32_t* newBlocks, int sub) {
         return;
     }
 
@@ -169,7 +170,7 @@ public:
         int zs = z1 - z0;
 
         int s = xs * ys * zs;
-        int len = s + s / 2 * 3;
+        int len = s * 4 + s / 2 * 3;
 
 		memset(data + p, Tile::invisible_bedrock->id, len); //Arrays.fill(data, p, p + len, (char) 0);
         return len;
@@ -181,7 +182,7 @@ public:
         int zs = z1 - z0;
 
         int s = xs * ys * zs;
-        return s + s / 2 * 3;
+        return s * 4 + s / 2 * 3;
     }
 
     Random getRandom(long l) {
