@@ -250,6 +250,7 @@ void Screen::mouseReleased( int x, int y, int buttonNum )
 			}
 		}
 	} else {
+		buttonClicked(clickedButton);
 		clickedButton->released(x, y);
 	}
 	clickedButton = NULL;

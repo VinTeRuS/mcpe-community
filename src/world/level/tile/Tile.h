@@ -117,7 +117,11 @@ public:
 
     BlockProperties properties;
 
-    static BlockProperties& getProperties(int id) { return tiles[id]->properties; }
+    static BlockProperties& getProperties(int id) {
+        static BlockProperties defaultProps;
+        if (id < 0 || id >= NUM_BLOCK_TYPES || !tiles[id]) return defaultProps;
+        return tiles[id]->properties;
+    }
 
     static Tile* rock;
 	static Tile* grass;
