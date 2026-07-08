@@ -506,7 +506,7 @@ LevelChunk* RandomLevelSource::getChunk(int xOffs, int zOffs) {
 	delete[] temperatures;
 	delete[] biomes;
 
-	//caveFeature.apply(this, level, xOffs, zOffs, blocks, LevelChunk::ChunkBlockCount);
+	caveFeature.apply(this, level, xOffs, zOffs, blocks, LevelChunk::ChunkBlockCount);
     levelChunk->recalcHeightmap();
 
     return levelChunk;

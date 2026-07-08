@@ -350,6 +350,9 @@ public:
         return descriptionId;
     }
 
+    const std::string& getNameId() const { return nameId; }
+    Item* setNameId(const std::string& id) { nameId = id; return this; }
+
     virtual std::string getDescriptionId(const ItemInstance* instance) const {
         return descriptionId;
     }
@@ -404,6 +407,7 @@ private:
 
 	Item* craftingRemainingItem;
     std::string descriptionId;
+    std::string nameId;
 };
 
 #endif /*NET_MINECRAFT_WORLD_ITEM__Item_H__*/

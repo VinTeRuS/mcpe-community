@@ -13,3 +13,5 @@ debug/
 release/
 level/
 src/options.txt
+.data/
+data/

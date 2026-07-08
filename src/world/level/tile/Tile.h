@@ -4,7 +4,6 @@
 //package net.minecraft.world.level.tile;
 
 #include <string>
-#include "../../../util/Registry.h"
 #include "../../phys/AABB.h"
 
 class Entity;
@@ -334,9 +333,12 @@ public:
     virtual bool canSurvive(Level* level, int x, int y, int z);
 
 
-    virtual std::string getName() const;
+	virtual std::string getName() const;
     virtual std::string getDescriptionId() const;
 	virtual Tile* setDescriptionId(const std::string& id);
+
+    const std::string& getNameId() const { return nameId; }
+    Tile* setNameId(const std::string& id) { nameId = id; return this; }
 
     virtual void triggerEvent(Level* level, int x, int y, int z, int b0, int b1) {}
 
@@ -385,6 +387,7 @@ protected:
     static const int RENDERLAYER_BLEND;
 private:
 	std::string descriptionId;
+    std::string nameId;
 };
 
 #endif /*NET_MINECRAFT_WORLD_LEVEL_TILE__Tile_H__*/
