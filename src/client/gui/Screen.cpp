@@ -238,8 +238,7 @@ void Screen::mouseReleased( int x, int y, int buttonNum )
 		return;
 	}
 
-#if 1
-//#if defined(ANDROID) || defined(__APPLE__) //if (minecraft->isTouchscreen()) {
+	if (minecraft->useTouchscreen()) {
 		for (unsigned int i = 0; i < buttons.size(); ++i) {
 			Button* button = buttons[i];
 			LOGVV("mouseReleased - checking button %d: id: %d, msg: %s", i, button->id, button->msg.c_str());
@@ -250,9 +249,9 @@ void Screen::mouseReleased( int x, int y, int buttonNum )
 				clickedButton->released(x, y);
 			}
 		}
-# else //	} else {
+	} else {
 		clickedButton->released(x, y);
-#endif // }
+	}
 	clickedButton = NULL;
 }
 

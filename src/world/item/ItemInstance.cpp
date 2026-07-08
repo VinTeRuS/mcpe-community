@@ -49,7 +49,7 @@ void ItemInstance::init(int id, int count, int damage) {
 }
 
 bool ItemInstance::isNull() const {
-	return (id|count|auxValue) == 0;
+	return id == 0;
 }
 
 void ItemInstance::setNull() {

@@ -455,7 +455,7 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
 		MobSpawner::postProcessSpawnMobs(level, biome, xo + 8, zo + 8, 16, 16, &random);
 
 	//LOGI("Reading temp: 1\n");
-    float* temperatures = level->getBiomeSource()->getTemperatureBlock(/*NULL,*/ xo + 8, zo + 8, 16, 16);
+    float* temperatures = level->getBiomeSource()->getTemperatureBlock(xo + 8, zo + 8, 16, 16);
     for (int x = xo + 8; x < xo + 8 + 16; x++)
         for (int z = zo + 8; z < zo + 8 + 16; z++) {
             int xp = x - (xo + 8);
@@ -468,6 +468,7 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
                 }
             }
         }
+	delete[] temperatures;
 	//LOGI("Reading temp: 0 END\n");
 
 	const float et = getTimeS();
@@ -492,16 +493,18 @@ LevelChunk* RandomLevelSource::getChunk(int xOffs, int zOffs) {
 	if (it != chunkMap.end())
 		return it->second;
 
-    random.setSeed((long)(xOffs * 341872712l + zOffs * 132899541l)); //@fix
+    random.setSeed((long)(xOffs * 341872712l + zOffs * 132899541l) ^ level->getSeed());
 
     unsigned char* blocks = new unsigned char[LevelChunk::ChunkBlockCount];
     LevelChunk* levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
 	chunkMap.insert(std::make_pair(hashedPos, levelChunk));
 
-	Biome** biomes = level->getBiomeSource()->getBiomeBlock(/*biomes, */xOffs * 16, zOffs * 16, 16, 16);
-    float* temperatures = level->getBiomeSource()->temperatures;
-    prepareHeights(xOffs, zOffs, blocks, 0, temperatures);//biomes, temperatures);
+	Biome** biomes = level->getBiomeSource()->getBiomeBlock(xOffs * 16, zOffs * 16, 16, 16);
+    float* temperatures = level->getBiomeSource()->getTemperatureBlock(xOffs * 16, zOffs * 16, 16, 16);
+    prepareHeights(xOffs, zOffs, blocks, 0, temperatures);
     buildSurfaces(xOffs, zOffs, blocks, biomes);
+	delete[] temperatures;
+	delete[] biomes;
 
 	//caveFeature.apply(this, level, xOffs, zOffs, blocks, LevelChunk::ChunkBlockCount);
     levelChunk->recalcHeightmap();
@@ -519,8 +522,9 @@ float* RandomLevelSource::getHeights(float* buffer, int x, int y, int z, int xSi
     float s = 1 * 684.412f;
     float hs = 1 * 684.412f;
 
-    float* temperatures = level->getBiomeSource()->temperatures;
-    float* downfalls = level->getBiomeSource()->downfalls;
+    BiomeSource* biomeSource = level->getBiomeSource();
+    float* temperatures_ = biomeSource->getTemperatureBlock(x, z, 16, 16);
+    float* downfalls_ = biomeSource->getDownfallBlock(x, z, 16, 16);
     sr = scaleNoise.getRegion(sr, x, z, xSize, zSize, 1.121f, 1.121f, 0.5f);
     dr = depthNoise.getRegion(dr, x, z, xSize, zSize, 200.0f, 200.0f, 0.5f);
 
@@ -537,8 +541,8 @@ float* RandomLevelSource::getHeights(float* buffer, int x, int y, int z, int xSi
 
         for (int zz = 0; zz < zSize; zz++) {
             int zp = zz * wScale + wScale / 2;
-            float temperature = temperatures[xp * 16 + zp];
-            float downfall = downfalls[xp * 16 + zp] * temperature;
+            float temperature = temperatures_[xp * 16 + zp];
+            float downfall = downfalls_[xp * 16 + zp] * temperature;
             float dd = 1 - downfall;
             dd = dd * dd;
             dd = dd * dd;
@@ -597,6 +601,8 @@ float* RandomLevelSource::getHeights(float* buffer, int x, int y, int z, int xSi
             }
         }
     }
+    delete[] temperatures_;
+    delete[] downfalls_;
     return buffer;
 }
 

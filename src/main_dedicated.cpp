@@ -12,6 +12,8 @@
 #include "platform/time.h"
 #include "SharedConstants.h"
 
+FILE* g_logFile = nullptr;
+
 #define MAIN_CLASS NinecraftApp
 static App* g_app = 0;
 static int g_exitCode = 0;

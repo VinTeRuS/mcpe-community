@@ -17,13 +17,7 @@ Screen* ScreenChooser::createScreen( ScreenId id )
 {
 	Screen* screen = NULL;
 
-	// Always use touch screens on Linux (they have better styled UI)
-	// This doesn't affect the game's internal touchscreen logic
-#if defined(LINUX)
-	bool useTouchScreens = true;
-#else
 	bool useTouchScreens = _mc->useTouchscreen();
-#endif
 
 	if (useTouchScreens) {
 		switch (id) {
