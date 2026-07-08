@@ -2,6 +2,11 @@
 
 TileEntity::MapIdType TileEntity::idClassMap;
 TileEntity::MapTypeId TileEntity::classIdMap;
+const int TileEntityType::Undefined;
+const int TileEntityType::Furnace;
+const int TileEntityType::Chest;
+const int TileEntityType::NetherReactor;
+const int TileEntityType::Sign;
 
 #include "FurnaceTileEntity.h"
 #include "ChestTileEntity.h"

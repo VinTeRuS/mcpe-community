@@ -363,6 +363,13 @@ protected:
     /*** Returns the item instance's auxValue when a TileItem is spawned from this Tile. */
     virtual int getSpawnResourcesAuxValue(int data);
 
+    template<typename T, typename... Args>
+    static T* create(Args&&... args) {
+        auto* t = new T(std::forward<Args>(args)...);
+        t->init();
+        return t;
+    }
+
 private:
 	Tile* init();
 	Tile* setCategory(int category);
