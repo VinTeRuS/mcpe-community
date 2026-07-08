@@ -21,6 +21,7 @@
 
 #include "../DialogDefinitions.h"
 #include "../SimpleChooseLevelScreen.h"
+#include "Platform.h"
 
 //
 // Buy Button implementation
@@ -125,10 +126,10 @@ void StartMenuScreen::init()
 	tabButtons.push_back(&bJoin);
 	tabButtons.push_back(&bOptions);
 
-	#ifdef DEMO_MODE
+	if (Platform::singleton().isDemo()) {
 		buttons.push_back(&bBuy);
 		tabButtons.push_back(&bBuy);
-	#endif
+	}
 
 	copyright = "\xffMojang AB";//. Do not distribute!";
 

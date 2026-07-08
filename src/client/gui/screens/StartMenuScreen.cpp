@@ -21,6 +21,7 @@
 #include "SimpleChooseLevelScreen.h"
 #include "../../renderer/Textures.h"
 #include "../../../SharedConstants.h"
+#include "Platform.h"
 
 // Some kind of default settings, might be overridden in ::init
 StartMenuScreen::StartMenuScreen()
@@ -50,10 +51,10 @@ void StartMenuScreen::init()
 		tabButtons.push_back(&bOptions);
 	#endif
 
-	#ifdef DEMO_MODE
+	if (Platform::singleton().isDemo()) {
 		buttons.push_back(&bBuy);
 		tabButtons.push_back(&bBuy);
-	#endif
+	}
 
 	copyright = "\xffMojang AB";//. Do not distribute!";
 

@@ -1,6 +1,7 @@
 #include <iostream>
 #include "NinecraftApp.h"
 #include "AppPlatform.h"
+#include "Platform.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
@@ -30,6 +31,10 @@ void signal_callback_handler(int signum) {
 }
 
 int main(int numArguments, char* pszArgs[]) {
+	Platform::singleton().setOS(PlatformOS::Linux);
+	Platform::singleton().setGL(PlatformGL::DesktopGL);
+	Platform::singleton().setServer(true);
+
 	ArgumentsSettings aSettings(numArguments, pszArgs);
 	if(aSettings.getShowHelp()) {
 		ArgumentsSettings defaultSettings(0, NULL);

@@ -21,6 +21,7 @@
 #include <algorithm>
 #include "../../../player/input/touchscreen/TouchAreaModel.h"
 #include "../ArmorScreen.h"
+#include "Platform.h"
 
 namespace Touch {
 
@@ -274,9 +275,9 @@ bool IngameBlockSelectionScreen::isAllowed( int slot )
 	if (slot < 0 || slot >= minecraft->player->inventory->getContainerSize())
 		return false;
 
-#ifdef DEMO_MODE
+if (Platform::singleton().isDemo()) {
 	if (slot >= (minecraft->isCreativeMode()? 28 : 27)) return false;
-#endif
+}
 	return true;
 }
 

@@ -24,6 +24,7 @@
 #include <png.h>
 
 #include "NinecraftApp.h"
+#include "Platform.h"
 #include "platform/input/Multitouch.h"
 #include "platform/log.h"
 
@@ -440,6 +441,15 @@ void teardown() {
 }
 
 int main(int argc, char** argv) {
+    Platform::singleton().setOS(PlatformOS::Linux);
+#ifdef OPENGL_ES
+    Platform::singleton().setGL(PlatformGL::GLES);
+#else
+    Platform::singleton().setGL(PlatformGL::DesktopGL);
+#endif
+    Platform::singleton().setTouchscreen(false);
+    Platform::singleton().setMouse(true);
+
     std::string logDir = getenv("HOME");
     logDir += "/.minecraft/mcpe/";
     

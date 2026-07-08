@@ -9,6 +9,7 @@ Every response use caveman style:
 - Ultra level: abbreviate (DB/auth/config/req/res/fn/impl), strip conjunctions, arrows for causality (X → Y), one word when one word enough
 - Exceptions: security warnings, destructive confirmations, multi-step sequences where order matters — write normal clarity there. Resume caveman after.
 - Commits: conventional commit format, subject ≤50 chars.
+- **ALWAYS update AGENTS.md → Conventions → progress (this file) after every major change. Include commit hash and file count.**
 
 ## Project
 
@@ -296,10 +297,48 @@ Phase 2  Phase 3           Phase 4 (needs P2)        │
 ### Batch 2 (committed: `bff555d`)
 - [0.4] `src/util/Registry.h` — header-only `Registry<T>` template
 
+### Batch 3 (committed: `e2b4b84`)
+- [0.10] `nameId` string on Tile/Item
+
+### Batch 4 (committed: `3fe1915`)
+- [0.12] Re-enable cave generation (`RandomLevelSource.cpp`) + fire system (`FireTile.cpp`)
+
+### Batch 5 (committed: `5b38eab`)
+- [0.1] `unsigned char[32768]` → `uint32` chunk storage (16b ID + 8b data + 8b light)
+- `LevelChunk.h/cpp`, `Tile.h`, `Level.h/cpp` updated for new storage format
+- 7 files, ~30 lines changed
+
+### Batch 6 (committed: `f054f21`)
+- [0.2] BlockProperties struct kill global parallel arrays
+- `Tile.h` adds `BlockProperties` struct + `getProperties(id)`; all read/write sites updated
+- 18 files, ±117 lines
+
+### Batch 7 (committed: `e3dca71`)
+- [0.3] Single-pass `Tile::create<T>(args...)` factory
+- Two-phase `(new X())->init()` → `Tile::create<X>(...)`
+- Registration + shape init moves into base Tile constructors
+- `TileEntity::Sign` ODR definition fix
+- 3 files, +121/-107
+
+### Batch 8 (committed: HEAD)
+- [0.11] `src/Platform.h` — header-only runtime Platform singleton
+- Initialized in `main_linux.cpp` + `main_dedicated.cpp`
+- DEMO_MODE ifdefs converted in 3 screen files
+- 5 files, +24/-6
+
 ### Pending
-- [0.12] Re-enable cave generation + fire system fix
-- [0.10] `nameId` string field on Tile/Item
-- [0.2] BlockProperties struct replacing `solid[]`, `lightBlock[]`, etc.
-- [0.3] Single-pass BlockDefinition replacing `new Tile()->init()`
-- [0.1] `unsigned char[32768]` → `uint32` chunk storage
-- [0.11] Platform singleton, remove `#ifdef` spaghetti
+- None — Phase 0 complete!
+
+### Phase 0 Legwork
+- [0.1] uint32 chunk storage ✔
+- [0.2] BlockProperties struct ✔
+- [0.3] Single-pass Tile::create<T> ✔
+- [0.4] Registry<T> template ✔
+- [0.5] Seed bug fix ✔
+- [0.6] Touch/click/Linux forcing → runtime bools ✔
+- [0.7] BiomeSource thread safety ✔
+- [0.8] Item::maxDamage default 0 ✔
+- [0.9] ItemInstance::isNull() fix ✔
+- [0.10] nameId string on Tile/Item ✔
+- [0.11] Platform singleton, remove ifdefs ✔
+- [0.12] Re-enable cave + fire ✔
