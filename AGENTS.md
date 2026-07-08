@@ -11,6 +11,18 @@ Every response use caveman style:
 - Commits: conventional commit format, subject ≤50 chars.
 - **ALWAYS update AGENTS.md → Conventions → progress (this file) after every major change. Include commit hash and file count.**
 
+## Sanity Check (auto-run after every change)
+
+After ANY code change, run these in order. Fix all issues before committing.
+
+1. **Build both targets** — `./build.sh MinecraftClient debug && ./build.sh MinecraftServer debug`
+2. **Launch test** — `timeout 10 ./debug/MinecraftClient 2>&1; [ $? -eq 124 ]` (exit 124 = clean timeout, no crash)
+3. **Server build only** — `./build.sh MinecraftServer debug` (catches `STANDALONE_SERVER` compile errors)
+4. **No warnings in new code** — Check compiler output for new warnings. Fix or document them.
+5. **Commit** only after all 4 pass. If launch fails, revert + fix.
+
+Exceptions: Phase 2+ may break client launch temporarily (GL overhaul). Mark in commit message: `[skip sanity]` and explain why.
+
 ## Project
 
 MCPE v0.6.1 alpha source. Ported to C++17. Builds on Linux via CMake + SDL2.
@@ -320,14 +332,19 @@ Phase 2  Phase 3           Phase 4 (needs P2)        │
 - `TileEntity::Sign` ODR definition fix
 - 3 files, +121/-107
 
-### Batch 8 (committed: HEAD)
+### Batch 8 (committed: `5fdd17a`)
 - [0.11] `src/Platform.h` — header-only runtime Platform singleton
 - Initialized in `main_linux.cpp` + `main_dedicated.cpp`
 - DEMO_MODE ifdefs converted in 3 screen files
 - 5 files, +24/-6
 
+### Batch 9 (committed: `c5b1027`)
+- Fix: null-guard in `Tile::getProperties()` for unregistered tile IDs (0)
+- Fix: missing `buttonClicked()` call in non-touch mouse release path
+- 2 files, +6/-1
+
 ### Pending
-- None — Phase 0 complete!
+- Phase 0 complete! Move to Phase 1 (JSON data-driven definitions)
 
 ### Phase 0 Legwork
 - [0.1] uint32 chunk storage ✔
