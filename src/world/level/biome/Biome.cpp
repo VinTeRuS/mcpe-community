@@ -249,13 +249,16 @@ float Biome::getCreatureProbability() {
 void Biome::applyDefinitions() {
 	auto& loader = JsonLoader::singleton();
 
-	// Build tile name->ID lookup
+	// Build tile name->ID lookup (prefer lower ID on name collision)
 	std::unordered_map<std::string, int> tileNames;
 	for (int i = 0; i < 256; i++) {
 		if (Tile::tiles[i]) {
 			const std::string& nid = Tile::tiles[i]->getNameId();
-			if (!nid.empty())
-				tileNames[nid] = i;
+			if (!nid.empty()) {
+				auto it = tileNames.find(nid);
+				if (it == tileNames.end() || i < it->second)
+					tileNames[nid] = i;
+			}
 		}
 	}
 
@@ -301,12 +304,12 @@ void Biome::applyDefinitions() {
 			std::string topMat = props.value("top_material", "");
 			if (!topMat.empty()) {
 				auto it = tileNames.find(topMat);
-				if (it != tileNames.end()) biome->topMaterial = (char)it->second;
+				if (it != tileNames.end()) biome->topMaterial = (unsigned char)it->second;
 			}
 			std::string mat = props.value("material", "");
 			if (!mat.empty()) {
 				auto it = tileNames.find(mat);
-				if (it != tileNames.end()) biome->material = (char)it->second;
+				if (it != tileNames.end()) biome->material = (unsigned char)it->second;
 			}
 
 			// Apply mob spawn lists

@@ -153,14 +153,14 @@ void RandomLevelSource::buildSurfaces(int xOffs, int zOffs, uint32_t* blocks, Bi
 
             int run = -1;
 
-			char top = b->topMaterial;
-            char material = b->material;
+			unsigned char top = (unsigned char)b->topMaterial;
+            unsigned char material = (unsigned char)b->material;
 
             for (int y = 127; y >= 0; y--) {
                 int offs = (z * 16 + x) * 128 + y;
 
                 if (y <= 0 + random.nextInt(5)) {
-                    blocks[offs] = (char) Tile::unbreakable->id;
+                    blocks[offs] = (unsigned char) Tile::unbreakable->id;
                 } else {
                     int old = blocks[offs];
 
@@ -170,27 +170,27 @@ void RandomLevelSource::buildSurfaces(int xOffs, int zOffs, uint32_t* blocks, Bi
                         if (run == -1) {
                             if (runDepth <= 0) {
                                 top = 0;
-                                material = (char) Tile::rock->id;
+                                material = (unsigned char) Tile::rock->id;
                             } else if (y >= waterHeight - 4 && y <= waterHeight + 1) {
-                                top = b->topMaterial;
-								material = b->material;
+                                top = (unsigned char) b->topMaterial;
+								material = (unsigned char) b->material;
 								
 								//@attn: ?
                                 if (gravel) {
 									top = 0;
-									material = (char) Tile::gravel->id;
+									material = (unsigned char) Tile::gravel->id;
 								}
                                 if (sand) {
-									top = (char) Tile::sand->id;
-									material = (char) Tile::sand->id;
+									top = (unsigned char) Tile::sand->id;
+									material = (unsigned char) Tile::sand->id;
 								}
                             }
 
                             if (y < waterHeight && top == 0) {
 								if (temp < 0.15f)
-									top = (char) Tile::ice->id;
+									top = (unsigned char) Tile::ice->id;
 								else
-									top = (char) Tile::calmWater->id;
+									top = (unsigned char) Tile::calmWater->id;
 							}
 
                             run = runDepth;
@@ -204,7 +204,7 @@ void RandomLevelSource::buildSurfaces(int xOffs, int zOffs, uint32_t* blocks, Bi
                             // runs
                             if (run == 0 && material == Tile::sand->id) {
                                 run = random.nextInt(4);
-                                material = (char) Tile::sandStone->id;
+                                material = (unsigned char) Tile::sandStone->id;
                             }
                         }
                     }
@@ -496,7 +496,7 @@ LevelChunk* RandomLevelSource::getChunk(int xOffs, int zOffs) {
 
     random.setSeed((long)(xOffs * 341872712l + zOffs * 132899541l) ^ level->getSeed());
 
-    uint32_t* blocks = new uint32_t[LevelChunk::ChunkBlockCount];
+    uint32_t* blocks = new uint32_t[LevelChunk::ChunkBlockCount]();
     LevelChunk* levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
 	chunkMap.insert(std::make_pair(hashedPos, levelChunk));
 
