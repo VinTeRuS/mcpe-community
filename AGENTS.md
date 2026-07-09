@@ -389,15 +389,14 @@ FIX: `renderHand()` selects arm1 when true, arm0 when false. arm0=left-arm, arm1
 - Slider snap points verified
 - 4 files, +17/-8
 
-### Batch 17 (committed: c78be65)
-RenderHand arm switches: arm0 → arm1. Projection mirror for left-handed.
+### Batch 17 (committed: d4b3eed)
+Render arm0 + projection mirror + culling fix.
 
-Final approach (overrides batches 15-17):
-- `renderHand()` always renders arm1 (right arm model)
-- `leftHanded=1.0f` always in transforms (no flip — projection mirror handles it)
-- `GameRenderer::renderItemInHand`: mirror projection via `glScalef(-1,1,1)` for left-handed
+- `renderHand()` always renders arm0 (left arm) — same as original
+- `leftHanded=1.0f` always in transforms (no flip)
+- `GameRenderer::renderItemInHand`: mirror projection + disable GL_CULL_FACE for left-handed
 - `additionalRendering`: arm1 for right-handed, arm0 for left-handed
-- `render()`: set `holdingLeftHand` for right-handed (→ arm1), `holdingRightHand` for left-handed (→ arm0)
+- `render()`: set `holdingLeftHand` for right-handed, `holdingRightHand` for left-handed
 - Reset both holding flags after super::render
 - 4 files, +22/-6
 
