@@ -21,6 +21,7 @@
 #include "world/level/material/Material.h"
 #include "world/entity/MobCategory.h"
 #include "world/entity/EntityDefinition.h"
+#include "world/level/dimension/Dimension.h"
 //#include "world/level/storage/FolderMethods.h"
 #ifndef STANDALONE_SERVER
 #include "client/gui/screens/StartMenuScreen.h"
@@ -94,6 +95,7 @@ void NinecraftApp::init()
 		EntityDefinition::applyDefinitions();
 		Recipes::applyDefinitions();
 		Biome::initBiomes();
+		Dimension::applyDefinitions();
 		TileEntity::initTileEntities();
 
 	#ifdef ANDROID

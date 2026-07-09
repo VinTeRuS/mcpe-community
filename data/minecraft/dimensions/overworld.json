@@ -1,0 +1,22 @@
+{
+  "format_version": "1",
+  "namespace": "minecraft",
+  "dimensions": [
+    {
+      "id": "minecraft:overworld",
+      "class": "normal_day_cycle",
+      "properties": {
+        "height": 128,
+        "sea_level": 63,
+        "world_size": 256,
+        "natural": true,
+        "foggy": false,
+        "ultra_warm": false,
+        "has_ceiling": false,
+        "fog_color": 8438015,
+        "cloud_height": 108,
+        "respawn": true
+      }
+    }
+  ]
+}

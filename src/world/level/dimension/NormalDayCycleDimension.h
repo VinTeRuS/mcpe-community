@@ -24,9 +24,9 @@ public:
 		if (br < 0) br = 0;
 		if (br > 1.f) br = 1.f;
 
-		float r = ((fogColor >> 16) & 0xff) / 255.0f;
-		float g = ((fogColor >> 8) & 0xff) / 255.0f;
-		float b = ((fogColor) & 0xff) / 255.0f;
+		float r = ((defaultFogColor >> 16) & 0xff) / 255.0f;
+		float g = ((defaultFogColor >> 8) & 0xff) / 255.0f;
+		float b = ((defaultFogColor) & 0xff) / 255.0f;
 		r *= br * 0.94f + 0.06f;
 		g *= br * 0.94f + 0.06f;
 		b *= br * 0.91f + 0.09f;

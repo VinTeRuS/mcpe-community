@@ -8,14 +8,20 @@
 #include "../chunk/ChunkSource.h"
 #include "../tile/Tile.h"
 #include "../../../util/Mth.h"
+#include "../../../util/JsonLoader.h"
 
+std::vector<DimensionDefinition> Dimension::s_definitions;
 
 Dimension::Dimension()
 :	foggy(false),
 	ultraWarm(false),
 	hasCeiling(false),
 	biomeSource(NULL),
-	id(0)
+	id(0),
+	seaLevel(63),
+	dimHeight(128),
+	worldSize(256),
+	natural(false)
 {
 }
 
@@ -97,9 +103,9 @@ Vec3 Dimension::getFogColor( float td, float a )
 	if (br < 0.0f) br = 0.0f;
 	if (br > 1.0f) br = 1.0f;
 
-	float r = ((fogColor >> 16) & 0xff) / 255.0f;
-	float g = ((fogColor >> 8) & 0xff) / 255.0f;
-	float b = ((fogColor) & 0xff) / 255.0f;
+	float r = ((defaultFogColor >> 16) & 0xff) / 255.0f;
+	float g = ((defaultFogColor >> 8) & 0xff) / 255.0f;
+	float b = ((defaultFogColor) & 0xff) / 255.0f;
 	r *= br * 0.94f + 0.06f;
 	g *= br * 0.94f + 0.06f;
 	b *= br * 0.91f + 0.09f;
@@ -119,11 +125,93 @@ Dimension* Dimension::getNew( int id )
 	return NULL;
 }
 
+/*static*/
+void Dimension::applyDefinitions() {
+	auto& loader = JsonLoader::singleton();
+
+	s_definitions.clear();
+	int count = 0;
+
+	loader.loadDir("minecraft", "dimensions", [&](const std::string& path, const json& data) {
+		auto list = data["dimensions"];
+		if (!list.is_array()) return;
+		for (auto& j : list) {
+			DimensionDefinition def;
+			def.nameId = j.value("id", "");
+			if (def.nameId.empty()) continue;
+
+			std::string dimClass = j.value("class", "normal");
+			if (dimClass == "normal_day_cycle") def.dimClass = Dimension::NORMAL_DAYCYCLE;
+			else if (dimClass == "normal") def.dimClass = Dimension::NORMAL;
+			else if (dimClass == "nether") def.dimClass = Dimension::NETHER;
+			else if (dimClass == "end") def.dimClass = Dimension::END;
+			else def.dimClass = Dimension::NORMAL;
+
+			auto& props = j["properties"];
+			if (props.is_object()) {
+				if (props.contains("height") && props["height"].is_number())
+					def.height = props["height"];
+				if (props.contains("sea_level") && props["sea_level"].is_number())
+					def.seaLevel = props["sea_level"];
+				if (props.contains("world_size") && props["world_size"].is_number())
+					def.worldSize = props["world_size"];
+				if (props.contains("fog_color") && props["fog_color"].is_number())
+					def.fogColor = props["fog_color"];
+				if (props.contains("cloud_height") && props["cloud_height"].is_number())
+					def.cloudHeight = props["cloud_height"];
+				if (props.contains("natural") && props["natural"].is_boolean())
+					def.natural = props["natural"];
+				if (props.contains("foggy") && props["foggy"].is_boolean())
+					def.foggy = props["foggy"];
+				if (props.contains("ultra_warm") && props["ultra_warm"].is_boolean())
+					def.ultraWarm = props["ultra_warm"];
+				if (props.contains("has_ceiling") && props["has_ceiling"].is_boolean())
+					def.hasCeiling = props["has_ceiling"];
+				if (props.contains("respawn") && props["respawn"].is_boolean())
+					def.respawn = props["respawn"];
+			}
+
+			s_definitions.push_back(def);
+			count++;
+		}
+	});
+
+	printf("Dimension::applyDefinitions: loaded %d dimension definitions\n", count);
+}
+
+/*static*/
+const DimensionDefinition* Dimension::getDefinition(const std::string& nameId) {
+	for (auto& d : s_definitions)
+		if (d.nameId == nameId) return &d;
+	return nullptr;
+}
+
+/*static*/
+const std::vector<DimensionDefinition>& Dimension::allDefinitions() {
+	return s_definitions;
+}
+
 //
 // DimensionFactory
 //
 #include "../storage/LevelData.h"
 Dimension* DimensionFactory::createDefaultDimension(LevelData* data )
 {
+	// Try named definitions first
+	auto* def = Dimension::getDefinition("minecraft:overworld");
+	if (def) {
+		Dimension* dim = Dimension::getNew(def->dimClass);
+		if (dim) {
+			dim->nameId = def->nameId;
+			dim->seaLevel = def->seaLevel;
+			dim->dimHeight = def->height;
+			dim->worldSize = def->worldSize;
+			dim->natural = def->natural;
+			dim->foggy = def->foggy;
+			dim->ultraWarm = def->ultraWarm;
+			dim->hasCeiling = def->hasCeiling;
+		}
+		return dim;
+	}
 	return Dimension::getNew(Dimension::NORMAL_DAYCYCLE);
 }
