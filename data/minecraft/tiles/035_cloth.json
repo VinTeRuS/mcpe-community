@@ -9,5 +9,6 @@
   "translucent": false,
   "category": "structures",
   "material": "cloth",
-  "creative_group": "items"
+  "creative_group": "items",
+  "type": "tile"
 }

@@ -137,7 +137,6 @@ void Biome::initBiomes() {
 	tundra->nameId = "minecraft:tundra";
 
 	recalc();
-	applyDefinitions();
 }
 /*static*/
 void Biome::teardownBiomes() {
@@ -339,4 +338,90 @@ void Biome::applyDefinitions() {
 	});
 
 	printf("Biome::applyDefinitions: loaded %d biome definitions\n", count);
+}
+
+/*static*/
+void Biome::handleJsonDefinition(const std::string& modId, const json& data) {
+    (void)modId;
+    auto list = data["biomes"];
+    if (!list.is_array()) return;
+
+    std::unordered_map<std::string, int> tileNames;
+    for (int i = 0; i < 256; i++) {
+        if (Tile::tiles[i]) {
+            const std::string& nid = Tile::tiles[i]->getNameId();
+            if (!nid.empty()) {
+                auto it = tileNames.find(nid);
+                if (it == tileNames.end() || i < it->second)
+                    tileNames[nid] = i;
+            }
+        }
+    }
+
+    std::unordered_map<std::string, int> entityNames;
+    for (int i = 0; i < 256; i++) {
+        auto* def = EntityDefinition::getDefinition(i);
+        if (def) entityNames[def->nameId] = i;
+    }
+
+    Biome* allBiomes[] = {
+        rainForest, swampland, seasonalForest, forest, savanna,
+        shrubland, taiga, desert, plains, iceDesert, tundra
+    };
+
+    for (auto& j : list) {
+        std::string id = j.value("id", "");
+        if (id.empty()) continue;
+
+        Biome* biome = nullptr;
+        for (auto* b : allBiomes) {
+            if (b && b->nameId == id) { biome = b; break; }
+        }
+        if (!biome) {
+            printf("Biome: unknown biome '%s'\n", id.c_str());
+            continue;
+        }
+
+        auto& props = j["properties"];
+        if (props.contains("color") && props["color"].is_number())
+            biome->color = props["color"];
+        if (props.contains("leaf_color") && props["leaf_color"].is_number())
+            biome->leafColor = props["leaf_color"];
+        if (props.contains("snow_covered") && props["snow_covered"].is_boolean())
+            biome->snowCovered = props["snow_covered"];
+
+        std::string topMat = props.value("top_material", "");
+        if (!topMat.empty()) {
+            auto it = tileNames.find(topMat);
+            if (it != tileNames.end()) biome->topMaterial = (unsigned char)it->second;
+        }
+        std::string mat = props.value("material", "");
+        if (!mat.empty()) {
+            auto it = tileNames.find(mat);
+            if (it != tileNames.end()) biome->material = (unsigned char)it->second;
+        }
+
+        auto& spawn = j["spawning"];
+        if (spawn.is_object()) {
+            auto parseMobs = [&](const std::string& key, MobList& list) {
+                list.clear();
+                auto& arr = spawn[key];
+                if (arr.is_array()) {
+                    for (auto& m : arr) {
+                        std::string entityId = m.value("entity", "");
+                        auto eit = entityNames.find(entityId);
+                        if (eit != entityNames.end()) {
+                            int weight = m.value("weight", 10);
+                            int min = m.value("min_count", 1);
+                            int max = m.value("max_count", 1);
+                            list.push_back(MobSpawnerData(eit->second, weight, min, max));
+                        }
+                    }
+                }
+            };
+            parseMobs("creatures", biome->_friendlies);
+            parseMobs("monsters", biome->_enemies);
+            parseMobs("water_creatures", biome->_waterFriendlies);
+        }
+    }
 }

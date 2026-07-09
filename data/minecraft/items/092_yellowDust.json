@@ -8,5 +8,6 @@
   ],
   "category": "Tools",
   "description_id": "yellowDust",
-  "creative_group": "tools"
+  "creative_group": "tools",
+  "type": "item"
 }

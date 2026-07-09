@@ -9,5 +9,6 @@
   "category": "Structures",
   "description_id": "stick",
   "hand_equipped": true,
-  "creative_group": "structures"
+  "creative_group": "structures",
+  "type": "item"
 }

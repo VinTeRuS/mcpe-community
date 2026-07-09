@@ -4,6 +4,9 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
 
 struct EntityDrop {
 	std::string item;
@@ -43,6 +46,7 @@ struct EntityDefinition {
 	std::vector<EntityDrop> drops;
 
 	static void applyDefinitions();
+	static void handleJsonDefinition(const std::string& modId, const json& data);
 	static const EntityDefinition* getDefinition(int numericId);
 
 private:

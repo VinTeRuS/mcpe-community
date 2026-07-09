@@ -11,5 +11,6 @@
   "category": "structures",
   "tex": 4,
   "material": "wood",
-  "creative_group": "items"
+  "creative_group": "items",
+  "type": "tile"
 }

@@ -6,8 +6,11 @@
 #include "../../locale/I18n.h"
 #include "../../util/Random.h"
 #include "../../platform/log.h"
+#include <nlohmann/json.hpp>
 #include "UseAnim.h"
 #include "ItemInstance.h"
+
+using json = nlohmann::json;
 class Level;
 class Tile;
 class Entity;
@@ -230,6 +233,7 @@ public:
 	static void initItems();
 	static void teardownItems();
 	static void applyDefinitions();
+	static void handleJsonDefinition(const std::string& modId, const json& data);
 
     Item(int id)
 	:	id(256 + id),

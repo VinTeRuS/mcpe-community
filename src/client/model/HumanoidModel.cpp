@@ -155,6 +155,10 @@ void HumanoidModel::setupAnim( float time, float r, float bob, float yRot, float
 		float swing = attackTime;
 		body.yRot = Mth::sin(Mth::sqrt(swing) * Mth::PI * 2) * 0.2f;
 
+		if (leftHanded) {
+			body.yRot *= -1.0f;
+		}
+
 	ModelPart& mainArm = leftHanded ? arm1 : arm0;
 	ModelPart& offArm  = leftHanded ? arm0 : arm1;
 
@@ -174,7 +178,7 @@ void HumanoidModel::setupAnim( float time, float r, float bob, float yRot, float
 		float bb = Mth::sin(attackTime * Mth::PI) * -(head.xRot - 0.7f) * 0.75f;
 		mainArm.xRot -= aa * 1.2f + bb;
 		mainArm.yRot += body.yRot * 2;
-		mainArm.zRot = Mth::sin(attackTime * Mth::PI) * -0.4f;
+		mainArm.zRot += Mth::sin(attackTime * Mth::PI) * -0.4f;
 	}
 
 	if (sneaking) {

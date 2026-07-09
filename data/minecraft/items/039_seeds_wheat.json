@@ -8,5 +8,6 @@
   ],
   "category": "FoodArmor",
   "description_id": "seeds",
-  "creative_group": "foodarmor"
+  "creative_group": "foodarmor",
+  "type": "item"
 }

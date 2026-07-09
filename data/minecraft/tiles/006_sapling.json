@@ -10,5 +10,6 @@
   "category": "structures",
   "tex": 15,
   "material": "plant",
-  "creative_group": "items"
+  "creative_group": "items",
+  "type": "tile"
 }

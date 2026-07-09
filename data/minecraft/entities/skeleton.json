@@ -30,5 +30,6 @@
   ],
   "equipment": {
     "main_hand": "minecraft:bow"
-  }
+  },
+  "type": "entity"
 }

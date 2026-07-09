@@ -10,5 +10,6 @@
   "category": "decorations",
   "tex": 35,
   "material": "wood",
-  "creative_group": "items"
+  "creative_group": "items",
+  "type": "tile"
 }

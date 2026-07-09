@@ -5,5 +5,6 @@
   "material": "dirt",
   "render_layer": "opaque",
   "solid": true,
-  "translucent": false
+  "translucent": false,
+  "type": "tile"
 }

@@ -9,5 +9,6 @@
   "category": "Tools",
   "description_id": "hoeWood",
   "tier": "WOOD",
-  "creative_group": "tools"
+  "creative_group": "tools",
+  "type": "item"
 }

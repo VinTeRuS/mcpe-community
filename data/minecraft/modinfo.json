@@ -1,0 +1,8 @@
+{
+  "type": "mod_info",
+  "id": "minecraft",
+  "name": "Minecraft",
+  "description": "Base game content",
+  "version": "0.6.1",
+  "core": true
+}

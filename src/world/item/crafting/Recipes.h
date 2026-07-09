@@ -4,7 +4,10 @@
 //package net.minecraft.world.item.crafting;
 
 #include "../Item.h"
+#include <nlohmann/json.hpp>
 #include "../../inventory/CraftingContainer.h"
+
+using json = nlohmann::json;
 #include "../../level/tile/Tile.h"
 
 #include "Recipe.h"
@@ -19,6 +22,7 @@ public:
     const RecipeList& getRecipes();
     static void      teardownRecipes();
     static void applyDefinitions();
+    static void handleJsonDefinition(const std::string& modId, const json& data);
 
 	class Type {
 	public:

@@ -11,5 +11,6 @@
   "category": "structures",
   "tex": 16,
   "material": "glass",
-  "creative_group": "items"
+  "creative_group": "items",
+  "type": "tile"
 }

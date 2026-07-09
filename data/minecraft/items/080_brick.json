@@ -8,5 +8,6 @@
   ],
   "category": "Structures",
   "description_id": "brick",
-  "creative_group": "structures"
+  "creative_group": "structures",
+  "type": "item"
 }

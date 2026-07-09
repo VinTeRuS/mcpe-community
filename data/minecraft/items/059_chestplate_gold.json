@@ -10,5 +10,6 @@
   "description_id": "chestplateGold",
   "armor_material": "GOLD",
   "armor_slot": "TORSO",
-  "creative_group": "foodarmor"
+  "creative_group": "foodarmor",
+  "type": "item"
 }

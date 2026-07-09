@@ -288,8 +288,6 @@ void Item::initItems() {
 	//Item::record_02 = (new RecordingItem(2001, "cat"))->setIcon(1, 15)->setCategory(ItemCategory::Decorations)->setDescriptionId("record");
 	Item::camera = (new CameraItem(200))->setIcon(2, 15)->setCategory(ItemCategory::Decorations)->setDescriptionId("camera");
 
-	applyDefinitions();
-
 	for (int i = 256; i < MAX_ITEMS; ++i) {
 		if (items[i] && items[i]->category == -1)
 			LOGE("Error: Missing category for item %d: %s\n", items[i]->id, items[i]->getDescriptionId().c_str());
@@ -352,4 +350,20 @@ void Item::applyDefinitions() {
 		applyItemDefinition(item, j);
 	});
 	printf("Item::applyDefinitions: loaded item definitions\n");
+}
+
+/*static*/
+void Item::handleJsonDefinition(const std::string& modId, const json& data) {
+    (void)modId;
+    if (!data.contains("numeric_id") || !data["numeric_id"].is_number()) {
+        printf("Item: skipping (no numeric_id)\n");
+        return;
+    }
+    int id = data["numeric_id"];
+    Item* item = Item::items[256 + id];
+    if (!item) {
+        printf("Item: no C++ item for numeric_id %d\n", id);
+        return;
+    }
+    applyItemDefinition(item, data);
 }

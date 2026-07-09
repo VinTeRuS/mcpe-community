@@ -10,5 +10,6 @@
   "translucent": false,
   "category": "structures",
   "material": "stone",
-  "creative_group": "items"
+  "creative_group": "items",
+  "type": "tile"
 }

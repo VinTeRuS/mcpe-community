@@ -5,7 +5,10 @@
 
 #include <string>
 #include <vector>
+#include <nlohmann/json.hpp>
 #include "../../phys/Vec3.h"
+
+using json = nlohmann::json;
 
 class Level;
 class BiomeSource;
@@ -55,7 +58,8 @@ public:
 	// @fix @port Caller is responsible (+ move this to a "factory method" outside?)
 	// @NOTE: RIGHT NOW, Level deletes the dimension.
     static Dimension* getNew(int id);
-	static void applyDefinitions();
+    static void applyDefinitions();
+	static void handleJsonDefinition(const std::string& modId, const json& data);
 	static const DimensionDefinition* getDefinition(const std::string& nameId);
 	static const std::vector<DimensionDefinition>& allDefinitions();
 

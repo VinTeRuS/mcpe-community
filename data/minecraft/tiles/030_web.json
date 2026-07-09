@@ -9,5 +9,6 @@
   "translucent": true,
   "category": "decorations",
   "tex": 11,
-  "creative_group": "items"
+  "creative_group": "items",
+  "type": "tile"
 }

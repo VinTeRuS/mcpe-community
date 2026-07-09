@@ -9,5 +9,6 @@
   "solid": true,
   "translucent": false,
   "tex": 104,
-  "creative_group": "items"
+  "creative_group": "items",
+  "type": "tile"
 }

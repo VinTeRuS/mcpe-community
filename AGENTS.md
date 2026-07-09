@@ -408,6 +408,19 @@ Render arm0 + projection mirror + culling fix.
 - `std::vector<DimensionDefinition>` static registry
 - 5 files, +150/-9
 
+### Batch 19 (committed: e57b987)
+- [1.9] `DynamicDataLoader` + `ModManager` infra
+- `DynamicDataLoader.h/.cpp` — type→handler dispatch with initialize()
+- `ModManager.h/.cpp` — mod scanning, dependency resolution, loading
+- `handleJsonDefinition()` added to Tile/Item/EntityDefinition/Recipes/Biome/Dimension
+- `data/minecraft/modinfo.json` — core mod manifest
+- `"type"` field added to all 215 JSON definition files via script
+- NinecraftApp.cpp init sequence wires ModManager after all registries
+- CMakeLists.txt adds new sources
+- Old `applyDefinitions()` calls removed from initTiles/initItems/initBiomes
+- Builds + launches clean (both targets)
+- 230 files, +762/-258
+
 ### Phase 0 Legwork
 - [0.1] uint32 chunk storage ✔
 - [0.2] BlockProperties struct ✔

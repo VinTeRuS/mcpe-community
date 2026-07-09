@@ -9,5 +9,6 @@
   "category": "Tools",
   "description_id": "bone",
   "hand_equipped": true,
-  "creative_group": "tools"
+  "creative_group": "tools",
+  "type": "item"
 }

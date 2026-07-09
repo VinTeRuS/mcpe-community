@@ -10,5 +10,6 @@
   "description_id": "melon",
   "food_nutrition": 2,
   "food_meat": false,
-  "creative_group": "foodarmor"
+  "creative_group": "foodarmor",
+  "type": "item"
 }

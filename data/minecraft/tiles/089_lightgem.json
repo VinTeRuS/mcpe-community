@@ -11,5 +11,6 @@
   "translucent": true,
   "category": "structures",
   "tex": 105,
-  "creative_group": "items"
+  "creative_group": "items",
+  "type": "tile"
 }

@@ -9,5 +9,6 @@
   "light_emission": 15,
   "solid": false,
   "translucent": true,
-  "category": "structures"
+  "category": "structures",
+  "type": "tile"
 }

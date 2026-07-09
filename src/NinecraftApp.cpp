@@ -19,6 +19,8 @@
 #include "world/level/Level.h"
 #include "world/level/biome/Biome.h"
 #include "world/level/material/Material.h"
+#include "util/DynamicDataLoader.h"
+#include "util/ModManager.h"
 #include "world/entity/MobCategory.h"
 #include "world/entity/EntityDefinition.h"
 #include "world/level/dimension/Dimension.h"
@@ -92,11 +94,12 @@ void NinecraftApp::init()
 		MobCategory::initMobCategories();
 		Tile::initTiles();
 		Item::initItems();
-		EntityDefinition::applyDefinitions();
-		Recipes::applyDefinitions();
 		Biome::initBiomes();
-		Dimension::applyDefinitions();
 		TileEntity::initTileEntities();
+
+		DynamicDataLoader::singleton().initialize();
+		ModManager::singleton().scanMods();
+		ModManager::singleton().loadMods();
 
 	#ifdef ANDROID
 	}

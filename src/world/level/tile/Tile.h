@@ -5,7 +5,10 @@
 
 #include <string>
 #include <cstdint>
+#include <nlohmann/json.hpp>
 #include "../../phys/AABB.h"
+
+using json = nlohmann::json;
 
 class Entity;
 class Mob;
@@ -269,6 +272,7 @@ public:
 
 	static void initTiles();
 	static void applyDefinitions();
+	static void handleJsonDefinition(const std::string& modId, const json& data);
 	static void teardownTiles();
 
 	static int transformToValidBlockId(int blockId);

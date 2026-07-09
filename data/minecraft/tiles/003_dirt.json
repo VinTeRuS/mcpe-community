@@ -10,5 +10,6 @@
   "category": "structures",
   "tex": 2,
   "material": "sand",
-  "creative_group": "items"
+  "creative_group": "items",
+  "type": "tile"
 }

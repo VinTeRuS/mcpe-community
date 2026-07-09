@@ -9,5 +9,6 @@
   "category": "Tools",
   "description_id": "hatchetStone",
   "tier": "STONE",
-  "creative_group": "tools"
+  "creative_group": "tools",
+  "type": "item"
 }

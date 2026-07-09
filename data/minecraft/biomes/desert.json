@@ -44,5 +44,6 @@
         "water_creatures": []
       }
     }
-  ]
+  ],
+  "type": "biome"
 }

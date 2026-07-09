@@ -9,5 +9,6 @@
   "translucent": true,
   "category": "structures",
   "tex": 88,
-  "material": "plant"
+  "material": "plant",
+  "type": "tile"
 }

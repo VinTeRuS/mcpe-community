@@ -10,5 +10,6 @@
   "description_id": "bootsGold",
   "armor_material": "GOLD",
   "armor_slot": "FEET",
-  "creative_group": "foodarmor"
+  "creative_group": "foodarmor",
+  "type": "item"
 }

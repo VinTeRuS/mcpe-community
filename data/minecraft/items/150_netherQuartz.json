@@ -8,5 +8,6 @@
   ],
   "category": "Mechanisms",
   "description_id": "netherquartz",
-  "creative_group": "mechanisms"
+  "creative_group": "mechanisms",
+  "type": "item"
 }

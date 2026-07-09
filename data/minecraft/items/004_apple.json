@@ -10,5 +10,6 @@
   "description_id": "apple",
   "food_nutrition": 4,
   "food_meat": false,
-  "creative_group": "foodarmor"
+  "creative_group": "foodarmor",
+  "type": "item"
 }

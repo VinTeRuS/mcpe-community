@@ -9,5 +9,6 @@
   "category": "Structures",
   "description_id": "doorIron",
   "door_material": "metal",
-  "creative_group": "structures"
+  "creative_group": "structures",
+  "type": "item"
 }

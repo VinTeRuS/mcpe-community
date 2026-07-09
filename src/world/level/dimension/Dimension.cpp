@@ -180,6 +180,52 @@ void Dimension::applyDefinitions() {
 }
 
 /*static*/
+void Dimension::handleJsonDefinition(const std::string& modId, const json& data) {
+    (void)modId;
+    auto list = data["dimensions"];
+    if (!list.is_array()) return;
+
+    for (auto& j : list) {
+        DimensionDefinition def;
+        def.nameId = j.value("id", "");
+        if (def.nameId.empty()) continue;
+
+        std::string dimClass = j.value("class", "normal");
+        if (dimClass == "normal_day_cycle") def.dimClass = Dimension::NORMAL_DAYCYCLE;
+        else if (dimClass == "normal") def.dimClass = Dimension::NORMAL;
+        else if (dimClass == "nether") def.dimClass = Dimension::NETHER;
+        else if (dimClass == "end") def.dimClass = Dimension::END;
+        else def.dimClass = Dimension::NORMAL;
+
+        auto& props = j["properties"];
+        if (props.is_object()) {
+            if (props.contains("height") && props["height"].is_number())
+                def.height = props["height"];
+            if (props.contains("sea_level") && props["sea_level"].is_number())
+                def.seaLevel = props["sea_level"];
+            if (props.contains("world_size") && props["world_size"].is_number())
+                def.worldSize = props["world_size"];
+            if (props.contains("fog_color") && props["fog_color"].is_number())
+                def.fogColor = props["fog_color"];
+            if (props.contains("cloud_height") && props["cloud_height"].is_number())
+                def.cloudHeight = props["cloud_height"];
+            if (props.contains("natural") && props["natural"].is_boolean())
+                def.natural = props["natural"];
+            if (props.contains("foggy") && props["foggy"].is_boolean())
+                def.foggy = props["foggy"];
+            if (props.contains("ultra_warm") && props["ultra_warm"].is_boolean())
+                def.ultraWarm = props["ultra_warm"];
+            if (props.contains("has_ceiling") && props["has_ceiling"].is_boolean())
+                def.hasCeiling = props["has_ceiling"];
+            if (props.contains("respawn") && props["respawn"].is_boolean())
+                def.respawn = props["respawn"];
+        }
+
+        s_definitions.push_back(def);
+    }
+}
+
+/*static*/
 const DimensionDefinition* Dimension::getDefinition(const std::string& nameId) {
 	for (auto& d : s_definitions)
 		if (d.nameId == nameId) return &d;

@@ -10,5 +10,6 @@
   "description_id": "helmetCloth",
   "armor_material": "CLOTH",
   "armor_slot": "HEAD",
-  "creative_group": "foodarmor"
+  "creative_group": "foodarmor",
+  "type": "item"
 }

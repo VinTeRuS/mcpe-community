@@ -26,5 +26,6 @@
   ],
   "equipment": {
     "main_hand": "minecraft:sword_gold"
-  }
+  },
+  "type": "entity"
 }

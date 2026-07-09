@@ -10,5 +10,6 @@
   "solid": true,
   "translucent": false,
   "category": "structures",
-  "tex": 17
+  "tex": 17,
+  "type": "tile"
 }

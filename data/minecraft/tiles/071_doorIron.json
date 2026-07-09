@@ -9,5 +9,6 @@
   "solid": true,
   "translucent": false,
   "category": "structures",
-  "creative_group": "items"
+  "creative_group": "items",
+  "type": "tile"
 }

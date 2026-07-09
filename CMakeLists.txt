@@ -61,7 +61,9 @@ set(COMMON_SOURCES
     src/util/Mth.cpp
     src/util/PerfTimer.cpp
     src/util/StringUtils.cpp
-    src/util/JsonLoader.cpp
+	src/util/JsonLoader.cpp
+	src/util/DynamicDataLoader.cpp
+	src/util/ModManager.cpp
 )
 
 file(GLOB_RECURSE SERVER_FILES "src/server/*.cpp")

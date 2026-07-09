@@ -9,5 +9,6 @@
   "render_layer": "alphatest",
   "solid": true,
   "translucent": false,
-  "tex": 0
+  "tex": 0,
+  "type": "tile"
 }

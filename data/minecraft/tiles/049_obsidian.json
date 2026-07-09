@@ -11,5 +11,6 @@
   "category": "structures",
   "tex": 37,
   "material": "stone",
-  "creative_group": "items"
+  "creative_group": "items",
+  "type": "tile"
 }

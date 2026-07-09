@@ -259,6 +259,64 @@ void Tile::applyDefinitions() {
 }
 
 /*static*/
+void Tile::handleJsonDefinition(const std::string& modId, const json& data) {
+    (void)modId;
+    TileDefinition def = parseTileDefinition(data);
+    if (def.numericId < 0 || def.numericId >= 256)
+        return;
+    Tile* tile = Tile::tiles[def.numericId];
+    if (!tile)
+        return;
+
+    if (!def.nameId.empty())
+        tile->setNameId(def.nameId);
+
+    static const std::unordered_map<std::string, const SoundType*> s_soundMap = {
+        {"stone", &SOUND_STONE},
+        {"wood", &SOUND_WOOD},
+        {"gravel", &SOUND_GRAVEL},
+        {"grass", &SOUND_GRASS},
+        {"metal", &SOUND_METAL},
+        {"glass", &SOUND_GLASS},
+        {"cloth", &SOUND_CLOTH},
+        {"sand", &SOUND_SAND},
+        {"silent", &SOUND_SILENT},
+        {"normal", &SOUND_NORMAL},
+    };
+    if (!def.soundType.empty()) {
+        auto it = s_soundMap.find(def.soundType);
+        if (it != s_soundMap.end())
+            tile->soundType = it->second;
+    }
+
+    if (def.hardness >= 0)
+        tile->destroySpeed = def.hardness;
+    if (def.resistance >= 0)
+        tile->explosionResistance = def.resistance * 3.0f;
+    if (def.lightBlock >= 0)
+        tile->properties.lightBlock = def.lightBlock;
+    if (def.lightEmission >= 0)
+        tile->properties.lightEmission = def.lightEmission;
+    tile->properties.solid = def.solid;
+    tile->properties.translucent = def.translucent;
+    if (def.hasTicking)
+        tile->properties.shouldTick = def.ticking;
+
+    if (!def.category.empty()) {
+        int cat = -1;
+        if (def.category == "structures") cat = 1;
+        else if (def.category == "decorations") cat = 8;
+        else if (def.category == "tools") cat = 2;
+        else if (def.category == "food_armor") cat = 4;
+        else if (def.category == "mechanisms") cat = 16;
+        if (cat >= 0) tile->category = cat;
+    }
+    tile->creativeGroup = def.creativeGroup;
+    if (def.tex >= 0)
+        tile->tex = def.tex;
+}
+
+/*static*/
 void Tile::initTiles() {
 	rock        = Tile::create<StoneTile>(1, 1)->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(SOUND_STONE)->setCategory(ItemCategory::Structures)->setDescriptionId("stone");
 	grass       = (GrassTile*) Tile::create<GrassTile>(2)->setDestroyTime(0.6f)->setSoundType(SOUND_GRASS)->setCategory(ItemCategory::Structures)->setDescriptionId("grass");
@@ -399,8 +457,6 @@ void Tile::initTiles() {
 				LOGE("Error: Missing category for tile %d: %s\n", tiles[i]->id, tiles[i]->getDescriptionId().c_str());
         }
     }
-
-    applyDefinitions();
 }
 
 /*static*/

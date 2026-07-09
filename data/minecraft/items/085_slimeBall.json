@@ -8,5 +8,6 @@
   ],
   "category": "Decorations",
   "description_id": "slimeball",
-  "creative_group": "decorations"
+  "creative_group": "decorations",
+  "type": "item"
 }

@@ -5,8 +5,11 @@
 
 #include <string>
 #include <vector>
+#include <nlohmann/json.hpp>
 
 #include "../../../util/WeighedRandom.h"
+
+using json = nlohmann::json;
 
 class Feature;
 class MobCategory;
@@ -70,6 +73,7 @@ public:
     static void recalc();
 	static void initBiomes();
 	static void teardownBiomes();
+	static void handleJsonDefinition(const std::string& modId, const json& data);
 
 	virtual Feature* getTreeFeature(Random* random);
 	virtual Feature* getGrassFeature(Random* random);

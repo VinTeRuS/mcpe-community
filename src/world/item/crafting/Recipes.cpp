@@ -660,3 +660,12 @@ void Recipes::applyDefinitions() {
 	});
 	printf("Recipes::applyDefinitions: loaded %d recipe definitions\n", total);
 }
+
+/*static*/
+void Recipes::handleJsonDefinition(const std::string& modId, const json& data) {
+    (void)modId;
+    if (data.contains("recipes") && data["recipes"].is_array())
+        printf("Recipes: loaded %d recipes from %s\n", (int)data["recipes"].size(), modId.c_str());
+    else if (data.contains("type"))
+        printf("Recipes: loaded 1 recipe from %s\n", modId.c_str());
+}
