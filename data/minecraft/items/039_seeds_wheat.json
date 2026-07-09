@@ -1,0 +1,11 @@
+{
+  "name_id": "seeds_wheat",
+  "numeric_id": 39,
+  "class": "SeedItem",
+  "icon": [
+    9,
+    0
+  ],
+  "category": "FoodArmor",
+  "description_id": "seeds"
+}

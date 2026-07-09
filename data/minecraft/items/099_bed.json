@@ -1,0 +1,12 @@
+{
+  "name_id": "bed",
+  "numeric_id": 99,
+  "class": "BedItem",
+  "icon": [
+    13,
+    2
+  ],
+  "category": "Structures",
+  "description_id": "bed",
+  "max_stack_size": 1
+}

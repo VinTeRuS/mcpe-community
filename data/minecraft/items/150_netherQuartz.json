@@ -1,0 +1,11 @@
+{
+  "name_id": "netherQuartz",
+  "numeric_id": 150,
+  "class": "Item",
+  "icon": [
+    5,
+    10
+  ],
+  "category": "Mechanisms",
+  "description_id": "netherquartz"
+}

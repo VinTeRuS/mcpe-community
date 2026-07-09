@@ -1,0 +1,13 @@
+{
+  "name_id": "chestplate_iron",
+  "numeric_id": 51,
+  "class": "ArmorItem",
+  "icon": [
+    2,
+    1
+  ],
+  "category": "FoodArmor",
+  "description_id": "chestplateIron",
+  "armor_material": "IRON",
+  "armor_slot": "TORSO"
+}

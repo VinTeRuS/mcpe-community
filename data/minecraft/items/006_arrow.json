@@ -1,0 +1,11 @@
+{
+  "name_id": "arrow",
+  "numeric_id": 6,
+  "class": "Item",
+  "icon": [
+    5,
+    2
+  ],
+  "category": "Tools",
+  "description_id": "arrow"
+}

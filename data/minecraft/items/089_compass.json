@@ -1,0 +1,11 @@
+{
+  "name_id": "compass",
+  "numeric_id": 89,
+  "class": "Item",
+  "icon": [
+    6,
+    3
+  ],
+  "category": "Tools",
+  "description_id": "compass"
+}

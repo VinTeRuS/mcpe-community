@@ -1,0 +1,11 @@
+{
+  "name_id": "shears",
+  "numeric_id": 103,
+  "class": "ShearsItem",
+  "icon": [
+    13,
+    5
+  ],
+  "category": "Tools",
+  "description_id": "shears"
+}

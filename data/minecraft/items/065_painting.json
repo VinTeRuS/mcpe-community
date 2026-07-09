@@ -1,0 +1,11 @@
+{
+  "name_id": "painting",
+  "numeric_id": 65,
+  "class": "HangingEntityItem",
+  "icon": [
+    10,
+    1
+  ],
+  "category": "Decorations",
+  "description_id": "painting"
+}

@@ -1,0 +1,11 @@
+{
+  "name_id": "dye_powder",
+  "numeric_id": 95,
+  "class": "DyePowderItem",
+  "icon": [
+    14,
+    4
+  ],
+  "category": "Decorations",
+  "description_id": "dyePowder"
+}

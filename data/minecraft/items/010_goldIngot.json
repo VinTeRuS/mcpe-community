@@ -1,0 +1,11 @@
+{
+  "name_id": "goldIngot",
+  "numeric_id": 10,
+  "class": "Item",
+  "icon": [
+    7,
+    2
+  ],
+  "category": "Decorations",
+  "description_id": "ingotGold"
+}

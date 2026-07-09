@@ -1,0 +1,13 @@
+{
+  "name_id": "porkChop_raw",
+  "numeric_id": 63,
+  "class": "FoodItem",
+  "icon": [
+    7,
+    5
+  ],
+  "category": "FoodArmor",
+  "description_id": "porkchopRaw",
+  "food_nutrition": 3,
+  "food_meat": true
+}

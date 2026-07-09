@@ -1,0 +1,11 @@
+{
+  "name_id": "snowBall",
+  "numeric_id": 76,
+  "class": "SnowballItem",
+  "icon": [
+    14,
+    0
+  ],
+  "category": "Decorations",
+  "description_id": "snowball"
+}

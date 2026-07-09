@@ -1,0 +1,12 @@
+{
+  "name_id": "door_wood",
+  "numeric_id": 68,
+  "class": "DoorItem",
+  "icon": [
+    11,
+    2
+  ],
+  "category": "Structures",
+  "description_id": "doorWood",
+  "door_material": "wood"
+}

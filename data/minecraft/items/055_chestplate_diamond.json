@@ -1,0 +1,13 @@
+{
+  "name_id": "chestplate_diamond",
+  "numeric_id": 55,
+  "class": "ArmorItem",
+  "icon": [
+    3,
+    1
+  ],
+  "category": "FoodArmor",
+  "description_id": "chestplateDiamond",
+  "armor_material": "DIAMOND",
+  "armor_slot": "TORSO"
+}

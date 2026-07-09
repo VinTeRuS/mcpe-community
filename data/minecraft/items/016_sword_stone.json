@@ -1,0 +1,12 @@
+{
+  "name_id": "sword_stone",
+  "numeric_id": 16,
+  "class": "WeaponItem",
+  "icon": [
+    1,
+    4
+  ],
+  "category": "Tools",
+  "description_id": "swordStone",
+  "tier": "STONE"
+}

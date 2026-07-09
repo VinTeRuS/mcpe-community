@@ -1,0 +1,13 @@
+{
+  "name_id": "bread",
+  "numeric_id": 41,
+  "class": "FoodItem",
+  "icon": [
+    9,
+    2
+  ],
+  "category": "FoodArmor",
+  "description_id": "bread",
+  "food_nutrition": 5,
+  "food_meat": false
+}

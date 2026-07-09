@@ -1,0 +1,11 @@
+{
+  "name_id": "sign",
+  "numeric_id": 67,
+  "class": "SignItem",
+  "icon": [
+    10,
+    2
+  ],
+  "category": "Decorations",
+  "description_id": "sign"
+}

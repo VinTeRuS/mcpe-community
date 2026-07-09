@@ -1,0 +1,12 @@
+{
+  "name_id": "shovel_gold",
+  "numeric_id": 28,
+  "class": "ShovelItem",
+  "icon": [
+    4,
+    5
+  ],
+  "category": "Tools",
+  "description_id": "shovelGold",
+  "tier": "GOLD"
+}

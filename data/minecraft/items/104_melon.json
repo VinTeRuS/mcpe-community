@@ -1,0 +1,13 @@
+{
+  "name_id": "melon",
+  "numeric_id": 104,
+  "class": "FoodItem",
+  "icon": [
+    13,
+    6
+  ],
+  "category": "FoodArmor",
+  "description_id": "melon",
+  "food_nutrition": 2,
+  "food_meat": false
+}

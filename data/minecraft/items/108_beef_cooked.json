@@ -1,0 +1,13 @@
+{
+  "name_id": "beef_cooked",
+  "numeric_id": 108,
+  "class": "FoodItem",
+  "icon": [
+    10,
+    6
+  ],
+  "category": "FoodArmor",
+  "description_id": "beefCooked",
+  "food_nutrition": 8,
+  "food_meat": true
+}

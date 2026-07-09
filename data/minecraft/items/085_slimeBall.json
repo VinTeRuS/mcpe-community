@@ -1,0 +1,11 @@
+{
+  "name_id": "slimeBall",
+  "numeric_id": 85,
+  "class": "Item",
+  "icon": [
+    14,
+    1
+  ],
+  "category": "Decorations",
+  "description_id": "slimeball"
+}

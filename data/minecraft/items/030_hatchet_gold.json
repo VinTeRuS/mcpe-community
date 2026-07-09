@@ -1,0 +1,12 @@
+{
+  "name_id": "hatchet_gold",
+  "numeric_id": 30,
+  "class": "HatchetItem",
+  "icon": [
+    4,
+    7
+  ],
+  "category": "Tools",
+  "description_id": "hatchetGold",
+  "tier": "GOLD"
+}

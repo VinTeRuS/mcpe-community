@@ -1,0 +1,13 @@
+{
+  "name_id": "apple",
+  "numeric_id": 4,
+  "class": "FoodItem",
+  "icon": [
+    10,
+    0
+  ],
+  "category": "FoodArmor",
+  "description_id": "apple",
+  "food_nutrition": 4,
+  "food_meat": false
+}

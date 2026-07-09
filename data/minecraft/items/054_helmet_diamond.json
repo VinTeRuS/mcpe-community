@@ -1,0 +1,13 @@
+{
+  "name_id": "helmet_diamond",
+  "numeric_id": 54,
+  "class": "ArmorItem",
+  "icon": [
+    3,
+    0
+  ],
+  "category": "FoodArmor",
+  "description_id": "helmetDiamond",
+  "armor_material": "DIAMOND",
+  "armor_slot": "HEAD"
+}

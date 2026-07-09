@@ -1,0 +1,12 @@
+{
+  "name_id": "pickAxe_stone",
+  "numeric_id": 18,
+  "class": "PickaxeItem",
+  "icon": [
+    1,
+    6
+  ],
+  "category": "Tools",
+  "description_id": "pickaxeStone",
+  "tier": "STONE"
+}

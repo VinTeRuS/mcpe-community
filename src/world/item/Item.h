@@ -207,8 +207,28 @@ public:
 
 	static Item* camera;
 
+	struct ItemDefinition {
+		std::string nameId;
+		int numericId;
+		std::string className;
+		std::string descriptionId;
+		int iconCol = 0;
+		int iconRow = 0;
+		std::string category;
+		int maxStackSize = 64;
+		bool handEquipped = false;
+		int maxDamage = 0;
+		std::string tier;
+		int foodNutrition = 0;
+		bool foodMeat = false;
+		std::string doorMaterial;
+		std::string armorMaterial;
+		std::string armorSlot;
+	};
+
 	static void initItems();
 	static void teardownItems();
+	static void applyDefinitions();
 
     Item(int id)
 	:	id(256 + id),

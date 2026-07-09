@@ -1,0 +1,12 @@
+{
+  "name_id": "hoe_emerald",
+  "numeric_id": 37,
+  "class": "HoeItem",
+  "icon": [
+    3,
+    8
+  ],
+  "category": "Tools",
+  "description_id": "hoeDiamond",
+  "tier": "EMERALD"
+}

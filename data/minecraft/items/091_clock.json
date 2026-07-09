@@ -1,0 +1,11 @@
+{
+  "name_id": "clock",
+  "numeric_id": 91,
+  "class": "Item",
+  "icon": [
+    6,
+    4
+  ],
+  "category": "Tools",
+  "description_id": "clock"
+}

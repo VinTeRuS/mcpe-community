@@ -1,0 +1,12 @@
+{
+  "name_id": "pickAxe_emerald",
+  "numeric_id": 22,
+  "class": "PickaxeItem",
+  "icon": [
+    3,
+    6
+  ],
+  "category": "Tools",
+  "description_id": "pickaxeDiamond",
+  "tier": "EMERALD"
+}

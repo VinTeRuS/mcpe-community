@@ -1,0 +1,11 @@
+{
+  "name_id": "paper",
+  "numeric_id": 83,
+  "class": "Item",
+  "icon": [
+    10,
+    3
+  ],
+  "category": "Decorations",
+  "description_id": "paper"
+}

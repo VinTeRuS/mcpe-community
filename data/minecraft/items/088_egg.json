@@ -1,0 +1,11 @@
+{
+  "name_id": "egg",
+  "numeric_id": 88,
+  "class": "EggItem",
+  "icon": [
+    12,
+    0
+  ],
+  "category": "FoodArmor",
+  "description_id": "egg"
+}

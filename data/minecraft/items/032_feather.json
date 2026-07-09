@@ -1,0 +1,11 @@
+{
+  "name_id": "feather",
+  "numeric_id": 32,
+  "class": "Item",
+  "icon": [
+    8,
+    1
+  ],
+  "category": "Tools",
+  "description_id": "feather"
+}

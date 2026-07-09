@@ -2,6 +2,7 @@
 #include "ItemCategory.h"
 #include "../level/tile/Tile.h"
 #include "ItemInstance.h"
+#include "../../util/JsonLoader.h"
 
 const std::string Item::ICON_DESCRIPTION_PREFIX("item.");
 Random Item::random;
@@ -287,6 +288,8 @@ void Item::initItems() {
 	//Item::record_02 = (new RecordingItem(2001, "cat"))->setIcon(1, 15)->setCategory(ItemCategory::Decorations)->setDescriptionId("record");
 	Item::camera = (new CameraItem(200))->setIcon(2, 15)->setCategory(ItemCategory::Decorations)->setDescriptionId("camera");
 
+	applyDefinitions();
+
 	for (int i = 256; i < MAX_ITEMS; ++i) {
 		if (items[i] && items[i]->category == -1)
 			LOGE("Error: Missing category for item %d: %s\n", items[i]->id, items[i]->getDescriptionId().c_str());
@@ -305,4 +308,46 @@ void Item::teardownItems() {
 ItemInstance Item::useTimeDepleted(ItemInstance* itemInstance, Level* level, Player* player )
 {
 	return *itemInstance;
+}
+
+static void applyItemDefinition(Item* item, const json& j) {
+	if (j.contains("name_id") && j["name_id"].is_string())
+		item->setNameId(j["name_id"]);
+	if (j.contains("description_id") && j["description_id"].is_string())
+		item->setDescriptionId(j["description_id"]);
+	if (j.contains("icon") && j["icon"].is_array() && j["icon"].size() >= 2)
+		item->setIcon(j["icon"][0], j["icon"][1]);
+	if (j.contains("category") && j["category"].is_string()) {
+		const std::string& cat = j["category"];
+		int catId = -1;
+		if (cat == "Structures") catId = ItemCategory::Structures;
+		else if (cat == "Tools") catId = ItemCategory::Tools;
+		else if (cat == "FoodArmor") catId = ItemCategory::FoodArmor;
+		else if (cat == "Decorations") catId = ItemCategory::Decorations;
+		else if (cat == "Mechanisms") catId = ItemCategory::Mechanisms;
+		if (catId >= 0) item->setCategory(catId);
+	}
+	if (j.contains("max_stack_size") && j["max_stack_size"].is_number())
+		item->setMaxStackSize(j["max_stack_size"]);
+	if (j.contains("hand_equipped") && j["hand_equipped"].is_boolean() && j["hand_equipped"])
+		item->handEquipped();
+}
+
+/*static*/
+void Item::applyDefinitions() {
+	auto& loader = JsonLoader::singleton();
+	loader.loadDir("minecraft", "items", [](const std::string& path, const json& j) {
+		if (!j.contains("numeric_id") || !j["numeric_id"].is_number()) {
+			printf("Item: skipping %s (no numeric_id)\n", path.c_str());
+			return;
+		}
+		int id = j["numeric_id"];
+		Item* item = Item::items[256 + id];
+		if (!item) {
+			printf("Item: no C++ item for numeric_id %d (%s)\n", id, path.c_str());
+			return;
+		}
+		applyItemDefinition(item, j);
+	});
+	printf("Item::applyDefinitions: loaded item definitions\n");
 }

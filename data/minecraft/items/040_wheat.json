@@ -1,0 +1,11 @@
+{
+  "name_id": "wheat",
+  "numeric_id": 40,
+  "class": "Item",
+  "icon": [
+    9,
+    1
+  ],
+  "category": "FoodArmor",
+  "description_id": "wheat"
+}

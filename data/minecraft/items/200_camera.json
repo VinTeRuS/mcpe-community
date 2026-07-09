@@ -1,0 +1,11 @@
+{
+  "name_id": "camera",
+  "numeric_id": 200,
+  "class": "CameraItem",
+  "icon": [
+    2,
+    15
+  ],
+  "category": "Decorations",
+  "description_id": "camera"
+}

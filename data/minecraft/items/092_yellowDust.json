@@ -1,0 +1,11 @@
+{
+  "name_id": "yellowDust",
+  "numeric_id": 92,
+  "class": "Item",
+  "icon": [
+    9,
+    4
+  ],
+  "category": "Tools",
+  "description_id": "yellowDust"
+}

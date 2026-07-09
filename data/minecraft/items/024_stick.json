@@ -1,0 +1,12 @@
+{
+  "name_id": "stick",
+  "numeric_id": 24,
+  "class": "Item",
+  "icon": [
+    5,
+    3
+  ],
+  "category": "Structures",
+  "description_id": "stick",
+  "hand_equipped": true
+}

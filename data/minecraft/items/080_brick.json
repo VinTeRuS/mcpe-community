@@ -1,0 +1,11 @@
+{
+  "name_id": "brick",
+  "numeric_id": 80,
+  "class": "Item",
+  "icon": [
+    6,
+    1
+  ],
+  "category": "Structures",
+  "description_id": "brick"
+}

@@ -1,0 +1,11 @@
+{
+  "name_id": "sulphur",
+  "numeric_id": 33,
+  "class": "Item",
+  "icon": [
+    8,
+    2
+  ],
+  "category": "Tools",
+  "description_id": "sulphur"
+}

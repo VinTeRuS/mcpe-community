@@ -1,0 +1,11 @@
+{
+  "name_id": "netherbrick",
+  "numeric_id": 149,
+  "class": "Item",
+  "icon": [
+    5,
+    9
+  ],
+  "category": "Structures",
+  "description_id": "netherbrickItem"
+}

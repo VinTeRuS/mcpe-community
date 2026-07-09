@@ -1,0 +1,11 @@
+{
+  "name_id": "flintAndSteel",
+  "numeric_id": 3,
+  "class": "FlintAndSteelItem",
+  "icon": [
+    5,
+    0
+  ],
+  "category": "Tools",
+  "description_id": "flintAndSteel"
+}

@@ -1,0 +1,11 @@
+{
+  "name_id": "reeds",
+  "numeric_id": 82,
+  "class": "TilePlanterItem",
+  "icon": [
+    11,
+    1
+  ],
+  "category": "FoodArmor",
+  "description_id": "reeds"
+}

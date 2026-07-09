@@ -1,0 +1,12 @@
+{
+  "name_id": "boots_chain",
+  "numeric_id": 49,
+  "class": "ArmorItem",
+  "icon": [
+    1,
+    3
+  ],
+  "category": "FoodArmor",
+  "description_id": "bootsChain",
+  "armor_material": "CHAIN"
+}

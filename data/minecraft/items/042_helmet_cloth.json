@@ -1,0 +1,13 @@
+{
+  "name_id": "helmet_cloth",
+  "numeric_id": 42,
+  "class": "ArmorItem",
+  "icon": [
+    0,
+    0
+  ],
+  "category": "FoodArmor",
+  "description_id": "helmetCloth",
+  "armor_material": "CLOTH",
+  "armor_slot": "HEAD"
+}

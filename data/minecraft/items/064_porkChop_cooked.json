@@ -1,0 +1,13 @@
+{
+  "name_id": "porkChop_cooked",
+  "numeric_id": 64,
+  "class": "FoodItem",
+  "icon": [
+    8,
+    5
+  ],
+  "category": "FoodArmor",
+  "description_id": "porkchopCooked",
+  "food_nutrition": 8,
+  "food_meat": true
+}

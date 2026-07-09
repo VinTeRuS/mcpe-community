@@ -1,0 +1,12 @@
+{
+  "name_id": "door_iron",
+  "numeric_id": 74,
+  "class": "DoorItem",
+  "icon": [
+    12,
+    2
+  ],
+  "category": "Structures",
+  "description_id": "doorIron",
+  "door_material": "metal"
+}

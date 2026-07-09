@@ -1,0 +1,12 @@
+{
+  "name_id": "sword_emerald",
+  "numeric_id": 20,
+  "class": "WeaponItem",
+  "icon": [
+    3,
+    4
+  ],
+  "category": "Tools",
+  "description_id": "swordDiamond",
+  "tier": "EMERALD"
+}

@@ -1,0 +1,11 @@
+{
+  "name_id": "string",
+  "numeric_id": 31,
+  "class": "Item",
+  "icon": [
+    8,
+    0
+  ],
+  "category": "Tools",
+  "description_id": "string"
+}

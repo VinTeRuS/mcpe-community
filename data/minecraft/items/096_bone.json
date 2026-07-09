@@ -1,0 +1,12 @@
+{
+  "name_id": "bone",
+  "numeric_id": 96,
+  "class": "Item",
+  "icon": [
+    12,
+    1
+  ],
+  "category": "Tools",
+  "description_id": "bone",
+  "hand_equipped": true
+}

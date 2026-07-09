@@ -1,0 +1,11 @@
+{
+  "name_id": "book",
+  "numeric_id": 84,
+  "class": "Item",
+  "icon": [
+    11,
+    3
+  ],
+  "category": "Decorations",
+  "description_id": "book"
+}

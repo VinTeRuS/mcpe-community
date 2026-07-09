@@ -1,0 +1,13 @@
+{
+  "name_id": "chicken_cooked",
+  "numeric_id": 110,
+  "class": "FoodItem",
+  "icon": [
+    10,
+    7
+  ],
+  "category": "FoodArmor",
+  "description_id": "chickenCooked",
+  "food_nutrition": 6,
+  "food_meat": true
+}

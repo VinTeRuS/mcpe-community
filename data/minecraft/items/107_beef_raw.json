@@ -1,0 +1,13 @@
+{
+  "name_id": "beef_raw",
+  "numeric_id": 107,
+  "class": "FoodItem",
+  "icon": [
+    9,
+    6
+  ],
+  "category": "FoodArmor",
+  "description_id": "beefRaw",
+  "food_nutrition": 3,
+  "food_meat": true
+}

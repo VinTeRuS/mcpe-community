@@ -1,0 +1,11 @@
+{
+  "name_id": "mushroomStew",
+  "numeric_id": 26,
+  "class": "BowlFoodItem",
+  "icon": [
+    8,
+    4
+  ],
+  "category": "FoodArmor",
+  "description_id": "mushroomStew"
+}

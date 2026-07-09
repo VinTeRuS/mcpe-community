@@ -1,0 +1,11 @@
+{
+  "name_id": "clay",
+  "numeric_id": 81,
+  "class": "Item",
+  "icon": [
+    9,
+    3
+  ],
+  "category": "Structures",
+  "description_id": "clay"
+}

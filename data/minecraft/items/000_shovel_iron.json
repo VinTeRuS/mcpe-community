@@ -1,0 +1,12 @@
+{
+  "name_id": "shovel_iron",
+  "numeric_id": 0,
+  "class": "ShovelItem",
+  "icon": [
+    2,
+    5
+  ],
+  "category": "Tools",
+  "description_id": "shovelIron",
+  "tier": "IRON"
+}

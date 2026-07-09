@@ -1,0 +1,13 @@
+{
+  "name_id": "boots_gold",
+  "numeric_id": 61,
+  "class": "ArmorItem",
+  "icon": [
+    4,
+    3
+  ],
+  "category": "FoodArmor",
+  "description_id": "bootsGold",
+  "armor_material": "GOLD",
+  "armor_slot": "FEET"
+}

@@ -1,0 +1,11 @@
+{
+  "name_id": "flint",
+  "numeric_id": 62,
+  "class": "Item",
+  "icon": [
+    6,
+    0
+  ],
+  "category": "Tools",
+  "description_id": "flint"
+}

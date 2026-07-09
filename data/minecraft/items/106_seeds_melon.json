@@ -1,0 +1,11 @@
+{
+  "name_id": "seeds_melon",
+  "numeric_id": 106,
+  "class": "SeedItem",
+  "icon": [
+    14,
+    3
+  ],
+  "category": "FoodArmor",
+  "description_id": "seedsMelon"
+}

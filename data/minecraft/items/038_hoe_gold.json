@@ -1,0 +1,12 @@
+{
+  "name_id": "hoe_gold",
+  "numeric_id": 38,
+  "class": "HoeItem",
+  "icon": [
+    4,
+    8
+  ],
+  "category": "Tools",
+  "description_id": "hoeGold",
+  "tier": "GOLD"
+}

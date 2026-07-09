@@ -1,0 +1,11 @@
+{
+  "name_id": "coal",
+  "numeric_id": 7,
+  "class": "CoalItem",
+  "icon": [
+    7,
+    0
+  ],
+  "category": "Tools",
+  "description_id": "coal"
+}

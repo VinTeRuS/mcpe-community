@@ -1,0 +1,12 @@
+{
+  "name_id": "hoe_wood",
+  "numeric_id": 34,
+  "class": "HoeItem",
+  "icon": [
+    0,
+    8
+  ],
+  "category": "Tools",
+  "description_id": "hoeWood",
+  "tier": "WOOD"
+}

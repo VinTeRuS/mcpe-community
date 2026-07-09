@@ -1,0 +1,13 @@
+{
+  "name_id": "leggings_cloth",
+  "numeric_id": 44,
+  "class": "ArmorItem",
+  "icon": [
+    0,
+    2
+  ],
+  "category": "FoodArmor",
+  "description_id": "leggingsCloth",
+  "armor_material": "CLOTH",
+  "armor_slot": "LEGS"
+}

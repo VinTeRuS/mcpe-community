@@ -1,0 +1,11 @@
+{
+  "name_id": "emerald",
+  "numeric_id": 8,
+  "class": "Item",
+  "icon": [
+    7,
+    3
+  ],
+  "category": "Decorations",
+  "description_id": "emerald"
+}

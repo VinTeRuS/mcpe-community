@@ -1,0 +1,12 @@
+{
+  "name_id": "sword_wood",
+  "numeric_id": 12,
+  "class": "WeaponItem",
+  "icon": [
+    0,
+    4
+  ],
+  "category": "Tools",
+  "description_id": "swordWood",
+  "tier": "WOOD"
+}

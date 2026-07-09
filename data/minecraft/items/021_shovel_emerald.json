@@ -1,0 +1,12 @@
+{
+  "name_id": "shovel_emerald",
+  "numeric_id": 21,
+  "class": "ShovelItem",
+  "icon": [
+    3,
+    5
+  ],
+  "category": "Tools",
+  "description_id": "shovelDiamond",
+  "tier": "EMERALD"
+}

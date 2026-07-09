@@ -1,0 +1,13 @@
+{
+  "name_id": "chestplate_gold",
+  "numeric_id": 59,
+  "class": "ArmorItem",
+  "icon": [
+    4,
+    1
+  ],
+  "category": "FoodArmor",
+  "description_id": "chestplateGold",
+  "armor_material": "GOLD",
+  "armor_slot": "TORSO"
+}

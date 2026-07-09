@@ -1,0 +1,11 @@
+{
+  "name_id": "leather",
+  "numeric_id": 78,
+  "class": "Item",
+  "icon": [
+    7,
+    6
+  ],
+  "category": "Tools",
+  "description_id": "leather"
+}

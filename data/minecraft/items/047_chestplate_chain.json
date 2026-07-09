@@ -1,0 +1,13 @@
+{
+  "name_id": "chestplate_chain",
+  "numeric_id": 47,
+  "class": "ArmorItem",
+  "icon": [
+    1,
+    1
+  ],
+  "category": "FoodArmor",
+  "description_id": "chestplateChain",
+  "armor_material": "CHAIN",
+  "armor_slot": "TORSO"
+}

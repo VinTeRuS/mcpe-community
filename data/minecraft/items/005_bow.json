@@ -1,0 +1,11 @@
+{
+  "name_id": "bow",
+  "numeric_id": 5,
+  "class": "BowItem",
+  "icon": [
+    5,
+    1
+  ],
+  "category": "Tools",
+  "description_id": "bow"
+}

@@ -1,0 +1,12 @@
+{
+  "name_id": "sugar",
+  "numeric_id": 97,
+  "class": "Item",
+  "icon": [
+    13,
+    0
+  ],
+  "category": "FoodArmor",
+  "description_id": "sugar",
+  "hand_equipped": true
+}

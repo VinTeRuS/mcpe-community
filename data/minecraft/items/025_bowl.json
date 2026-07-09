@@ -1,0 +1,11 @@
+{
+  "name_id": "bowl",
+  "numeric_id": 25,
+  "class": "Item",
+  "icon": [
+    7,
+    4
+  ],
+  "category": "FoodArmor",
+  "description_id": "bowl"
+}

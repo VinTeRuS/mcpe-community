@@ -1,0 +1,13 @@
+{
+  "name_id": "boots_cloth",
+  "numeric_id": 45,
+  "class": "ArmorItem",
+  "icon": [
+    0,
+    3
+  ],
+  "category": "FoodArmor",
+  "description_id": "bootsCloth",
+  "armor_material": "CLOTH",
+  "armor_slot": "FEET"
+}
