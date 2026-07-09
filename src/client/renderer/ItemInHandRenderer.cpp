@@ -368,7 +368,7 @@ void ItemInHandRenderer::render( float a )
 		HumanoidMobRenderer* playerRenderer = (HumanoidMobRenderer*) er;
 		float ss = 1;
 		glScalef2(ss, ss, ss);
-		playerRenderer->renderHand(!mc->options.isLeftHanded);
+		playerRenderer->renderHand();
 		glPopMatrix2();
 	}
 	//glDisable2(GL_RESCALE_NORMAL);

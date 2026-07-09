@@ -14,7 +14,7 @@ class HumanoidMobRenderer: public MobRenderer
 public:
     HumanoidMobRenderer(HumanoidModel* humanoidModel, float shadow);
 
-	void renderHand(bool isLeftHanded);
+	void renderHand();
 	void render(Entity* mob_, float x, float y, float z, float rot, float a);
 protected:
     void additionalRendering(Mob* mob, float a);

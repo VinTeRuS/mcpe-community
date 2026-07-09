@@ -383,11 +383,17 @@ Phase 2  Phase 3           Phase 4 (needs P2)        │
 - Fix: prefer lower tile ID on name collision in Biome::applyDefinitions lookup; use unsigned char for top/material in buildSurfaces
 - 2 files, +21/-18
 
-### Batch 16 (committed: PENDING — run commit after)
-- Left hand empty render: `HumanoidMobRenderer::renderHand()` takes `bool isLeftHanded`, renders `arm1` when true
-- Platform-gate destroyVibration toggle: wrapped with `Platform::singleton().isAndroid() || isApple()`
-- Slider snap points verified: sensitivity/GUI scale = continuous, render dist/FPS = discrete step
-- 4 files, +17/-9
+### Batch 16 (committed: d1c846a — FIXED arm selection)
+FIX: `renderHand()` selects arm1 when true, arm0 when false. arm0=left-arm, arm1=right-arm. Inverted selection rendered wrong arm → invisible. Negated condition at `ItemInHandRenderer.cpp:371` to match.
+- Platform-gate destroyVibration toggle
+- Slider snap points verified
+- 4 files, +17/-8
+
+### Batch 17 (committed: NEXT)
+FIX: renderHand() always renders arm0. Transform leftHanded=-1.0/1.0 handles positioning. arm selection parameter was wrong — arm0 is first-person arm, arm1 is third-person right arm. Removing bool param eliminates confusion.
+- HumanoidMobRenderer.h/.cpp: renderHand() no param, always arm0
+- ItemInHandRenderer.cpp: renderHand() call simplified
+- 3 files, +2/-4
 
 ### Phase 0 Legwork
 - [0.1] uint32 chunk storage ✔

@@ -16,13 +16,13 @@ HumanoidMobRenderer::HumanoidMobRenderer(HumanoidModel* humanoidModel, float sha
 {
 }
 
-void HumanoidMobRenderer::renderHand(bool isLeftHanded) {
+void HumanoidMobRenderer::renderHand() {
 	humanoidModel->attackTime = 0;
 	humanoidModel->setupAnim(0, 0, 0, 0, 0, 1 / 16.0f);
 
 	glEnableClientState2(GL_VERTEX_ARRAY);
 	glEnableClientState2(GL_TEXTURE_COORD_ARRAY);
-	(isLeftHanded ? humanoidModel->arm1 : humanoidModel->arm0).render(1 / 16.0f);
+	humanoidModel->arm0.render(1 / 16.0f);
 	glDisableClientState2(GL_VERTEX_ARRAY);
 	glDisableClientState2(GL_TEXTURE_COORD_ARRAY);
 }
