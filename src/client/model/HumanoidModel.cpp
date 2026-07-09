@@ -154,13 +154,17 @@ void HumanoidModel::setupAnim( float time, float r, float bob, float yRot, float
 	if (attackTime > -9990) {
 		float swing = attackTime;
 		body.yRot = Mth::sin(Mth::sqrt(swing) * Mth::PI * 2) * 0.2f;
-		arm0.z = Mth::sin(body.yRot) * 5;
-		arm0.x = -Mth::cos(body.yRot) * 5;
-		arm1.z = -Mth::sin(body.yRot) * 5;
-		arm1.x = Mth::cos(body.yRot) * 5;
-		arm0.yRot += body.yRot;
-		arm1.yRot += body.yRot;
-		arm1.xRot += body.yRot;
+
+		ModelPart& mainArm = holdingLeftHand ? arm1 : arm0;
+		ModelPart& offArm  = holdingLeftHand ? arm0 : arm1;
+
+		mainArm.z = Mth::sin(body.yRot) * 5;
+		mainArm.x = -Mth::cos(body.yRot) * 5;
+		offArm.z = -Mth::sin(body.yRot) * 5;
+		offArm.x = Mth::cos(body.yRot) * 5;
+		mainArm.yRot += body.yRot;
+		offArm.yRot += body.yRot;
+		offArm.xRot += body.yRot;
 
 		swing = 1 - attackTime;
 		swing *= swing;
@@ -168,9 +172,9 @@ void HumanoidModel::setupAnim( float time, float r, float bob, float yRot, float
 		swing = 1 - swing;
 		float aa = Mth::sin(swing * Mth::PI);
 		float bb = Mth::sin(attackTime * Mth::PI) * -(head.xRot - 0.7f) * 0.75f;
-		arm0.xRot -= aa * 1.2f + bb;
-		arm0.yRot += body.yRot * 2;
-		arm0.zRot = Mth::sin(attackTime * Mth::PI) * -0.4f;
+		mainArm.xRot -= aa * 1.2f + bb;
+		mainArm.yRot += body.yRot * 2;
+		mainArm.zRot = Mth::sin(attackTime * Mth::PI) * -0.4f;
 	}
 
 	if (sneaking) {
