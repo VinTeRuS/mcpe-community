@@ -255,7 +255,7 @@ void ItemInHandRenderer::render( float a )
 	else
 		item = NULL;
 
-	float leftHanded = mc->options.isLeftHanded ? -1.0f : 1.0f;
+	float leftHanded = 1.0f;
 
 	if (item != NULL) {
 		glColor4f2(br, br, br, 1);

@@ -927,7 +927,18 @@ void GameRenderer::renderItemInHand(float a, int eye) {
 				gluPerspective(fov, mc->width / (float) mc->height, 0.05f, renderDistance);
 				glMatrixMode(GL_MODELVIEW);
 			}
+            if (mc->options.isLeftHanded) {
+                glMatrixMode(GL_PROJECTION);
+                glPushMatrix();
+                glScalef(-1, 1, 1);
+                glMatrixMode(GL_MODELVIEW);
+            }
             itemInHandRenderer->render(a);
+            if (mc->options.isLeftHanded) {
+                glMatrixMode(GL_PROJECTION);
+                glPopMatrix();
+                glMatrixMode(GL_MODELVIEW);
+            }
         }
     }
 

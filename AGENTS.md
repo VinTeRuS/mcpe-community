@@ -389,11 +389,17 @@ FIX: `renderHand()` selects arm1 when true, arm0 when false. arm0=left-arm, arm1
 - Slider snap points verified
 - 4 files, +17/-8
 
-### Batch 17 (committed: NEXT)
-FIX: renderHand() always renders arm0. Transform leftHanded=-1.0/1.0 handles positioning. arm selection parameter was wrong — arm0 is first-person arm, arm1 is third-person right arm. Removing bool param eliminates confusion.
-- HumanoidMobRenderer.h/.cpp: renderHand() no param, always arm0
-- ItemInHandRenderer.cpp: renderHand() call simplified
-- 3 files, +2/-4
+### Batch 17 (committed: 606839e)
+RenderHand arm switches: arm0 → arm1. Projection mirror for left-handed.
+
+Final approach (overrides batches 15-17):
+- `renderHand()` always renders arm1 (right arm model)
+- `leftHanded=1.0f` always in transforms (no flip — projection mirror handles it)
+- `GameRenderer::renderItemInHand`: mirror projection via `glScalef(-1,1,1)` for left-handed
+- `additionalRendering`: arm1 for right-handed, arm0 for left-handed
+- `render()`: set `holdingLeftHand` for right-handed (→ arm1), `holdingRightHand` for left-handed (→ arm0)
+- Reset both holding flags after super::render
+- 4 files, +22/-6
 
 ### Phase 0 Legwork
 - [0.1] uint32 chunk storage ✔
