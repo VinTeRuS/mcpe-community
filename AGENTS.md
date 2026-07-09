@@ -362,8 +362,14 @@ Phase 2  Phase 3           Phase 4 (needs P2)        │
 - Generator script `scripts/gen_entity_defs.py`
 - 14 files changed, +498/-1
 
+### Batch 13 (committed: `120b64c`)
+- [1.5] 136 recipe JSON definitions in `data/minecraft/recipes/` (9 group files)
+- [1.5] `Recipes::applyDefinitions()` via JsonLoader
+- Generator script `scripts/gen_recipe_defs.py`
+- 6 C++ sources changed, 10 recipe files, 1 script
+
 ### Pending
-- [1.5] recipe definitions JSON
+- [1.6] biome definitions JSON
 
 ### Phase 0 Legwork
 - [0.1] uint32 chunk storage ✔

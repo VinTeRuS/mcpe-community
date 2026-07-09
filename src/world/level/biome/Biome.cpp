@@ -5,7 +5,10 @@
 
 #include "../../entity/EntityTypes.h"
 #include "../../entity/MobCategory.h"
+#include "../../entity/EntityDefinition.h"
 #include "../../level/tile/TallGrass.h"
+#include "../../level/tile/Tile.h"
+#include "../../../util/JsonLoader.h"
 
 Biome* Biome::rainForest	 = NULL;
 Biome* Biome::swampland		 = NULL;
@@ -81,6 +84,7 @@ Biome* Biome::setColor( int color )
 
 Biome* Biome::setSnowCovered()
 {
+	this->snowCovered = true;
 	return this;
 }
 
@@ -120,7 +124,20 @@ void Biome::initBiomes() {
 	iceDesert		= (new FlatBiome())->setColor(0xFFED93)->clearMobs(true, false, false)->setName("Ice Desert")->setSnowCovered()->setLeafColor(0xC4D339);
 	tundra			= (new Biome())->setColor(0x57EBF9)->setName("Tundra")->setSnowCovered()->setLeafColor(0xC4D339);
 	
+	rainForest->nameId = "minecraft:rainforest";
+	swampland->nameId = "minecraft:swampland";
+	seasonalForest->nameId = "minecraft:seasonal_forest";
+	forest->nameId = "minecraft:forest";
+	savanna->nameId = "minecraft:savanna";
+	shrubland->nameId = "minecraft:shrubland";
+	taiga->nameId = "minecraft:taiga";
+	desert->nameId = "minecraft:desert";
+	plains->nameId = "minecraft:plains";
+	iceDesert->nameId = "minecraft:ice_desert";
+	tundra->nameId = "minecraft:tundra";
+
 	recalc();
+	applyDefinitions();
 }
 /*static*/
 void Biome::teardownBiomes() {
@@ -226,4 +243,97 @@ Biome::MobList& Biome::getMobs(const MobCategory& category)
 
 float Biome::getCreatureProbability() {
     return 0.08f;
+}
+
+/*static*/
+void Biome::applyDefinitions() {
+	auto& loader = JsonLoader::singleton();
+
+	// Build tile name->ID lookup
+	std::unordered_map<std::string, int> tileNames;
+	for (int i = 0; i < 256; i++) {
+		if (Tile::tiles[i]) {
+			const std::string& nid = Tile::tiles[i]->getNameId();
+			if (!nid.empty())
+				tileNames[nid] = i;
+		}
+	}
+
+	// Build entity name->ID lookup
+	std::unordered_map<std::string, int> entityNames;
+	for (int i = 0; i < 256; i++) {
+		auto* def = EntityDefinition::getDefinition(i);
+		if (def) entityNames[def->nameId] = i;
+	}
+
+	// All biome pointers for matching
+	Biome* allBiomes[] = {
+		rainForest, swampland, seasonalForest, forest, savanna,
+		shrubland, taiga, desert, plains, iceDesert, tundra
+	};
+
+	int count = 0;
+	loader.loadDir("minecraft", "biomes", [&](const std::string& path, const json& data) {
+		auto list = data["biomes"];
+		if (!list.is_array()) return;
+		for (auto& j : list) {
+			std::string id = j.value("id", "");
+			if (id.empty()) continue;
+
+			Biome* biome = nullptr;
+			for (auto* b : allBiomes) {
+				if (b && b->nameId == id) { biome = b; break; }
+			}
+			if (!biome) {
+				printf("Biome::applyDefinitions: unknown biome '%s'\n", id.c_str());
+				continue;
+			}
+			count++;
+
+			auto& props = j["properties"];
+			if (props.contains("color") && props["color"].is_number())
+				biome->color = props["color"];
+			if (props.contains("leaf_color") && props["leaf_color"].is_number())
+				biome->leafColor = props["leaf_color"];
+			if (props.contains("snow_covered") && props["snow_covered"].is_boolean())
+				biome->snowCovered = props["snow_covered"];
+
+			std::string topMat = props.value("top_material", "");
+			if (!topMat.empty()) {
+				auto it = tileNames.find(topMat);
+				if (it != tileNames.end()) biome->topMaterial = (char)it->second;
+			}
+			std::string mat = props.value("material", "");
+			if (!mat.empty()) {
+				auto it = tileNames.find(mat);
+				if (it != tileNames.end()) biome->material = (char)it->second;
+			}
+
+			// Apply mob spawn lists
+			auto& spawn = j["spawning"];
+			if (spawn.is_object()) {
+				auto parseMobs = [&](const std::string& key, MobList& list) {
+					list.clear();
+					auto& arr = spawn[key];
+					if (arr.is_array()) {
+						for (auto& m : arr) {
+							std::string entityId = m.value("entity", "");
+							auto eit = entityNames.find(entityId);
+							if (eit != entityNames.end()) {
+								int weight = m.value("weight", 10);
+								int min = m.value("min_count", 1);
+								int max = m.value("max_count", 1);
+								list.push_back(MobSpawnerData(eit->second, weight, min, max));
+							}
+						}
+					}
+				};
+				parseMobs("creatures", biome->_friendlies);
+				parseMobs("monsters", biome->_enemies);
+				parseMobs("water_creatures", biome->_waterFriendlies);
+			}
+		}
+	});
+
+	printf("Biome::applyDefinitions: loaded %d biome definitions\n", count);
 }

@@ -55,6 +55,8 @@ protected:
 	Biome* setSnowCovered();
 	Biome* clearMobs(bool friendlies = true, bool waterFriendlies = true, bool enemies = true);
 
+	static void applyDefinitions();
+
 	MobList _enemies;
     MobList _friendlies;
     MobList _waterFriendlies;
@@ -83,11 +85,13 @@ public:
 	virtual MobList& getMobs(const MobCategory& category);
 	virtual float getCreatureProbability();
 
+	std::string nameId;
 	std::string name;
 	int color;
 	char topMaterial;
 	char material;
 	int leafColor;
+	bool snowCovered = false;
 private:
 	static Biome* map[64*64];
 };

@@ -1,0 +1,73 @@
+{
+  "format_version": "1",
+  "namespace": "minecraft",
+  "biomes": [
+    {
+      "id": "minecraft:taiga",
+      "class": "TaigaBiome",
+      "properties": {
+        "color": 3060051,
+        "leaf_color": 8107825,
+        "snow_covered": true,
+        "top_material": "minecraft:grass",
+        "material": "minecraft:dirt",
+        "tree_type": "pine_spruce"
+      },
+      "spawning": {
+        "creatures": [
+          {
+            "entity": "minecraft:sheep",
+            "weight": 12,
+            "min_count": 2,
+            "max_count": 3
+          },
+          {
+            "entity": "minecraft:pig",
+            "weight": 10,
+            "min_count": 1,
+            "max_count": 3
+          },
+          {
+            "entity": "minecraft:chicken",
+            "weight": 10,
+            "min_count": 2,
+            "max_count": 4
+          },
+          {
+            "entity": "minecraft:cow",
+            "weight": 8,
+            "min_count": 2,
+            "max_count": 3
+          }
+        ],
+        "monsters": [
+          {
+            "entity": "minecraft:spider",
+            "weight": 8,
+            "min_count": 2,
+            "max_count": 3
+          },
+          {
+            "entity": "minecraft:zombie",
+            "weight": 12,
+            "min_count": 2,
+            "max_count": 4
+          },
+          {
+            "entity": "minecraft:skeleton",
+            "weight": 6,
+            "min_count": 1,
+            "max_count": 3
+          },
+          {
+            "entity": "minecraft:creeper",
+            "weight": 4,
+            "min_count": 1,
+            "max_count": 1
+          }
+        ],
+        "water_creatures": []
+      }
+    }
+  ]
+}

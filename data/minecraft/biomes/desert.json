@@ -1,0 +1,48 @@
+{
+  "format_version": "1",
+  "namespace": "minecraft",
+  "biomes": [
+    {
+      "id": "minecraft:desert",
+      "class": "FlatBiome",
+      "properties": {
+        "color": 16421912,
+        "leaf_color": 5169201,
+        "snow_covered": false,
+        "top_material": "minecraft:sand",
+        "material": "minecraft:sand",
+        "tree_type": "none"
+      },
+      "spawning": {
+        "creatures": [],
+        "monsters": [
+          {
+            "entity": "minecraft:spider",
+            "weight": 8,
+            "min_count": 2,
+            "max_count": 3
+          },
+          {
+            "entity": "minecraft:zombie",
+            "weight": 12,
+            "min_count": 2,
+            "max_count": 4
+          },
+          {
+            "entity": "minecraft:skeleton",
+            "weight": 6,
+            "min_count": 1,
+            "max_count": 3
+          },
+          {
+            "entity": "minecraft:creeper",
+            "weight": 4,
+            "min_count": 1,
+            "max_count": 1
+          }
+        ],
+        "water_creatures": []
+      }
+    }
+  ]
+}
