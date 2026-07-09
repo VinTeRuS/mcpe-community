@@ -10,5 +10,6 @@
   "translucent": false,
   "category": "decorations",
   "tex": 38,
-  "material": "metal"
+  "material": "metal",
+  "creative_group": "items"
 }

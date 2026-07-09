@@ -9,5 +9,6 @@
   "translucent": false,
   "category": "structures",
   "tex": 16,
-  "material": "cloth"
+  "material": "cloth",
+  "creative_group": "items"
 }

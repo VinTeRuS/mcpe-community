@@ -10,5 +10,6 @@
   "solid": true,
   "translucent": false,
   "category": "structures",
-  "tex": 224
+  "tex": 224,
+  "creative_group": "items"
 }

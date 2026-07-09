@@ -8,5 +8,6 @@
   ],
   "category": "Tools",
   "description_id": "pickaxeIron",
-  "tier": "IRON"
+  "tier": "IRON",
+  "creative_group": "tools"
 }

@@ -8,5 +8,6 @@
   ],
   "category": "Tools",
   "description_id": "shovelWood",
-  "tier": "WOOD"
+  "tier": "WOOD",
+  "creative_group": "tools"
 }

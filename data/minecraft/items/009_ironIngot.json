@@ -7,5 +7,6 @@
     1
   ],
   "category": "Decorations",
-  "description_id": "ingotIron"
+  "description_id": "ingotIron",
+  "creative_group": "decorations"
 }

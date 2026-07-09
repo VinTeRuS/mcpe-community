@@ -7,5 +7,6 @@
     9
   ],
   "category": "Structures",
-  "description_id": "netherbrickItem"
+  "description_id": "netherbrickItem",
+  "creative_group": "structures"
 }

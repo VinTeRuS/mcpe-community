@@ -400,6 +400,14 @@ Render arm0 + projection mirror + culling fix.
 - Reset both holding flags after super::render
 - 4 files, +22/-6
 
+### Batch 18 (committed: f45b3e3)
+- [1.7] Dimension definitions JSON: `data/minecraft/dimensions/overworld.json`
+- [1.7] `DimensionDefinition` struct + `Dimension::applyDefinitions()` via JsonLoader
+- [1.7] `DimensionFactory::createDefaultDimension()` reads from definition
+- `nameId`, `seaLevel`, `dimHeight`, `worldSize`, `natural` fields on Dimension
+- `std::vector<DimensionDefinition>` static registry
+- 5 files, +150/-9
+
 ### Phase 0 Legwork
 - [0.1] uint32 chunk storage ✔
 - [0.2] BlockProperties struct ✔

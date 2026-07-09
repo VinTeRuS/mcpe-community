@@ -8,5 +8,6 @@
   "solid": true,
   "translucent": false,
   "category": "structures",
-  "material": "wood"
+  "material": "wood",
+  "creative_group": "items"
 }

@@ -7,5 +7,6 @@
     1
   ],
   "category": "FoodArmor",
-  "description_id": "wheat"
+  "description_id": "wheat",
+  "creative_group": "foodarmor"
 }

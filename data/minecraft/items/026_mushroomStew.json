@@ -7,5 +7,6 @@
     4
   ],
   "category": "FoodArmor",
-  "description_id": "mushroomStew"
+  "description_id": "mushroomStew",
+  "creative_group": "foodarmor"
 }

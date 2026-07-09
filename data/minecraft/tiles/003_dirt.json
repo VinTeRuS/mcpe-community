@@ -9,5 +9,6 @@
   "translucent": false,
   "category": "structures",
   "tex": 2,
-  "material": "sand"
+  "material": "sand",
+  "creative_group": "items"
 }

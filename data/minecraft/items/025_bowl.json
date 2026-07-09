@@ -7,5 +7,6 @@
     4
   ],
   "category": "FoodArmor",
-  "description_id": "bowl"
+  "description_id": "bowl",
+  "creative_group": "foodarmor"
 }

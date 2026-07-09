@@ -159,6 +159,7 @@ TileDefinition parseTileDefinition(const json& j) {
     def.renderLayer = j.value("render_layer", "opaque");
     def.shape = j.value("shape", "");
     def.category = j.value("category", "");
+    def.creativeGroup = j.value("creative_group", "");
     def.numericId = j.value("numeric_id", -1);
     def.tex = j.value("tex", -1);
     def.lightBlock = j.value("light_block", -1);
@@ -243,6 +244,9 @@ void Tile::applyDefinitions() {
             else if (def.category == "mechanisms") cat = 16;
             if (cat >= 0) tile->category = cat;
         }
+
+        // Apply creative group
+        tile->creativeGroup = def.creativeGroup;
 
         // Apply tex
         if (def.tex >= 0)

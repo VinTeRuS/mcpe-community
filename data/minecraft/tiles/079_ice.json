@@ -10,5 +10,6 @@
   "translucent": false,
   "category": "structures",
   "tex": 16,
-  "material": "glass"
+  "material": "glass",
+  "creative_group": "items"
 }

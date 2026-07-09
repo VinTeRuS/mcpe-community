@@ -9,5 +9,6 @@
   "category": "FoodArmor",
   "description_id": "porkchopRaw",
   "food_nutrition": 3,
-  "food_meat": true
+  "food_meat": true,
+  "creative_group": "foodarmor"
 }

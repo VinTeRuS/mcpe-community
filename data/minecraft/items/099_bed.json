@@ -8,5 +8,6 @@
   ],
   "category": "Structures",
   "description_id": "bed",
-  "max_stack_size": 1
+  "max_stack_size": 1,
+  "creative_group": "structures"
 }

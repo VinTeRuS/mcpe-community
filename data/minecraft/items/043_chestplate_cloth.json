@@ -9,5 +9,6 @@
   "category": "FoodArmor",
   "description_id": "chestplateCloth",
   "armor_material": "CLOTH",
-  "armor_slot": "TORSO"
+  "armor_slot": "TORSO",
+  "creative_group": "foodarmor"
 }

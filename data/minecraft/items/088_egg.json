@@ -7,5 +7,6 @@
     0
   ],
   "category": "FoodArmor",
-  "description_id": "egg"
+  "description_id": "egg",
+  "creative_group": "foodarmor"
 }

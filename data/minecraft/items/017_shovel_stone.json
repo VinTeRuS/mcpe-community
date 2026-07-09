@@ -8,5 +8,6 @@
   ],
   "category": "Tools",
   "description_id": "shovelStone",
-  "tier": "STONE"
+  "tier": "STONE",
+  "creative_group": "tools"
 }

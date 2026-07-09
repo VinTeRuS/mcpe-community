@@ -8,5 +8,6 @@
   ],
   "category": "Structures",
   "description_id": "doorWood",
-  "door_material": "wood"
+  "door_material": "wood",
+  "creative_group": "structures"
 }

@@ -9,5 +9,6 @@
   "translucent": false,
   "category": "tools",
   "tex": 8,
-  "material": "plant"
+  "material": "plant",
+  "creative_group": "items"
 }

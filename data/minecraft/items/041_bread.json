@@ -9,5 +9,6 @@
   "category": "FoodArmor",
   "description_id": "bread",
   "food_nutrition": 5,
-  "food_meat": false
+  "food_meat": false,
+  "creative_group": "foodarmor"
 }

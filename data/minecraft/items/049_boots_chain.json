@@ -8,5 +8,6 @@
   ],
   "category": "FoodArmor",
   "description_id": "bootsChain",
-  "armor_material": "CHAIN"
+  "armor_material": "CHAIN",
+  "creative_group": "foodarmor"
 }

@@ -10,5 +10,6 @@
   "translucent": true,
   "category": "tools",
   "tex": 5,
-  "material": "wood"
+  "material": "wood",
+  "creative_group": "items"
 }

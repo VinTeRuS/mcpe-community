@@ -7,5 +7,6 @@
     5
   ],
   "category": "Tools",
-  "description_id": "shears"
+  "description_id": "shears",
+  "creative_group": "tools"
 }

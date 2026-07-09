@@ -8,5 +8,6 @@
   ],
   "category": "FoodArmor",
   "description_id": "sugar",
-  "hand_equipped": true
+  "hand_equipped": true,
+  "creative_group": "foodarmor"
 }

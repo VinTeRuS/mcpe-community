@@ -8,5 +8,6 @@
   "render_layer": "opaque",
   "solid": true,
   "translucent": false,
-  "category": "structures"
+  "category": "structures",
+  "creative_group": "items"
 }

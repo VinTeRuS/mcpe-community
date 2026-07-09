@@ -7,5 +7,6 @@
     3
   ],
   "category": "FoodArmor",
-  "description_id": "seedsMelon"
+  "description_id": "seedsMelon",
+  "creative_group": "foodarmor"
 }

@@ -9,5 +9,6 @@
   "translucent": true,
   "category": "decorations",
   "tex": 2,
-  "material": "plant"
+  "material": "plant",
+  "creative_group": "items"
 }

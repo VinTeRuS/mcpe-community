@@ -8,5 +8,6 @@
   "render_layer": "opaque",
   "solid": true,
   "translucent": false,
-  "tex": 103
+  "tex": 103,
+  "creative_group": "items"
 }

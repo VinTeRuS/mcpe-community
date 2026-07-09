@@ -9,5 +9,6 @@
   "category": "FoodArmor",
   "description_id": "chickenRaw",
   "food_nutrition": 2,
-  "food_meat": true
+  "food_meat": true,
+  "creative_group": "foodarmor"
 }

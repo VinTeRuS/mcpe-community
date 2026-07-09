@@ -8,5 +8,6 @@
   ],
   "category": "Tools",
   "description_id": "shovelDiamond",
-  "tier": "EMERALD"
+  "tier": "EMERALD",
+  "creative_group": "tools"
 }

@@ -215,6 +215,7 @@ public:
 		int iconCol = 0;
 		int iconRow = 0;
 		std::string category;
+		std::string creativeGroup;
 		int maxStackSize = 64;
 		bool handEquipped = false;
 		int maxDamage = 0;
@@ -428,6 +429,8 @@ private:
 	Item* craftingRemainingItem;
     std::string descriptionId;
     std::string nameId;
+public:
+    std::string creativeGroup;
 };
 
 #endif /*NET_MINECRAFT_WORLD_ITEM__Item_H__*/

@@ -9,5 +9,6 @@
   "category": "FoodArmor",
   "description_id": "bootsCloth",
   "armor_material": "CLOTH",
-  "armor_slot": "FEET"
+  "armor_slot": "FEET",
+  "creative_group": "foodarmor"
 }

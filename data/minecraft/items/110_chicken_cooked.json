@@ -9,5 +9,6 @@
   "category": "FoodArmor",
   "description_id": "chickenCooked",
   "food_nutrition": 6,
-  "food_meat": true
+  "food_meat": true,
+  "creative_group": "foodarmor"
 }

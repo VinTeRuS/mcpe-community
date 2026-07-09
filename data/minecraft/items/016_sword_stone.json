@@ -8,5 +8,6 @@
   ],
   "category": "Tools",
   "description_id": "swordStone",
-  "tier": "STONE"
+  "tier": "STONE",
+  "creative_group": "tools"
 }

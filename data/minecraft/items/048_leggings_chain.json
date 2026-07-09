@@ -9,5 +9,6 @@
   "category": "FoodArmor",
   "description_id": "leggingsChain",
   "armor_material": "CHAIN",
-  "armor_slot": "LEGS"
+  "armor_slot": "LEGS",
+  "creative_group": "foodarmor"
 }

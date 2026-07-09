@@ -9,5 +9,6 @@
   "category": "FoodArmor",
   "description_id": "chestplateDiamond",
   "armor_material": "DIAMOND",
-  "armor_slot": "TORSO"
+  "armor_slot": "TORSO",
+  "creative_group": "foodarmor"
 }

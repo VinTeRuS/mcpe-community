@@ -8,5 +8,6 @@
   ],
   "category": "Tools",
   "description_id": "hatchetGold",
-  "tier": "GOLD"
+  "tier": "GOLD",
+  "creative_group": "tools"
 }

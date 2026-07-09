@@ -8,5 +8,6 @@
   ],
   "category": "Tools",
   "description_id": "hoeStone",
-  "tier": "STONE"
+  "tier": "STONE",
+  "creative_group": "tools"
 }

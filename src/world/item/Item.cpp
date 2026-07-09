@@ -331,6 +331,8 @@ static void applyItemDefinition(Item* item, const json& j) {
 		item->setMaxStackSize(j["max_stack_size"]);
 	if (j.contains("hand_equipped") && j["hand_equipped"].is_boolean() && j["hand_equipped"])
 		item->handEquipped();
+	if (j.contains("creative_group") && j["creative_group"].is_string())
+		item->creativeGroup = j["creative_group"];
 }
 
 /*static*/

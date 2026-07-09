@@ -8,5 +8,6 @@
   ],
   "category": "Tools",
   "description_id": "hatchetDiamond",
-  "tier": "EMERALD"
+  "tier": "EMERALD",
+  "creative_group": "tools"
 }

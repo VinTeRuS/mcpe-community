@@ -11,5 +11,6 @@
   "translucent": false,
   "category": "mechanisms",
   "tex": 16,
-  "material": "stone"
+  "material": "stone",
+  "creative_group": "items"
 }

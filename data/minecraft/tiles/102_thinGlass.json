@@ -9,5 +9,6 @@
   "solid": false,
   "translucent": true,
   "category": "structures",
-  "tex": 49
+  "tex": 49,
+  "creative_group": "items"
 }

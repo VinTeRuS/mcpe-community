@@ -8,5 +8,6 @@
   ],
   "category": "Tools",
   "description_id": "shovelGold",
-  "tier": "GOLD"
+  "tier": "GOLD",
+  "creative_group": "tools"
 }

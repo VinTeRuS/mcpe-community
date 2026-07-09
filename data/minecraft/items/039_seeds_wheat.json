@@ -7,5 +7,6 @@
     0
   ],
   "category": "FoodArmor",
-  "description_id": "seeds"
+  "description_id": "seeds",
+  "creative_group": "foodarmor"
 }

@@ -8,5 +8,6 @@
   "solid": false,
   "translucent": true,
   "category": "decorations",
-  "tex": 11
+  "tex": 11,
+  "creative_group": "items"
 }

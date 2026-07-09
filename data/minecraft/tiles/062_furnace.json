@@ -9,5 +9,6 @@
   "solid": true,
   "translucent": false,
   "category": "structures",
-  "material": "stone"
+  "material": "stone",
+  "creative_group": "items"
 }

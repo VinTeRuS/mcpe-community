@@ -10,5 +10,6 @@
   "translucent": false,
   "category": "decorations",
   "tex": 16,
-  "material": "stone"
+  "material": "stone",
+  "creative_group": "items"
 }

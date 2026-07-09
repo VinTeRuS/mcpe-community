@@ -8,5 +8,6 @@
   "solid": true,
   "translucent": false,
   "category": "structures",
-  "material": "plant"
+  "material": "plant",
+  "creative_group": "items"
 }

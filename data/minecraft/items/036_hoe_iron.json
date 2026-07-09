@@ -8,5 +8,6 @@
   ],
   "category": "Tools",
   "description_id": "hoeIron",
-  "tier": "IRON"
+  "tier": "IRON",
+  "creative_group": "tools"
 }

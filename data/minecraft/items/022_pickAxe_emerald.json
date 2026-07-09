@@ -8,5 +8,6 @@
   ],
   "category": "Tools",
   "description_id": "pickaxeDiamond",
-  "tier": "EMERALD"
+  "tier": "EMERALD",
+  "creative_group": "tools"
 }

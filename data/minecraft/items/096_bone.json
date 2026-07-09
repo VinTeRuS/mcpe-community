@@ -8,5 +8,6 @@
   ],
   "category": "Tools",
   "description_id": "bone",
-  "hand_equipped": true
+  "hand_equipped": true,
+  "creative_group": "tools"
 }

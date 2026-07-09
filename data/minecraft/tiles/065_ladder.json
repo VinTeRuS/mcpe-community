@@ -9,5 +9,6 @@
   "translucent": false,
   "category": "structures",
   "tex": 83,
-  "material": "wood"
+  "material": "wood",
+  "creative_group": "items"
 }

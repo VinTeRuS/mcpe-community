@@ -10,5 +10,6 @@
   "translucent": false,
   "category": "structures",
   "tex": 52,
-  "material": "plant"
+  "material": "plant",
+  "creative_group": "items"
 }

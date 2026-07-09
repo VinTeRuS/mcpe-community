@@ -9,5 +9,6 @@
   "translucent": false,
   "category": "decorations",
   "tex": 35,
-  "material": "wood"
+  "material": "wood",
+  "creative_group": "items"
 }

@@ -9,5 +9,6 @@
   "category": "FoodArmor",
   "description_id": "helmetGold",
   "armor_material": "GOLD",
-  "armor_slot": "HEAD"
+  "armor_slot": "HEAD",
+  "creative_group": "foodarmor"
 }

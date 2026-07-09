@@ -9,5 +9,6 @@
   "translucent": true,
   "category": "structures",
   "tex": 15,
-  "material": "plant"
+  "material": "plant",
+  "creative_group": "items"
 }

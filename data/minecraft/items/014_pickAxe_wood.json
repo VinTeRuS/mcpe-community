@@ -8,5 +8,6 @@
   ],
   "category": "Tools",
   "description_id": "pickaxeWood",
-  "tier": "WOOD"
+  "tier": "WOOD",
+  "creative_group": "tools"
 }

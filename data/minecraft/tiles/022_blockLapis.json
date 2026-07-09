@@ -10,5 +10,6 @@
   "solid": true,
   "translucent": false,
   "category": "decorations",
-  "tex": 9
+  "tex": 9,
+  "creative_group": "items"
 }

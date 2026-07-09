@@ -8,5 +8,6 @@
   ],
   "category": "Tools",
   "description_id": "hoeGold",
-  "tier": "GOLD"
+  "tier": "GOLD",
+  "creative_group": "tools"
 }

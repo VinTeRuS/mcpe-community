@@ -34,6 +34,7 @@ struct TileDefinition {
     std::string renderLayer = "opaque";
     std::string shape;
     std::string category;
+    std::string creativeGroup;
     float hardness = -1.0f;
     float resistance = -1.0f;
     int numericId = -1;
@@ -424,6 +425,8 @@ protected:
     static const int RENDERLAYER_OPAQUE;
     static const int RENDERLAYER_ALPHATEST;
     static const int RENDERLAYER_BLEND;
+public:
+    std::string creativeGroup;
 private:
 	std::string descriptionId;
     std::string nameId;

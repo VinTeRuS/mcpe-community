@@ -9,5 +9,6 @@
   "category": "FoodArmor",
   "description_id": "bootsDiamond",
   "armor_material": "DIAMOND",
-  "armor_slot": "FEET"
+  "armor_slot": "FEET",
+  "creative_group": "foodarmor"
 }

@@ -8,5 +8,6 @@
   ],
   "category": "Tools",
   "description_id": "hatchetIron",
-  "tier": "IRON"
+  "tier": "IRON",
+  "creative_group": "tools"
 }

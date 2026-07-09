@@ -9,5 +9,6 @@
   "category": "FoodArmor",
   "description_id": "porkchopCooked",
   "food_nutrition": 8,
-  "food_meat": true
+  "food_meat": true,
+  "creative_group": "foodarmor"
 }

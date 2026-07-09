@@ -10,5 +10,6 @@
   "translucent": false,
   "category": "structures",
   "tex": 10,
-  "material": "stone"
+  "material": "stone",
+  "creative_group": "items"
 }
