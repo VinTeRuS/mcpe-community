@@ -31,7 +31,7 @@ void HumanoidMobRenderer::additionalRendering(Mob* mob, float a) {
 	ItemInstance* item = mob->getCarriedItem();
 	if (item != NULL && item->count > 0) {
 		glPushMatrix2();
-		(entityRenderDispatcher->options->isLeftHanded ? humanoidModel->arm0 : humanoidModel->arm1).translateTo(1 / 16.0f);
+		(entityRenderDispatcher->options->isLeftHanded ? humanoidModel->arm1 : humanoidModel->arm0).translateTo(1 / 16.0f);
 		glTranslatef2(-1.0f / 16.0f, 7.0f / 16.0f, 1.0f / 16.0f);
 
 		if (item->id < 256 && TileRenderer::canRender(Tile::tiles[item->id]->getRenderShape())) {
@@ -72,9 +72,9 @@ void HumanoidMobRenderer::render( Entity* mob_, float x, float y, float z, float
 	ItemInstance* carriedItem = mob->getCarriedItem();
 	if(carriedItem != NULL) {
 		if (entityRenderDispatcher->options->isLeftHanded)
-			humanoidModel->holdingRightHand = true;
-		else
 			humanoidModel->holdingLeftHand = true;
+		else
+			humanoidModel->holdingRightHand = true;
 	}
 
 	humanoidModel->sneaking = mob->isSneaking();
