@@ -16,18 +16,15 @@ HumanoidMobRenderer::HumanoidMobRenderer(HumanoidModel* humanoidModel, float sha
 {
 }
 
-void HumanoidMobRenderer::renderHand() {
+void HumanoidMobRenderer::renderHand(bool isLeftHanded) {
 	humanoidModel->attackTime = 0;
 	humanoidModel->setupAnim(0, 0, 0, 0, 0, 1 / 16.0f);
 
-	//@attn @cuberender @enableClientState @vertexarray
 	glEnableClientState2(GL_VERTEX_ARRAY);
 	glEnableClientState2(GL_TEXTURE_COORD_ARRAY);
-	//glEnableClientState2(GL_COLOR_ARRAY); 
-	humanoidModel->arm0.render(1 / 16.0f);
+	(isLeftHanded ? humanoidModel->arm1 : humanoidModel->arm0).render(1 / 16.0f);
 	glDisableClientState2(GL_VERTEX_ARRAY);
 	glDisableClientState2(GL_TEXTURE_COORD_ARRAY);
-	//glDisableClientState2(GL_COLOR_ARRAY); 
 }
 
 void HumanoidMobRenderer::additionalRendering(Mob* mob, float a) {

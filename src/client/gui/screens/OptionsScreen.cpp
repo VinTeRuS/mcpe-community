@@ -8,6 +8,7 @@
 #include "../components/OptionsPane.h"
 #include "../components/ImageButton.h"
 #include "../components/OptionsGroup.h"
+#include "Platform.h"
 OptionsScreen::OptionsScreen()
 : btnClose(NULL),
   bHeader(NULL),
@@ -150,7 +151,9 @@ void OptionsScreen::generateOptionScreens() {
 	optionPanes[2]->createToggle(minecraft, 0, "Use touch screen", &Options::Option::USE_TOUCHSCREEN);
 	optionPanes[2]->createToggle(minecraft, 0, "Use touch joypad", &Options::Option::USE_TOUCH_JOYPAD);
 	optionPanes[2]->createOptionsGroup("Feedback");
-	optionPanes[2]->createToggle(minecraft, 1, "Vibrate on destroy", &Options::Option::DESTROY_VIBRATION);
+	if (Platform::singleton().isAndroid() || Platform::singleton().isApple()) {
+		optionPanes[2]->createToggle(minecraft, 1, "Vibrate on destroy", &Options::Option::DESTROY_VIBRATION);
+	}
 
 	// Graphics Pane
 	optionPanes[3]->createOptionsGroup("Graphics");

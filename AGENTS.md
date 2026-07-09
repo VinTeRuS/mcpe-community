@@ -368,8 +368,26 @@ Phase 2  Phase 3           Phase 4 (needs P2)        │
 - Generator script `scripts/gen_recipe_defs.py`
 - 6 C++ sources changed, 10 recipe files, 1 script
 
-### Pending
-- [1.6] biome definitions JSON
+### Batch 14 (committed: `e83651f`)
+- [1.6] 11 biome JSON definitions in `data/minecraft/biomes/`
+- [1.6] `Biome::applyDefinitions()` via JsonLoader
+- Generator script `scripts/gen_biome_defs.py`
+- 3 files changed, +277/-0
+
+### Batch 15 (committed: `0a8e072`)
+- CRASH FIX: sign-extension from duplicate tile nameId
+
+### Phase 0 Legwork
+- 0.1-0.12 all complete ✔
+- Root cause: both grass (ID 2) and grass_carried (ID 253) have nameId `minecraft:grass`. Forward iteration overwrote grass→2 with grass_carried→253. `(char)253=-3` sign-extended to 0xFFFFFFFD on uint32_t assignment in buildSurfaces → `getTile() & 0xffff = 0xFFFD = 65533` → out-of-bounds Tile::tiles access → segfault
+- Fix: prefer lower tile ID on name collision in Biome::applyDefinitions lookup; use unsigned char for top/material in buildSurfaces
+- 2 files, +21/-18
+
+### Batch 16 (committed: PENDING — run commit after)
+- Left hand empty render: `HumanoidMobRenderer::renderHand()` takes `bool isLeftHanded`, renders `arm1` when true
+- Platform-gate destroyVibration toggle: wrapped with `Platform::singleton().isAndroid() || isApple()`
+- Slider snap points verified: sensitivity/GUI scale = continuous, render dist/FPS = discrete step
+- 4 files, +17/-9
 
 ### Phase 0 Legwork
 - [0.1] uint32 chunk storage ✔
