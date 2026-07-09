@@ -15,6 +15,7 @@
 #include "platform/input/Multitouch.h"
 
 #include "world/item/Item.h"
+#include "world/item/crafting/Recipes.h"
 #include "world/level/Level.h"
 #include "world/level/biome/Biome.h"
 #include "world/level/material/Material.h"
@@ -91,6 +92,7 @@ void NinecraftApp::init()
 		Tile::initTiles();
 		Item::initItems();
 		EntityDefinition::applyDefinitions();
+		Recipes::applyDefinitions();
 		Biome::initBiomes();
 		TileEntity::initTileEntities();
 

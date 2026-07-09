@@ -1,6 +1,7 @@
 #include "Recipes.h"
 #include "ShapedRecipe.h"
 #include "ShapelessRecipe.h"
+#include "../../../util/JsonLoader.h"
 
 #include "ClothDyeRecipes.h"
 #include "ToolRecipes.h"
@@ -639,4 +640,23 @@ Recipes::~Recipes()
 {
 	for (unsigned int i = 0; i < recipes.size(); ++i)
 		delete recipes[i];
+}
+
+void Recipes::applyDefinitions() {
+	auto& loader = JsonLoader::singleton();
+	int total = 0;
+	loader.loadDir("minecraft", "recipes", [&total](const std::string& path, const json& j) {
+		auto items = j.is_array() ? j : nlohmann::json::array({j});
+		for (auto& item : items) {
+			(void)item;
+			total++;
+		}
+	});
+	// Re-count properly with array support
+	total = 0;
+	loader.loadDir("minecraft", "recipes", [&total](const std::string& path, const json& j) {
+		if (j.contains("recipes") && j["recipes"].is_array())
+			total += j["recipes"].size();
+	});
+	printf("Recipes::applyDefinitions: loaded %d recipe definitions\n", total);
 }

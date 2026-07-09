@@ -1,0 +1,185 @@
+{
+  "namespace": "minecraft",
+  "recipes": [
+    {
+      "type": "shaped",
+      "result": {
+        "item": "chest",
+        "count": 1
+      },
+      "pattern": [
+        "###",
+        "# #",
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:wood"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "furnace",
+        "count": 1
+      },
+      "pattern": [
+        "###",
+        "# #",
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:stonebrick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "workbench",
+        "count": 1
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:wood"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "stonecutter",
+        "count": 1
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:stonebrick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "sandstone",
+        "count": 1
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:sand"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "sandstone",
+        "count": 4,
+        "data": 4
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:sandstone"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "sandstone",
+        "count": 1,
+        "data": 1
+      },
+      "pattern": [
+        "#",
+        "#"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:stone_slab"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "stonebricksmooth",
+        "count": 4
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:rock"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "thin_glass",
+        "count": 16
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:glass"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "nether_brick",
+        "count": 1
+      },
+      "pattern": [
+        "NN",
+        "NN"
+      ],
+      "key": {
+        "N": {
+          "item": "minecraft:netherbrick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "quartz_block",
+        "count": 1
+      },
+      "pattern": [
+        "NN",
+        "NN"
+      ],
+      "key": {
+        "N": {
+          "item": "minecraft:nether_quartz"
+        }
+      }
+    }
+  ]
+}

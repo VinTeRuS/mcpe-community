@@ -1,0 +1,148 @@
+{
+  "namespace": "minecraft",
+  "recipes": [
+    {
+      "type": "shaped",
+      "result": {
+        "item": "sword_wood",
+        "count": 1
+      },
+      "pattern": [
+        "X",
+        "X",
+        "#"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:wood"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "sword_stone",
+        "count": 1
+      },
+      "pattern": [
+        "X",
+        "X",
+        "#"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:stonebrick"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "sword_iron",
+        "count": 1
+      },
+      "pattern": [
+        "X",
+        "X",
+        "#"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:iron_ingot"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "sword_emerald",
+        "count": 1
+      },
+      "pattern": [
+        "X",
+        "X",
+        "#"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:emerald"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "sword_gold",
+        "count": 1
+      },
+      "pattern": [
+        "X",
+        "X",
+        "#"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:gold_ingot"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "bow",
+        "count": 1
+      },
+      "pattern": [
+        " #X",
+        "# X",
+        " #X"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:string"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "arrow",
+        "count": 4
+      },
+      "pattern": [
+        "X",
+        "#",
+        "Y"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:flint"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        },
+        "Y": {
+          "item": "minecraft:feather"
+        }
+      }
+    }
+  ]
+}

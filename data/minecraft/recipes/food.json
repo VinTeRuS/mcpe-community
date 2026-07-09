@@ -1,0 +1,55 @@
+{
+  "namespace": "minecraft",
+  "recipes": [
+    {
+      "type": "shapeless",
+      "result": {
+        "item": "mushroom_stew",
+        "count": 1
+      },
+      "ingredients": [
+        {
+          "item": "minecraft:mushroom"
+        },
+        {
+          "item": "minecraft:mushroom"
+        },
+        {
+          "item": "minecraft:bowl"
+        }
+      ]
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "melon_block",
+        "count": 1
+      },
+      "pattern": [
+        "MMM",
+        "MMM",
+        "MMM"
+      ],
+      "key": {
+        "M": {
+          "item": "minecraft:melon"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "seeds_melon",
+        "count": 1
+      },
+      "pattern": [
+        "M"
+      ],
+      "key": {
+        "M": {
+          "item": "minecraft:melon"
+        }
+      }
+    }
+  ]
+}

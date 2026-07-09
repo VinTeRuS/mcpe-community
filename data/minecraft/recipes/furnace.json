@@ -1,0 +1,135 @@
+{
+  "namespace": "minecraft",
+  "recipes": [
+    {
+      "type": "furnace",
+      "input": {
+        "item": "minecraft:iron_ore"
+      },
+      "output": {
+        "item": "minecraft:iron_ingot",
+        "count": 1
+      }
+    },
+    {
+      "type": "furnace",
+      "input": {
+        "item": "minecraft:gold_ore"
+      },
+      "output": {
+        "item": "minecraft:gold_ingot",
+        "count": 1
+      }
+    },
+    {
+      "type": "furnace",
+      "input": {
+        "item": "minecraft:ore_emerald"
+      },
+      "output": {
+        "item": "minecraft:emerald",
+        "count": 1
+      }
+    },
+    {
+      "type": "furnace",
+      "input": {
+        "item": "minecraft:sand"
+      },
+      "output": {
+        "item": "minecraft:glass",
+        "count": 1
+      }
+    },
+    {
+      "type": "furnace",
+      "input": {
+        "item": "minecraft:porkchop_raw"
+      },
+      "output": {
+        "item": "minecraft:porkchop_cooked",
+        "count": 1
+      }
+    },
+    {
+      "type": "furnace",
+      "input": {
+        "item": "minecraft:beef_raw"
+      },
+      "output": {
+        "item": "minecraft:beef_cooked",
+        "count": 1
+      }
+    },
+    {
+      "type": "furnace",
+      "input": {
+        "item": "minecraft:chicken_raw"
+      },
+      "output": {
+        "item": "minecraft:chicken_cooked",
+        "count": 1
+      }
+    },
+    {
+      "type": "furnace",
+      "input": {
+        "item": "minecraft:stonebrick"
+      },
+      "output": {
+        "item": "minecraft:rock",
+        "count": 1
+      }
+    },
+    {
+      "type": "furnace",
+      "input": {
+        "item": "minecraft:clay"
+      },
+      "output": {
+        "item": "minecraft:brick",
+        "count": 1
+      }
+    },
+    {
+      "type": "furnace",
+      "input": {
+        "item": "minecraft:cactus"
+      },
+      "output": {
+        "item": "minecraft:dye_powder",
+        "count": 1
+      }
+    },
+    {
+      "type": "furnace",
+      "input": {
+        "item": "minecraft:mushroom"
+      },
+      "output": {
+        "item": "minecraft:dye_powder",
+        "count": 1
+      }
+    },
+    {
+      "type": "furnace",
+      "input": {
+        "item": "minecraft:tree_trunk"
+      },
+      "output": {
+        "item": "minecraft:coal",
+        "count": 1
+      }
+    },
+    {
+      "type": "furnace",
+      "input": {
+        "item": "minecraft:netherrack"
+      },
+      "output": {
+        "item": "minecraft:netherbrick",
+        "count": 1
+      }
+    }
+  ]
+}

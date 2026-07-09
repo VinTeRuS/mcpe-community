@@ -1,0 +1,325 @@
+{
+  "namespace": "minecraft",
+  "recipes": [
+    {
+      "type": "shapeless",
+      "result": {
+        "item": "cloth",
+        "count": 1,
+        "data": 1
+      },
+      "ingredients": [
+        {
+          "item": "minecraft:dye_powder"
+        },
+        {
+          "item": "minecraft:cloth"
+        }
+      ]
+    },
+    {
+      "type": "shapeless",
+      "result": {
+        "item": "cloth",
+        "count": 1,
+        "data": 2
+      },
+      "ingredients": [
+        {
+          "item": "minecraft:dye_powder"
+        },
+        {
+          "item": "minecraft:cloth"
+        }
+      ]
+    },
+    {
+      "type": "shapeless",
+      "result": {
+        "item": "cloth",
+        "count": 1,
+        "data": 4
+      },
+      "ingredients": [
+        {
+          "item": "minecraft:dye_powder"
+        },
+        {
+          "item": "minecraft:cloth"
+        }
+      ]
+    },
+    {
+      "type": "shapeless",
+      "result": {
+        "item": "cloth",
+        "count": 1,
+        "data": 5
+      },
+      "ingredients": [
+        {
+          "item": "minecraft:dye_powder"
+        },
+        {
+          "item": "minecraft:cloth"
+        }
+      ]
+    },
+    {
+      "type": "shapeless",
+      "result": {
+        "item": "cloth",
+        "count": 1,
+        "data": 6
+      },
+      "ingredients": [
+        {
+          "item": "minecraft:dye_powder"
+        },
+        {
+          "item": "minecraft:cloth"
+        }
+      ]
+    },
+    {
+      "type": "shapeless",
+      "result": {
+        "item": "cloth",
+        "count": 1,
+        "data": 9
+      },
+      "ingredients": [
+        {
+          "item": "minecraft:dye_powder"
+        },
+        {
+          "item": "minecraft:cloth"
+        }
+      ]
+    },
+    {
+      "type": "shapeless",
+      "result": {
+        "item": "cloth",
+        "count": 1,
+        "data": 10
+      },
+      "ingredients": [
+        {
+          "item": "minecraft:dye_powder"
+        },
+        {
+          "item": "minecraft:cloth"
+        }
+      ]
+    },
+    {
+      "type": "shapeless",
+      "result": {
+        "item": "cloth",
+        "count": 1,
+        "data": 11
+      },
+      "ingredients": [
+        {
+          "item": "minecraft:dye_powder"
+        },
+        {
+          "item": "minecraft:cloth"
+        }
+      ]
+    },
+    {
+      "type": "shapeless",
+      "result": {
+        "item": "cloth",
+        "count": 1,
+        "data": 12
+      },
+      "ingredients": [
+        {
+          "item": "minecraft:dye_powder"
+        },
+        {
+          "item": "minecraft:cloth"
+        }
+      ]
+    },
+    {
+      "type": "shapeless",
+      "result": {
+        "item": "cloth",
+        "count": 1,
+        "data": 13
+      },
+      "ingredients": [
+        {
+          "item": "minecraft:dye_powder"
+        },
+        {
+          "item": "minecraft:cloth"
+        }
+      ]
+    },
+    {
+      "type": "shapeless",
+      "result": {
+        "item": "cloth",
+        "count": 1,
+        "data": 14
+      },
+      "ingredients": [
+        {
+          "item": "minecraft:dye_powder"
+        },
+        {
+          "item": "minecraft:cloth"
+        }
+      ]
+    },
+    {
+      "type": "shapeless",
+      "result": {
+        "item": "dye_powder",
+        "count": 2,
+        "data": 11
+      },
+      "ingredients": [
+        {
+          "item": "minecraft:flower"
+        }
+      ]
+    },
+    {
+      "type": "shapeless",
+      "result": {
+        "item": "dye_powder",
+        "count": 3,
+        "data": 15
+      },
+      "ingredients": [
+        {
+          "item": "minecraft:bone"
+        }
+      ]
+    },
+    {
+      "type": "shapeless",
+      "result": {
+        "item": "dye_powder",
+        "count": 2,
+        "data": 6
+      },
+      "ingredients": [
+        {
+          "item": "minecraft:dye_powder"
+        },
+        {
+          "item": "minecraft:dye_powder"
+        }
+      ]
+    },
+    {
+      "type": "shapeless",
+      "result": {
+        "item": "dye_powder",
+        "count": 2,
+        "data": 14
+      },
+      "ingredients": [
+        {
+          "item": "minecraft:dye_powder"
+        },
+        {
+          "item": "minecraft:dye_powder"
+        }
+      ]
+    },
+    {
+      "type": "shapeless",
+      "result": {
+        "item": "dye_powder",
+        "count": 2,
+        "data": 5
+      },
+      "ingredients": [
+        {
+          "item": "minecraft:dye_powder"
+        },
+        {
+          "item": "minecraft:dye_powder"
+        }
+      ]
+    },
+    {
+      "type": "shapeless",
+      "result": {
+        "item": "dye_powder",
+        "count": 2,
+        "data": 12
+      },
+      "ingredients": [
+        {
+          "item": "minecraft:dye_powder"
+        },
+        {
+          "item": "minecraft:dye_powder"
+        }
+      ]
+    },
+    {
+      "type": "shapeless",
+      "result": {
+        "item": "dye_powder",
+        "count": 2,
+        "data": 9
+      },
+      "ingredients": [
+        {
+          "item": "minecraft:dye_powder"
+        },
+        {
+          "item": "minecraft:dye_powder"
+        }
+      ]
+    },
+    {
+      "type": "shapeless",
+      "result": {
+        "item": "dye_powder",
+        "count": 2,
+        "data": 10
+      },
+      "ingredients": [
+        {
+          "item": "minecraft:dye_powder"
+        },
+        {
+          "item": "minecraft:dye_powder"
+        }
+      ]
+    },
+    {
+      "type": "shapeless",
+      "result": {
+        "item": "dye_powder",
+        "count": 4,
+        "data": 2
+      },
+      "ingredients": [
+        {
+          "item": "minecraft:dye_powder"
+        },
+        {
+          "item": "minecraft:dye_powder"
+        },
+        {
+          "item": "minecraft:dye_powder"
+        },
+        {
+          "item": "minecraft:dye_powder"
+        }
+      ]
+    }
+  ]
+}

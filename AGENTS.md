@@ -356,10 +356,14 @@ Phase 2  Phase 3           Phase 4 (needs P2)        │
 - [1.3] `ItemDefinition` struct + `Item::applyDefinitions()` via JsonLoader
 - 98 files changed, +1205/-17
 
-### Batch 11 (committed: `060b5fa`)
-- [1.3] 95 item JSON definition files in `data/minecraft/items/`
-- [1.3] `ItemDefinition` struct + `Item::applyDefinitions()` via JsonLoader
-- 98 files changed, +1205/-17
+### Batch 12 (committed: `b4035f9`)
+- [1.4] 9 entity JSON definition files in `data/minecraft/entities/`
+- [1.4] `EntityDefinition` struct + `EntityDefinition::applyDefinitions()` via JsonLoader
+- Generator script `scripts/gen_entity_defs.py`
+- 14 files changed, +498/-1
+
+### Pending
+- [1.5] recipe definitions JSON
 
 ### Phase 0 Legwork
 - [0.1] uint32 chunk storage ✔

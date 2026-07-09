@@ -1,0 +1,421 @@
+{
+  "namespace": "minecraft",
+  "recipes": [
+    {
+      "type": "shaped",
+      "result": {
+        "item": "pickaxe_wood",
+        "count": 1
+      },
+      "pattern": [
+        "XXX",
+        " # ",
+        " # "
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:wood"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "shovel_wood",
+        "count": 1
+      },
+      "pattern": [
+        "X",
+        "#",
+        "#"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:wood"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "hatchet_wood",
+        "count": 1
+      },
+      "pattern": [
+        "XX",
+        "X#",
+        " #"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:wood"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "hoe_wood",
+        "count": 1
+      },
+      "pattern": [
+        "XX",
+        " #",
+        " #"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:wood"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "pickaxe_stone",
+        "count": 1
+      },
+      "pattern": [
+        "XXX",
+        " # ",
+        " # "
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:stonebrick"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "shovel_stone",
+        "count": 1
+      },
+      "pattern": [
+        "X",
+        "#",
+        "#"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:stonebrick"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "hatchet_stone",
+        "count": 1
+      },
+      "pattern": [
+        "XX",
+        "X#",
+        " #"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:stonebrick"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "hoe_stone",
+        "count": 1
+      },
+      "pattern": [
+        "XX",
+        " #",
+        " #"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:stonebrick"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "pickaxe_iron",
+        "count": 1
+      },
+      "pattern": [
+        "XXX",
+        " # ",
+        " # "
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:iron_ingot"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "shovel_iron",
+        "count": 1
+      },
+      "pattern": [
+        "X",
+        "#",
+        "#"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:iron_ingot"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "hatchet_iron",
+        "count": 1
+      },
+      "pattern": [
+        "XX",
+        "X#",
+        " #"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:iron_ingot"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "hoe_iron",
+        "count": 1
+      },
+      "pattern": [
+        "XX",
+        " #",
+        " #"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:iron_ingot"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "pickaxe_emerald",
+        "count": 1
+      },
+      "pattern": [
+        "XXX",
+        " # ",
+        " # "
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:emerald"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "shovel_emerald",
+        "count": 1
+      },
+      "pattern": [
+        "X",
+        "#",
+        "#"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:emerald"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "hatchet_emerald",
+        "count": 1
+      },
+      "pattern": [
+        "XX",
+        "X#",
+        " #"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:emerald"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "hoe_emerald",
+        "count": 1
+      },
+      "pattern": [
+        "XX",
+        " #",
+        " #"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:emerald"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "pickaxe_gold",
+        "count": 1
+      },
+      "pattern": [
+        "XXX",
+        " # ",
+        " # "
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:gold_ingot"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "shovel_gold",
+        "count": 1
+      },
+      "pattern": [
+        "X",
+        "#",
+        "#"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:gold_ingot"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "shovel_gold",
+        "count": 1
+      },
+      "pattern": [
+        "XX",
+        "X#",
+        " #"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:gold_ingot"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "hoe_gold",
+        "count": 1
+      },
+      "pattern": [
+        "XX",
+        " #",
+        " #"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:gold_ingot"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "shears",
+        "count": 1
+      },
+      "pattern": [
+        " #",
+        "# "
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:iron_ingot"
+        }
+      }
+    }
+  ]
+}

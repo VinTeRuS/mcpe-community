@@ -1,0 +1,636 @@
+{
+  "namespace": "minecraft",
+  "recipes": [
+    {
+      "type": "shaped",
+      "result": {
+        "item": "paper",
+        "count": 3
+      },
+      "pattern": [
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:reeds"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "book",
+        "count": 1
+      },
+      "pattern": [
+        "#",
+        "#",
+        "#"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:paper"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "fence",
+        "count": 2
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "fence_gate",
+        "count": 1
+      },
+      "pattern": [
+        "#W#",
+        "#W#"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:stick"
+        },
+        "W": {
+          "item": "minecraft:wood"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "bookshelf",
+        "count": 1
+      },
+      "pattern": [
+        "###",
+        "XXX",
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:wood"
+        },
+        "X": {
+          "item": "minecraft:book"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "snow",
+        "count": 1
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:snowball"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "clay",
+        "count": 1
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:clay"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "red_brick",
+        "count": 1
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:brick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "light_gem",
+        "count": 1
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:yellow_dust"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "cloth",
+        "count": 1
+      },
+      "pattern": [
+        "##",
+        "##"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:string"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "tnt",
+        "count": 1
+      },
+      "pattern": [
+        "X#X",
+        "#X#",
+        "X#X"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:sulphur"
+        },
+        "#": {
+          "item": "minecraft:sand"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "stone_slab",
+        "count": 6,
+        "data": 0
+      },
+      "pattern": [
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:stonebrick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "stone_slab",
+        "count": 6,
+        "data": 1
+      },
+      "pattern": [
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:rock"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "stone_slab",
+        "count": 6,
+        "data": 2
+      },
+      "pattern": [
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:sandstone"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "stone_slab",
+        "count": 6,
+        "data": 3
+      },
+      "pattern": [
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:wood"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "stone_slab",
+        "count": 6,
+        "data": 4
+      },
+      "pattern": [
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:red_brick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "stone_slab",
+        "count": 6,
+        "data": 5
+      },
+      "pattern": [
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:stonebricksmooth"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "ladder",
+        "count": 2
+      },
+      "pattern": [
+        "# #",
+        "###",
+        "# #"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "door_wood",
+        "count": 1
+      },
+      "pattern": [
+        "##",
+        "##",
+        "##"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:wood"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "trapdoor",
+        "count": 2
+      },
+      "pattern": [
+        "###",
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:wood"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "sign",
+        "count": 1
+      },
+      "pattern": [
+        "###",
+        "###",
+        " X "
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:wood"
+        },
+        "X": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "sugar",
+        "count": 1
+      },
+      "pattern": [
+        "#"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:reeds"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "wood",
+        "count": 4
+      },
+      "pattern": [
+        "#"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:tree_trunk"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "stick",
+        "count": 4
+      },
+      "pattern": [
+        "#",
+        "#"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:wood"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "torch",
+        "count": 4
+      },
+      "pattern": [
+        "X",
+        "#"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:coal"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "torch",
+        "count": 4
+      },
+      "pattern": [
+        "X",
+        "#"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:coal"
+        },
+        "#": {
+          "item": "minecraft:stick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "bowl",
+        "count": 4
+      },
+      "pattern": [
+        "# #",
+        " # "
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:wood"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "flint_and_steel",
+        "count": 1
+      },
+      "pattern": [
+        "A ",
+        " B"
+      ],
+      "key": {
+        "A": {
+          "item": "minecraft:iron_ingot"
+        },
+        "B": {
+          "item": "minecraft:flint"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "bread",
+        "count": 1
+      },
+      "pattern": [
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:wheat"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "stairs_wood",
+        "count": 4
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:wood"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "stairs_stone",
+        "count": 4
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:stonebrick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "stairs_brick",
+        "count": 4
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:red_brick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "stairs_stonebricksmooth",
+        "count": 4
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:stonebricksmooth"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "stairs_netherbrick",
+        "count": 4
+      },
+      "pattern": [
+        "#  ",
+        "## ",
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:nether_brick"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "painting",
+        "count": 1
+      },
+      "pattern": [
+        "###",
+        "#X#",
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:stick"
+        },
+        "X": {
+          "item": "minecraft:cloth"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "bed",
+        "count": 1
+      },
+      "pattern": [
+        "###",
+        "XXX"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:cloth"
+        },
+        "X": {
+          "item": "minecraft:wood"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "nether_reactor",
+        "count": 1
+      },
+      "pattern": [
+        "X#X",
+        "X#X",
+        "X#X"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:emerald"
+        },
+        "X": {
+          "item": "minecraft:iron_ingot"
+        }
+      }
+    }
+  ]
+}

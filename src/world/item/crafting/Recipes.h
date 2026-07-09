@@ -16,8 +16,9 @@ class Recipes
 {
 public:
     static Recipes* getInstance();
-	const RecipeList& getRecipes();
-	static void		teardownRecipes();
+    const RecipeList& getRecipes();
+    static void      teardownRecipes();
+    static void applyDefinitions();
 
 	class Type {
 	public:

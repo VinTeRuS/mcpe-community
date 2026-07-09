@@ -1,0 +1,133 @@
+{
+  "namespace": "minecraft",
+  "recipes": [
+    {
+      "type": "shaped",
+      "result": {
+        "item": "minecraft:gold_ingot",
+        "count": 9
+      },
+      "pattern": [
+        "#"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:gold_block"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "minecraft:gold_block",
+        "count": 1
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:gold_ingot"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "minecraft:iron_ingot",
+        "count": 9
+      },
+      "pattern": [
+        "#"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:iron_block"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "minecraft:iron_block",
+        "count": 1
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:iron_ingot"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "minecraft:emerald",
+        "count": 9
+      },
+      "pattern": [
+        "#"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:emerald_block"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "minecraft:emerald_block",
+        "count": 1
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:emerald"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "minecraft:dye_powder",
+        "count": 9
+      },
+      "pattern": [
+        "#"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:lapis_block"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "minecraft:lapis_block",
+        "count": 1
+      },
+      "pattern": [
+        "###",
+        "###",
+        "###"
+      ],
+      "key": {
+        "#": {
+          "item": "minecraft:dye_powder"
+        }
+      }
+    }
+  ]
+}

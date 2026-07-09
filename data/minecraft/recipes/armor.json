@@ -1,0 +1,269 @@
+{
+  "namespace": "minecraft",
+  "recipes": [
+    {
+      "type": "shaped",
+      "result": {
+        "item": "helmet_cloth",
+        "count": 1
+      },
+      "pattern": [
+        "XXX",
+        "X X"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:leather"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "chestplate_cloth",
+        "count": 1
+      },
+      "pattern": [
+        "X X",
+        "XXX",
+        "XXX"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:leather"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "leggings_cloth",
+        "count": 1
+      },
+      "pattern": [
+        "XXX",
+        "X X",
+        "X X"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:leather"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "boots_cloth",
+        "count": 1
+      },
+      "pattern": [
+        "X X",
+        "X X"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:leather"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "helmet_iron",
+        "count": 1
+      },
+      "pattern": [
+        "XXX",
+        "X X"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:iron_ingot"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "chestplate_iron",
+        "count": 1
+      },
+      "pattern": [
+        "X X",
+        "XXX",
+        "XXX"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:iron_ingot"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "leggings_iron",
+        "count": 1
+      },
+      "pattern": [
+        "XXX",
+        "X X",
+        "X X"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:iron_ingot"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "boots_iron",
+        "count": 1
+      },
+      "pattern": [
+        "X X",
+        "X X"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:iron_ingot"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "helmet_diamond",
+        "count": 1
+      },
+      "pattern": [
+        "XXX",
+        "X X"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:emerald"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "chestplate_diamond",
+        "count": 1
+      },
+      "pattern": [
+        "X X",
+        "XXX",
+        "XXX"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:emerald"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "leggings_diamond",
+        "count": 1
+      },
+      "pattern": [
+        "XXX",
+        "X X",
+        "X X"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:emerald"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "boots_diamond",
+        "count": 1
+      },
+      "pattern": [
+        "X X",
+        "X X"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:emerald"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "helmet_gold",
+        "count": 1
+      },
+      "pattern": [
+        "XXX",
+        "X X"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:gold_ingot"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "chestplate_gold",
+        "count": 1
+      },
+      "pattern": [
+        "X X",
+        "XXX",
+        "XXX"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:gold_ingot"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "leggings_gold",
+        "count": 1
+      },
+      "pattern": [
+        "XXX",
+        "X X",
+        "X X"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:gold_ingot"
+        }
+      }
+    },
+    {
+      "type": "shaped",
+      "result": {
+        "item": "boots_gold",
+        "count": 1
+      },
+      "pattern": [
+        "X X",
+        "X X"
+      ],
+      "key": {
+        "X": {
+          "item": "minecraft:gold_ingot"
+        }
+      }
+    }
+  ]
+}
