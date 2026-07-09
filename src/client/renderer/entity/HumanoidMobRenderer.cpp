@@ -77,9 +77,11 @@ void HumanoidMobRenderer::render( Entity* mob_, float x, float y, float z, float
 			humanoidModel->holdingRightHand = true;
 	}
 
+	humanoidModel->leftHanded = entityRenderDispatcher->options->isLeftHanded;
 	humanoidModel->sneaking = mob->isSneaking();
 
 	super::render(mob_, x, y, z, rot, a);
 	humanoidModel->holdingRightHand = false;
 	humanoidModel->holdingLeftHand = false;
+	humanoidModel->leftHanded = false;
 }

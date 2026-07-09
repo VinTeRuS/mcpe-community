@@ -21,6 +21,7 @@ public:
 	ModelPart head, /*hair,*/ body, arm0, arm1, leg0, leg1;//, ear;
 	bool holdingLeftHand;
 	bool holdingRightHand;
+	bool leftHanded;
 	bool sneaking;
 	bool bowAndArrow;
 };
