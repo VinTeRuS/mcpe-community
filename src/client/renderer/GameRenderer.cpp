@@ -932,9 +932,11 @@ void GameRenderer::renderItemInHand(float a, int eye) {
                 glPushMatrix();
                 glScalef(-1, 1, 1);
                 glMatrixMode(GL_MODELVIEW);
+                glDisable2(GL_CULL_FACE);
             }
             itemInHandRenderer->render(a);
             if (mc->options.isLeftHanded) {
+                glEnable2(GL_CULL_FACE);
                 glMatrixMode(GL_PROJECTION);
                 glPopMatrix();
                 glMatrixMode(GL_MODELVIEW);

@@ -22,7 +22,7 @@ void HumanoidMobRenderer::renderHand() {
 
 	glEnableClientState2(GL_VERTEX_ARRAY);
 	glEnableClientState2(GL_TEXTURE_COORD_ARRAY);
-	humanoidModel->arm1.render(1 / 16.0f);
+	humanoidModel->arm0.render(1 / 16.0f);
 	glDisableClientState2(GL_VERTEX_ARRAY);
 	glDisableClientState2(GL_TEXTURE_COORD_ARRAY);
 }

@@ -389,7 +389,7 @@ FIX: `renderHand()` selects arm1 when true, arm0 when false. arm0=left-arm, arm1
 - Slider snap points verified
 - 4 files, +17/-8
 
-### Batch 17 (committed: 606839e)
+### Batch 17 (committed: c78be65)
 RenderHand arm switches: arm0 → arm1. Projection mirror for left-handed.
 
 Final approach (overrides batches 15-17):
