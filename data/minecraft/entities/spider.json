@@ -1,0 +1,27 @@
+{
+  "id": "minecraft:spider",
+  "numeric_id": 35,
+  "class": "Spider",
+  "category": "monster",
+  "properties": {
+    "health": 8,
+    "run_speed": 0.5,
+    "width": 1.4,
+    "height": 0.9,
+    "attack_damage": 2
+  },
+  "texture": "mob/spider.png",
+  "climbs": true,
+  "sounds": {
+    "ambient": "mob.spider",
+    "hurt": "mob.spider",
+    "death": "mob.spiderdeath"
+  },
+  "drops": [
+    {
+      "item": "minecraft:string",
+      "min": 0,
+      "max": 2
+    }
+  ]
+}

@@ -9,7 +9,7 @@ Every response use caveman style:
 - Ultra level: abbreviate (DB/auth/config/req/res/fn/impl), strip conjunctions, arrows for causality (X → Y), one word when one word enough
 - Exceptions: security warnings, destructive confirmations, multi-step sequences where order matters — write normal clarity there. Resume caveman after.
 - Commits: conventional commit format, subject ≤50 chars.
-- **ALWAYS update AGENTS.md → Conventions → progress (this file) after every major change. Include commit hash and file count.**
+- **ALWAYS update AGENTS.md → Conventions → progress (this file) after every major change. Include commit hash and file count. Do not repeat yourself**
 
 ## Sanity Check (auto-run after every change)
 
@@ -350,6 +350,16 @@ Phase 2  Phase 3           Phase 4 (needs P2)        │
 - [1.2] `Material::byName()` string→material lookup
 - `.gitignore`: `data/` removed (JSON defs are tracked source files)
 - 98 files changed, +1360/-4
+
+### Batch 11 (committed: `060b5fa`)
+- [1.3] 95 item JSON definition files in `data/minecraft/items/`
+- [1.3] `ItemDefinition` struct + `Item::applyDefinitions()` via JsonLoader
+- 98 files changed, +1205/-17
+
+### Batch 11 (committed: `060b5fa`)
+- [1.3] 95 item JSON definition files in `data/minecraft/items/`
+- [1.3] `ItemDefinition` struct + `Item::applyDefinitions()` via JsonLoader
+- 98 files changed, +1205/-17
 
 ### Phase 0 Legwork
 - [0.1] uint32 chunk storage ✔

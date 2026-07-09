@@ -1,0 +1,26 @@
+{
+  "id": "minecraft:creeper",
+  "numeric_id": 33,
+  "class": "Creeper",
+  "category": "monster",
+  "properties": {
+    "health": 16,
+    "run_speed": 0.7,
+    "width": 0.6,
+    "height": 1.8,
+    "attack_damage": 2
+  },
+  "texture": "mob/creeper.png",
+  "sounds": {
+    "ambient": "mob.creeper",
+    "hurt": "mob.creeper",
+    "death": "mob.creeperdeath"
+  },
+  "drops": [
+    {
+      "item": "minecraft:sulphur",
+      "min": 0,
+      "max": 2
+    }
+  ]
+}

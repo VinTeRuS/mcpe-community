@@ -1,0 +1,34 @@
+{
+  "id": "minecraft:skeleton",
+  "numeric_id": 34,
+  "class": "Skeleton",
+  "category": "monster",
+  "properties": {
+    "health": 10,
+    "run_speed": 0.7,
+    "width": 0.6,
+    "height": 1.8,
+    "attack_damage": 2
+  },
+  "texture": "mob/skeleton.png",
+  "sounds": {
+    "ambient": "mob.skeletonhurt",
+    "hurt": "mob.skeletonhurt",
+    "death": "mob.skeletonhurt"
+  },
+  "drops": [
+    {
+      "item": "minecraft:arrow",
+      "min": 0,
+      "max": 2
+    },
+    {
+      "item": "minecraft:bone",
+      "min": 0,
+      "max": 2
+    }
+  ],
+  "equipment": {
+    "main_hand": "minecraft:bow"
+  }
+}

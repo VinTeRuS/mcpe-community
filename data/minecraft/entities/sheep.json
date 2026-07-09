@@ -1,0 +1,25 @@
+{
+  "id": "minecraft:sheep",
+  "numeric_id": 13,
+  "class": "Sheep",
+  "category": "creature",
+  "properties": {
+    "health": 8,
+    "run_speed": 0.7,
+    "width": 0.9,
+    "height": 1.3
+  },
+  "texture": "mob/sheep.png",
+  "sounds": {
+    "ambient": "mob.sheep",
+    "hurt": "mob.sheep",
+    "death": "mob.sheep"
+  },
+  "drops": [
+    {
+      "item": "minecraft:cloth",
+      "min": 1,
+      "max": 1
+    }
+  ]
+}

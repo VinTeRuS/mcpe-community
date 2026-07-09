@@ -19,6 +19,7 @@
 #include "world/level/biome/Biome.h"
 #include "world/level/material/Material.h"
 #include "world/entity/MobCategory.h"
+#include "world/entity/EntityDefinition.h"
 //#include "world/level/storage/FolderMethods.h"
 #ifndef STANDALONE_SERVER
 #include "client/gui/screens/StartMenuScreen.h"
@@ -89,6 +90,7 @@ void NinecraftApp::init()
 		MobCategory::initMobCategories();
 		Tile::initTiles();
 		Item::initItems();
+		EntityDefinition::applyDefinitions();
 		Biome::initBiomes();
 		TileEntity::initTileEntities();
 

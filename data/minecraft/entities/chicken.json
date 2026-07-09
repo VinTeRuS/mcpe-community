@@ -1,0 +1,31 @@
+{
+  "id": "minecraft:chicken",
+  "numeric_id": 10,
+  "class": "Chicken",
+  "category": "creature",
+  "properties": {
+    "health": 4,
+    "run_speed": 0.7,
+    "width": 0.3,
+    "height": 0.7
+  },
+  "texture": "mob/chicken.png",
+  "fall_damage_immune": true,
+  "sounds": {
+    "ambient": "mob.chicken",
+    "hurt": "mob.chickenhurt",
+    "death": "mob.chickenhurt"
+  },
+  "drops": [
+    {
+      "item": "minecraft:feather",
+      "min": 0,
+      "max": 2
+    },
+    {
+      "item": "minecraft:chicken_raw",
+      "min": 1,
+      "max": 1
+    }
+  ]
+}

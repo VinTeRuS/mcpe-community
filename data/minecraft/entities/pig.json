@@ -1,0 +1,25 @@
+{
+  "id": "minecraft:pig",
+  "numeric_id": 12,
+  "class": "Pig",
+  "category": "creature",
+  "properties": {
+    "health": 10,
+    "run_speed": 0.7,
+    "width": 0.9,
+    "height": 0.9
+  },
+  "texture": "mob/pig.png",
+  "sounds": {
+    "ambient": "mob.pig",
+    "hurt": "mob.pig",
+    "death": "mob.pigdeath"
+  },
+  "drops": [
+    {
+      "item": "minecraft:porkchop_raw",
+      "min": 0,
+      "max": 2
+    }
+  ]
+}
