@@ -1,0 +1,12 @@
+{
+  "name_id": "minecraft:doorWood",
+  "numeric_id": 64,
+  "class": "DoorTile",
+  "material": "wood",
+  "hardness": 3.0,
+  "sound_type": "wood",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures"
+}

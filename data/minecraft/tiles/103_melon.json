@@ -1,0 +1,12 @@
+{
+  "name_id": "minecraft:melon",
+  "numeric_id": 103,
+  "class": "MelonTile",
+  "hardness": 1.0,
+  "sound_type": "wood",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "food_armor",
+  "material": "wood"
+}

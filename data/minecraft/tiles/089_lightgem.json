@@ -1,0 +1,14 @@
+{
+  "name_id": "minecraft:lightgem",
+  "numeric_id": 89,
+  "class": "LightGemTile",
+  "material": "glass",
+  "hardness": 0.3,
+  "sound_type": "glass",
+  "render_layer": "alphatest",
+  "light_emission": 15,
+  "solid": false,
+  "translucent": true,
+  "category": "structures",
+  "tex": 105
+}

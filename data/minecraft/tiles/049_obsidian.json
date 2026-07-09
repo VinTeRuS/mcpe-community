@@ -1,0 +1,14 @@
+{
+  "name_id": "minecraft:obsidian",
+  "numeric_id": 49,
+  "class": "ObsidianTile",
+  "hardness": 10.0,
+  "resistance": 2000.0,
+  "sound_type": "stone",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures",
+  "tex": 37,
+  "material": "stone"
+}

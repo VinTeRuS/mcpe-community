@@ -1,0 +1,12 @@
+{
+  "name_id": "minecraft:furnace",
+  "numeric_id": 61,
+  "class": "FurnaceTile",
+  "hardness": 3.5,
+  "sound_type": "stone",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures",
+  "material": "stone"
+}

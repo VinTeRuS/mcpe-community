@@ -1,0 +1,14 @@
+{
+  "name_id": "minecraft:oreGold",
+  "numeric_id": 14,
+  "class": "OreTile",
+  "hardness": 3.0,
+  "resistance": 5.0,
+  "sound_type": "stone",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "decorations",
+  "tex": 32,
+  "material": "stone"
+}

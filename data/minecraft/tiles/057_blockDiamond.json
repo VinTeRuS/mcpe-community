@@ -1,0 +1,14 @@
+{
+  "name_id": "minecraft:blockDiamond",
+  "numeric_id": 57,
+  "class": "MetalTile",
+  "hardness": 5.0,
+  "resistance": 10.0,
+  "sound_type": "metal",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "decorations",
+  "tex": 40,
+  "material": "metal"
+}

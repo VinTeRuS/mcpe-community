@@ -1,0 +1,12 @@
+{
+  "name_id": "minecraft:doorIron",
+  "numeric_id": 71,
+  "class": "DoorTile",
+  "material": "metal",
+  "hardness": 5.0,
+  "sound_type": "metal",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures"
+}

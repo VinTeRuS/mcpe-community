@@ -1,0 +1,12 @@
+{
+  "name_id": "minecraft:quartzBlock",
+  "numeric_id": 155,
+  "class": "QuartzBlockTile",
+  "hardness": 0.8,
+  "sound_type": "stone",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures",
+  "material": "stone"
+}

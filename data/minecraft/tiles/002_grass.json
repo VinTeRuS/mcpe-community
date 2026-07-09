@@ -1,0 +1,12 @@
+{
+  "name_id": "minecraft:grass",
+  "numeric_id": 2,
+  "class": "GrassTile",
+  "hardness": 0.6,
+  "sound_type": "grass",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures",
+  "material": "plant"
+}

@@ -1,0 +1,13 @@
+{
+  "name_id": "minecraft:crops",
+  "numeric_id": 59,
+  "class": "CropTile",
+  "hardness": 0.0,
+  "sound_type": "grass",
+  "render_layer": "blend",
+  "solid": false,
+  "translucent": true,
+  "category": "structures",
+  "tex": 88,
+  "material": "plant"
+}

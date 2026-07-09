@@ -1,0 +1,12 @@
+{
+  "name_id": "minecraft:cloth",
+  "numeric_id": 35,
+  "class": "ClothTile",
+  "hardness": 0.8,
+  "sound_type": "cloth",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures",
+  "material": "cloth"
+}

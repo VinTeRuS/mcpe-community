@@ -1,0 +1,10 @@
+{
+  "name_id": "minecraft:bed",
+  "numeric_id": 26,
+  "class": "BedTile",
+  "hardness": 0.2,
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures"
+}

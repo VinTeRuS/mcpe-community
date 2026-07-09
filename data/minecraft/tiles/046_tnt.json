@@ -1,0 +1,13 @@
+{
+  "name_id": "minecraft:tnt",
+  "numeric_id": 46,
+  "class": "TntTile",
+  "hardness": 0.0,
+  "sound_type": "grass",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "tools",
+  "tex": 8,
+  "material": "plant"
+}

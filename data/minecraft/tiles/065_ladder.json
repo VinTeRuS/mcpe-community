@@ -1,0 +1,13 @@
+{
+  "name_id": "minecraft:ladder",
+  "numeric_id": 65,
+  "class": "LadderTile",
+  "hardness": 0.4,
+  "sound_type": "wood",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures",
+  "tex": 83,
+  "material": "wood"
+}

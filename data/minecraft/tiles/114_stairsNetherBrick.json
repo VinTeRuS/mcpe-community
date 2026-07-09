@@ -1,0 +1,9 @@
+{
+  "name_id": "minecraft:stairsNetherBrick",
+  "numeric_id": 114,
+  "class": "StairTile",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures"
+}

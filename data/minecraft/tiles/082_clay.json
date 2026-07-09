@@ -1,0 +1,13 @@
+{
+  "name_id": "minecraft:clay",
+  "numeric_id": 82,
+  "class": "ClayTile",
+  "hardness": 0.6,
+  "sound_type": "gravel",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures",
+  "tex": 16,
+  "material": "sand"
+}

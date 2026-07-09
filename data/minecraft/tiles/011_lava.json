@@ -1,0 +1,13 @@
+{
+  "name_id": "minecraft:lava",
+  "numeric_id": 11,
+  "class": "LiquidTileStatic",
+  "material": "lava",
+  "hardness": 100.0,
+  "render_layer": "blend",
+  "light_block": 255,
+  "light_emission": 15,
+  "solid": false,
+  "translucent": true,
+  "category": "structures"
+}

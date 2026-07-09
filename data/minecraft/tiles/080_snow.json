@@ -1,0 +1,13 @@
+{
+  "name_id": "minecraft:snow",
+  "numeric_id": 80,
+  "class": "SnowTile",
+  "hardness": 0.2,
+  "sound_type": "cloth",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures",
+  "tex": 16,
+  "material": "cloth"
+}

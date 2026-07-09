@@ -1,0 +1,13 @@
+{
+  "name_id": "minecraft:netherreactor",
+  "numeric_id": 247,
+  "class": "NetherReactor",
+  "material": "metal",
+  "hardness": 3.0,
+  "sound_type": "metal",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures",
+  "tex": 234
+}

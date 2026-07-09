@@ -1,0 +1,12 @@
+{
+  "name_id": "minecraft:web",
+  "numeric_id": 30,
+  "class": "WebTile",
+  "hardness": 4.0,
+  "render_layer": "blend",
+  "light_block": 1,
+  "solid": false,
+  "translucent": true,
+  "category": "decorations",
+  "tex": 11
+}

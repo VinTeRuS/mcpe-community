@@ -26,6 +26,26 @@ struct BlockProperties {
     int lightEmission = 0;
 };
 
+struct TileDefinition {
+    std::string nameId;
+    std::string className;
+    std::string material;
+    std::string soundType;
+    std::string renderLayer = "opaque";
+    std::string shape;
+    std::string category;
+    float hardness = -1.0f;
+    float resistance = -1.0f;
+    int numericId = -1;
+    int tex = -1;
+    int lightBlock = -1;
+    int lightEmission = -1;
+    bool solid = true;
+    bool translucent = false;
+    bool ticking = false;
+    bool hasTicking = false;
+};
+
 class Bush;
 class GrassTile;
 class LeafTile;
@@ -247,6 +267,7 @@ public:
 	static Tile* info_reserved6;
 
 	static void initTiles();
+	static void applyDefinitions();
 	static void teardownTiles();
 
 	static int transformToValidBlockId(int blockId);

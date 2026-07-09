@@ -1,0 +1,12 @@
+{
+  "name_id": "minecraft:sign",
+  "numeric_id": 68,
+  "class": "SignTile",
+  "hardness": 1.0,
+  "sound_type": "wood",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "decorations",
+  "material": "wood"
+}

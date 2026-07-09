@@ -1,0 +1,9 @@
+{
+  "name_id": "minecraft:stairsBrick",
+  "numeric_id": 108,
+  "class": "StairTile",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures"
+}

@@ -1,0 +1,14 @@
+{
+  "name_id": "minecraft:blockIron",
+  "numeric_id": 42,
+  "class": "MetalTile",
+  "hardness": 5.0,
+  "resistance": 10.0,
+  "sound_type": "metal",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "decorations",
+  "tex": 38,
+  "material": "metal"
+}

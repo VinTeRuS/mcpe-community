@@ -6,8 +6,7 @@
 #include "../../item/TileItem.h"
 
 #include "../../../util/Random.h"
-//#include "locale/Descriptive.h"
-//#include "stats/Stats.h"
+#include "../../../util/JsonLoader.h"
 #include "../../entity/Entity.h"
 #include "../LevelSource.h"
 #include "../material/Material.h"
@@ -16,6 +15,7 @@
 #include "../../phys/Vec3.h"
 #include "../../../locale/I18n.h"
 #include "../../item/ClothTileItem.h"
+#include <unordered_map>
 
 #include "../../item/AuxDataTileItem.h"
 #include "../../item/LeafTileItem.h"
@@ -148,6 +148,111 @@ Tile* Tile::stairs_netherBricks   = NULL;
 Tile* Tile::stairs_sandStone   = NULL;
 Tile* Tile::quartzBlock   = NULL;
 Tile* Tile::stairs_quartz   = NULL;
+
+/*static*/
+TileDefinition parseTileDefinition(const json& j) {
+    TileDefinition def;
+    def.nameId = j.value("name_id", "");
+    def.className = j.value("class", "");
+    def.material = j.value("material", "");
+    def.soundType = j.value("sound_type", "");
+    def.renderLayer = j.value("render_layer", "opaque");
+    def.shape = j.value("shape", "");
+    def.category = j.value("category", "");
+    def.numericId = j.value("numeric_id", -1);
+    def.tex = j.value("tex", -1);
+    def.lightBlock = j.value("light_block", -1);
+    def.lightEmission = j.value("light_emission", -1);
+    def.solid = j.value("solid", true);
+    def.translucent = j.value("translucent", false);
+    def.hardness = j.value("hardness", -1.0f);
+    def.resistance = j.value("resistance", -1.0f);
+    if (j.contains("ticking")) { def.ticking = j["ticking"]; def.hasTicking = true; }
+    return def;
+}
+
+/*static*/
+void Tile::applyDefinitions() {
+    auto& loader = JsonLoader::singleton();
+
+    // Sound type lookup
+    static const std::unordered_map<std::string, const SoundType*> s_soundMap = {
+        {"stone", &SOUND_STONE},
+        {"wood", &SOUND_WOOD},
+        {"gravel", &SOUND_GRAVEL},
+        {"grass", &SOUND_GRASS},
+        {"metal", &SOUND_METAL},
+        {"glass", &SOUND_GLASS},
+        {"cloth", &SOUND_CLOTH},
+        {"sand", &SOUND_SAND},
+        {"silent", &SOUND_SILENT},
+        {"normal", &SOUND_NORMAL},
+    };
+
+    int loaded = 0;
+    loader.loadDir("minecraft", "tiles", [&](const std::string& path, const json& data) {
+        TileDefinition def = parseTileDefinition(data);
+        if (def.numericId < 0 || def.numericId >= 256)
+            return;
+        Tile* tile = Tile::tiles[def.numericId];
+        if (!tile)
+            return;
+
+        // Apply nameId
+        if (!def.nameId.empty())
+            tile->setNameId(def.nameId);
+
+        // Apply sound type
+        if (!def.soundType.empty()) {
+            auto it = s_soundMap.find(def.soundType);
+            if (it != s_soundMap.end())
+                tile->soundType = it->second;
+        }
+
+        // Apply hardness
+        if (def.hardness >= 0)
+            tile->destroySpeed = def.hardness;
+
+        // Apply resistance (stored as * 3 internally, matching setExplodeable)
+        if (def.resistance >= 0)
+            tile->explosionResistance = def.resistance * 3.0f;
+
+        // Apply light block
+        if (def.lightBlock >= 0)
+            tile->properties.lightBlock = def.lightBlock;
+
+        // Apply light emission (0-15 range, stored as MAX_BRIGHTNESS * f internally)
+        if (def.lightEmission >= 0)
+            tile->properties.lightEmission = def.lightEmission;
+
+        // Apply solid/translucent
+        tile->properties.solid = def.solid;
+        tile->properties.translucent = def.translucent;
+
+        // Apply ticking
+        if (def.hasTicking)
+            tile->properties.shouldTick = def.ticking;
+
+        // Apply category
+        if (!def.category.empty()) {
+            int cat = -1;
+            if (def.category == "structures") cat = 1;
+            else if (def.category == "decorations") cat = 8;
+            else if (def.category == "tools") cat = 2;
+            else if (def.category == "food_armor") cat = 4;
+            else if (def.category == "mechanisms") cat = 16;
+            if (cat >= 0) tile->category = cat;
+        }
+
+        // Apply tex
+        if (def.tex >= 0)
+            tile->tex = def.tex;
+
+        loaded++;
+    });
+
+    printf("Tile::applyDefinitions: loaded %d tile definitions from JSON\n", loaded);
+}
 
 /*static*/
 void Tile::initTiles() {
@@ -290,6 +395,8 @@ void Tile::initTiles() {
 				LOGE("Error: Missing category for tile %d: %s\n", tiles[i]->id, tiles[i]->getDescriptionId().c_str());
         }
     }
+
+    applyDefinitions();
 }
 
 /*static*/

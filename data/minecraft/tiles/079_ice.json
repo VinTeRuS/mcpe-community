@@ -1,0 +1,14 @@
+{
+  "name_id": "minecraft:ice",
+  "numeric_id": 79,
+  "class": "IceTile",
+  "hardness": 0.5,
+  "sound_type": "glass",
+  "render_layer": "alphatest",
+  "light_block": 3,
+  "solid": true,
+  "translucent": false,
+  "category": "structures",
+  "tex": 16,
+  "material": "glass"
+}

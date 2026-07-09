@@ -1,0 +1,15 @@
+{
+  "name_id": "minecraft:oreRedstone",
+  "numeric_id": 74,
+  "class": "RedStoneOreTile",
+  "hardness": 3.0,
+  "resistance": 5.0,
+  "sound_type": "stone",
+  "render_layer": "opaque",
+  "light_emission": 9,
+  "solid": true,
+  "translucent": false,
+  "category": "mechanisms",
+  "tex": 16,
+  "material": "stone"
+}

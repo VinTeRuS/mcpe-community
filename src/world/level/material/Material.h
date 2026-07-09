@@ -3,6 +3,8 @@
 
 //package net.minecraft.world.level.material;
 
+#include <string>
+
 class Material
 {
 public:
@@ -33,6 +35,8 @@ public:
     static const Material* portal;
     static const Material* cake;
 	static const Material* web;
+
+	static const Material* byName(const std::string& name);
 
 	static void initMaterials();
 	static void teardownMaterials();

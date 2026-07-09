@@ -1,0 +1,12 @@
+{
+  "name_id": "minecraft:hellsand",
+  "numeric_id": 88,
+  "class": "HellSandTile",
+  "material": "sand",
+  "hardness": 0.5,
+  "sound_type": "sand",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "tex": 104
+}

@@ -1,0 +1,9 @@
+{
+  "name_id": "minecraft:stairsSandStone",
+  "numeric_id": 128,
+  "class": "StairTile",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures"
+}

@@ -1,0 +1,14 @@
+{
+  "name_id": "minecraft:fence",
+  "numeric_id": 85,
+  "class": "FenceTile",
+  "hardness": 2.0,
+  "resistance": 5.0,
+  "sound_type": "wood",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures",
+  "tex": 4,
+  "material": "wood"
+}

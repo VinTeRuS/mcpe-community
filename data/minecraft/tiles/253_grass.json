@@ -1,0 +1,9 @@
+{
+  "name_id": "minecraft:grass",
+  "numeric_id": 253,
+  "class": "CarriedTile",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "tex": 3
+}

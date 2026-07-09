@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Block Definition",
+  "type": "object",
+  "properties": {
+    "name_id": { "type": "string", "pattern": "^[a-z_]+:[a-z_]+$" },
+    "numeric_id": { "type": "integer", "minimum": 1, "maximum": 255 },
+    "material": { "type": "string", "enum": ["stone","wood","dirt","grass","sand","gravel","glass","cloth","metal","water","lava","leaves","plant","sponge","cloth","cake","unused","portal","tnt","ice","snow","cactus","clay","gourd","dragon_egg","portal","cake","web","red_stone","fire","invisible_bedrock","stone_slab","farmland"] },
+    "hardness": { "type": "number", "minimum": 0 },
+    "resistance": { "type": "number", "minimum": 0 },
+    "sound_type": { "type": "string", "enum": ["normal","wood","gravel","grass","stone","metal","glass","cloth","sand","silent"] },
+    "render_layer": { "type": "string", "enum": ["opaque","alphatest","blend"] },
+    "light_emission": { "type": "integer", "minimum": 0, "maximum": 15 },
+    "light_block": { "type": "integer", "minimum": 0, "maximum": 255 },
+    "solid": { "type": "boolean" },
+    "translucent": { "type": "boolean" },
+    "entity_tile": { "type": "boolean" },
+    "should_tick": { "type": "boolean" },
+    "ticking": { "type": "boolean" },
+    "shape": { "type": "string", "enum": ["cube","thin","fence","stairs","torch","crops","door","ladder","reeds","bed","slab","flower","mushroom","portal","cake","pumpkin","stem","trapdoor","sign","fire"] },
+    "category": { "type": "integer", "minimum": -1, "maximum": 4 },
+    "destroy_time": { "type": "number", "minimum": 0 },
+    "explosion_resistance": { "type": "number", "minimum": 0 },
+    "friction": { "type": "number", "minimum": 0 },
+    "gravity": { "type": "number", "minimum": 0 },
+    "tex": { "type": "integer", "minimum": 0 }
+  },
+  "required": ["name_id", "numeric_id", "material"]
+}

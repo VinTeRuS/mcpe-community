@@ -1,0 +1,14 @@
+{
+  "name_id": "minecraft:leaves",
+  "numeric_id": 254,
+  "class": "LeafTile",
+  "hardness": 0.2,
+  "sound_type": "grass",
+  "render_layer": "opaque",
+  "light_block": 1,
+  "solid": true,
+  "translucent": false,
+  "category": "structures",
+  "tex": 235,
+  "material": "plant"
+}

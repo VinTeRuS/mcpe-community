@@ -1,0 +1,13 @@
+{
+  "name_id": "minecraft:thinGlass",
+  "numeric_id": 102,
+  "class": "ThinFenceTile",
+  "material": "glass",
+  "hardness": 0.3,
+  "sound_type": "glass",
+  "render_layer": "alphatest",
+  "solid": false,
+  "translucent": true,
+  "category": "structures",
+  "tex": 49
+}

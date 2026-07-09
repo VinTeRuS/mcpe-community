@@ -1,0 +1,13 @@
+{
+  "name_id": "minecraft:stonebricksmooth",
+  "numeric_id": 98,
+  "class": "MultiTextureTile",
+  "hardness": 1.5,
+  "resistance": 10.0,
+  "sound_type": "stone",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures",
+  "material": "stone"
+}

@@ -1,0 +1,13 @@
+{
+  "name_id": "minecraft:stoneSlab",
+  "numeric_id": 44,
+  "class": "StoneSlabTile",
+  "hardness": 2.0,
+  "resistance": 10.0,
+  "sound_type": "stone",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures",
+  "material": "stone"
+}

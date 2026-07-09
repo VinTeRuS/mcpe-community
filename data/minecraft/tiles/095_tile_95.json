@@ -1,0 +1,13 @@
+{
+  "name_id": "minecraft:tile_95",
+  "numeric_id": 95,
+  "class": "InvisibleTile",
+  "material": "stone",
+  "hardness": -1.0,
+  "resistance": 6000000.0,
+  "sound_type": "silent",
+  "render_layer": "alphatest",
+  "solid": true,
+  "translucent": false,
+  "tex": 0
+}

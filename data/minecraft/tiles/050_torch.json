@@ -1,0 +1,14 @@
+{
+  "name_id": "minecraft:torch",
+  "numeric_id": 50,
+  "class": "TorchTile",
+  "hardness": 0.0,
+  "sound_type": "wood",
+  "render_layer": "blend",
+  "light_emission": 14,
+  "solid": false,
+  "translucent": true,
+  "category": "tools",
+  "tex": 5,
+  "material": "wood"
+}

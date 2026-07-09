@@ -1,0 +1,9 @@
+{
+  "name_id": "minecraft:stairsQuartz",
+  "numeric_id": 156,
+  "class": "StairTile",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures"
+}

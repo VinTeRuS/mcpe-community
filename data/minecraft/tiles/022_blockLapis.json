@@ -1,0 +1,14 @@
+{
+  "name_id": "minecraft:blockLapis",
+  "numeric_id": 22,
+  "class": "Tile",
+  "material": "stone",
+  "hardness": 3.0,
+  "resistance": 5.0,
+  "sound_type": "stone",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "decorations",
+  "tex": 9
+}

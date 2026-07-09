@@ -1,0 +1,12 @@
+{
+  "name_id": "minecraft:farmland",
+  "numeric_id": 60,
+  "class": "FarmTile",
+  "hardness": 0.6,
+  "sound_type": "gravel",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures",
+  "material": "sand"
+}

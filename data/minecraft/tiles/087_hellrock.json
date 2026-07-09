@@ -1,0 +1,12 @@
+{
+  "name_id": "minecraft:hellrock",
+  "numeric_id": 87,
+  "class": "Tile",
+  "material": "stone",
+  "hardness": 0.4,
+  "sound_type": "stone",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "tex": 103
+}

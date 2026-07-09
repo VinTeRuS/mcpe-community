@@ -1,0 +1,9 @@
+{
+  "name_id": "minecraft:stairsWood",
+  "numeric_id": 53,
+  "class": "StairTile",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures"
+}

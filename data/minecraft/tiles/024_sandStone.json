@@ -1,0 +1,12 @@
+{
+  "name_id": "minecraft:sandStone",
+  "numeric_id": 24,
+  "class": "SandStoneTile",
+  "hardness": 0.8,
+  "sound_type": "stone",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures",
+  "material": "stone"
+}

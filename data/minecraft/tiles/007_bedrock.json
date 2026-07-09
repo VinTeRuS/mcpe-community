@@ -1,0 +1,14 @@
+{
+  "name_id": "minecraft:bedrock",
+  "numeric_id": 7,
+  "class": "Tile",
+  "material": "stone",
+  "hardness": -1.0,
+  "resistance": 6000000.0,
+  "sound_type": "stone",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures",
+  "tex": 17
+}

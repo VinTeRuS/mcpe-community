@@ -1,0 +1,13 @@
+{
+  "name_id": "minecraft:flower",
+  "numeric_id": 37,
+  "class": "Bush",
+  "hardness": 0.0,
+  "sound_type": "grass",
+  "render_layer": "blend",
+  "solid": false,
+  "translucent": true,
+  "category": "decorations",
+  "tex": 13,
+  "material": "plant"
+}

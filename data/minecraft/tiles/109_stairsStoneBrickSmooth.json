@@ -1,0 +1,9 @@
+{
+  "name_id": "minecraft:stairsStoneBrickSmooth",
+  "numeric_id": 109,
+  "class": "StairTile",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures"
+}

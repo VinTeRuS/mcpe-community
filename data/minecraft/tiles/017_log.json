@@ -1,0 +1,12 @@
+{
+  "name_id": "minecraft:log",
+  "numeric_id": 17,
+  "class": "TreeTile",
+  "hardness": 2.0,
+  "sound_type": "wood",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures",
+  "material": "wood"
+}

@@ -4,6 +4,8 @@
 #include "DecorationMaterial.h"
 #include "WebMaterial.h"
 #include <cstdlib>
+#include <unordered_map>
+#include <string>
 
 const Material* Material::air		= NULL;
 const Material* Material::dirt		= NULL;
@@ -96,4 +98,42 @@ void Material::teardownMaterials() {
 	SAFEDEL(portal);
 	SAFEDEL(cake);
 	SAFEDEL(web);
+}
+
+/*static*/
+const Material* Material::byName(const std::string& name) {
+    static const std::unordered_map<std::string, const Material**> s_map = {
+        {"air", &air},
+        {"dirt", &dirt},
+        {"wood", &wood},
+        {"stone", &stone},
+        {"metal", &metal},
+        {"water", &water},
+        {"lava", &lava},
+        {"leaves", &leaves},
+        {"plant", &plant},
+        {"replaceable_plant", &replaceable_plant},
+        {"sponge", &sponge},
+        {"cloth", &cloth},
+        {"fire", &fire},
+        {"sand", &sand},
+        {"decoration", &decoration},
+        {"decor", &decoration},
+        {"glass", &glass},
+        {"explosive", &explosive},
+        {"ice", &ice},
+        {"top_snow", &topSnow},
+        {"snow", &snow},
+        {"cactus", &cactus},
+        {"clay", &clay},
+        {"vegetable", &vegetable},
+        {"portal", &portal},
+        {"cake", &cake},
+        {"web", &web},
+    };
+    auto it = s_map.find(name);
+    if (it != s_map.end() && *it->second)
+        return *it->second;
+    fprintf(stderr, "Material::byName: unknown material '%s'\n", name.c_str());
+    return stone;
 }

@@ -343,8 +343,23 @@ Phase 2  Phase 3           Phase 4 (needs P2)        │
 - Fix: missing `buttonClicked()` call in non-touch mouse release path
 - 2 files, +6/-1
 
+### Batch 10 (committed: `dc2d4cd`)
+- [1.1] `src/util/JsonLoader.h/.cpp` — parse `data/<namespace>/*.json` with overlay support
+- AGENTS.md: Sanity Check section (build both, launch test, check warnings)
+- `data/minecraft/` namespace dirs created
+- 3 files, +167/-2
+
+### Batch 11
+- [1.2] `TileDefinition` struct + `Tile::applyDefinitions()` in Tile.h/cpp
+- `Material::byName()` string→material lookup
+- 89 generated tile JSON definition files in `data/minecraft/tiles/`
+- Symlink `debug/data → ../data` for runtime JSON loading
+- `JsonLoader.cpp` added to CMakeLists.txt
+- 8 files changed (5 C++ source/header, 1 CMake, +90 data files)
+- Sanity: client builds + server builds + launch clean (89 defs loaded)
+
 ### Pending
-- Phase 0 complete! Move to Phase 1 (JSON data-driven definitions)
+- [1.3] item definitions JSON
 
 ### Phase 0 Legwork
 - [0.1] uint32 chunk storage ✔

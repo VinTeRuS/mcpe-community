@@ -1,0 +1,13 @@
+{
+  "name_id": "minecraft:reeds",
+  "numeric_id": 83,
+  "class": "ReedTile",
+  "hardness": 0.0,
+  "sound_type": "grass",
+  "render_layer": "blend",
+  "solid": false,
+  "translucent": true,
+  "category": "structures",
+  "tex": 16,
+  "material": "plant"
+}

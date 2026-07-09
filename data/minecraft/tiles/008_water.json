@@ -1,0 +1,12 @@
+{
+  "name_id": "minecraft:water",
+  "numeric_id": 8,
+  "class": "LiquidTileDynamic",
+  "material": "water",
+  "hardness": 100.0,
+  "render_layer": "blend",
+  "light_block": 3,
+  "solid": false,
+  "translucent": true,
+  "category": "structures"
+}

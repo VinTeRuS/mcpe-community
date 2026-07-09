@@ -1,0 +1,12 @@
+{
+  "name_id": "minecraft:workbench",
+  "numeric_id": 58,
+  "class": "WorkbenchTile",
+  "hardness": 2.5,
+  "sound_type": "wood",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures",
+  "material": "wood"
+}

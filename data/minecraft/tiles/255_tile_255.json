@@ -1,0 +1,9 @@
+{
+  "name_id": "minecraft:tile_255",
+  "numeric_id": 255,
+  "class": "Tile",
+  "material": "dirt",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false
+}

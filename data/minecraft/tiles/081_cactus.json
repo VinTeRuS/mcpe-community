@@ -1,0 +1,13 @@
+{
+  "name_id": "minecraft:cactus",
+  "numeric_id": 81,
+  "class": "CactusTile",
+  "hardness": 0.4,
+  "sound_type": "cloth",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures",
+  "tex": 16,
+  "material": "cloth"
+}

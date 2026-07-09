@@ -1,0 +1,14 @@
+{
+  "name_id": "minecraft:netherBrick",
+  "numeric_id": 112,
+  "class": "Tile",
+  "material": "stone",
+  "hardness": 2.0,
+  "resistance": 10.0,
+  "sound_type": "stone",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures",
+  "tex": 224
+}

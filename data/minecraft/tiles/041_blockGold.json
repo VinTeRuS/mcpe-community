@@ -1,0 +1,14 @@
+{
+  "name_id": "minecraft:blockGold",
+  "numeric_id": 41,
+  "class": "MetalTile",
+  "hardness": 3.0,
+  "resistance": 10.0,
+  "sound_type": "metal",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "decorations",
+  "tex": 39,
+  "material": "metal"
+}

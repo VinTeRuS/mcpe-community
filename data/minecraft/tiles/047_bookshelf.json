@@ -1,0 +1,13 @@
+{
+  "name_id": "minecraft:bookshelf",
+  "numeric_id": 47,
+  "class": "BookshelfTile",
+  "hardness": 1.5,
+  "sound_type": "wood",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "decorations",
+  "tex": 35,
+  "material": "wood"
+}

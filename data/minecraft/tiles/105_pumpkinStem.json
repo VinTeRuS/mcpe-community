@@ -1,0 +1,12 @@
+{
+  "name_id": "minecraft:pumpkinStem",
+  "numeric_id": 105,
+  "class": "StemTile",
+  "hardness": 0.0,
+  "sound_type": "wood",
+  "render_layer": "blend",
+  "solid": false,
+  "translucent": true,
+  "category": "food_armor",
+  "material": "wood"
+}

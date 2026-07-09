@@ -1,0 +1,13 @@
+{
+  "name_id": "minecraft:sand",
+  "numeric_id": 12,
+  "class": "HeavyTile",
+  "hardness": 0.5,
+  "sound_type": "sand",
+  "render_layer": "opaque",
+  "solid": true,
+  "translucent": false,
+  "category": "structures",
+  "tex": 18,
+  "material": "sand"
+}
