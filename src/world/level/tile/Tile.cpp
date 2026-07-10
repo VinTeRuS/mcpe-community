@@ -258,30 +258,250 @@ void Tile::applyDefinitions() {
     printf("Tile::applyDefinitions: loaded %d tile definitions from JSON\n", loaded);
 }
 
-/*static*/
-void Tile::handleJsonDefinition(const std::string& modId, const json& data) {
-    (void)modId;
-    TileDefinition def = parseTileDefinition(data);
-    if (def.numericId < 0 || def.numericId >= 256)
-        return;
-    Tile* tile = Tile::tiles[def.numericId];
-    if (!tile)
-        return;
+// ─── Tile Factory System ────────────────────────────────────────
+static std::unordered_map<std::string, Tile::TileFactory>& s_tileFactories() {
+    static std::unordered_map<std::string, Tile::TileFactory> factories;
+    return factories;
+}
 
+void Tile::registerTileClass(const std::string& name, TileFactory factory) {
+    s_tileFactories()[name] = std::move(factory);
+}
+
+/*static*/
+void Tile::initTileFactories() {
+    // Helper templates
+    auto regTex = [](const std::string& name, auto fn) {
+        registerTileClass(name, fn);
+    };
+
+    // Basic generic cube (most common)
+    registerTileClass("Tile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 1;
+        const Material* mat = def.material.empty() ? Material::stone : Material::byName(def.material);
+        auto* t = new Tile(id, tex, mat);
+        t->init();
+        return t;
+    });
+
+    // ── Register all known subclasses ────────────────────────
+    // Simple (int id, int tex)
+    regTex("StoneTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 1; auto* t = new StoneTile(id, tex); t->init(); return t; });
+    regTex("DirtTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 2; auto* t = new DirtTile(id, tex); t->init(); return t; });
+    regTex("OreTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 1; auto* t = new OreTile(id, tex); t->init(); return t; });
+    regTex("GravelTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 19; auto* t = new GravelTile(id, tex); t->init(); return t; });
+    regTex("WebTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 11; auto* t = new WebTile(id, tex); t->init(); return t; });
+    regTex("ClayTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 16*4+8; auto* t = new ClayTile(id, tex); t->init(); return t; });
+    regTex("ReedTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 16*4+9; auto* t = new ReedTile(id, tex); t->init(); return t; });
+    regTex("LadderTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 3+5*16; auto* t = new LadderTile(id, tex); t->init(); return t; });
+    regTex("CactusTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 16*4+6; auto* t = new CactusTile(id, tex); t->init(); return t; });
+    regTex("TorchTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 5*16; auto* t = new TorchTile(id, tex); t->init(); return t; });
+    regTex("TopSnowTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 16*4+2; auto* t = new TopSnowTile(id, tex); t->init(); return t; });
+    regTex("IceTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 16*4+3; auto* t = new IceTile(id, tex); t->init(); return t; });
+    regTex("SnowTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 16*4+2; auto* t = new SnowTile(id, tex); t->init(); return t; });
+    regTex("TntTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 8; auto* t = new TntTile(id, tex); t->init(); return t; });
+    regTex("BookshelfTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 35; auto* t = new BookshelfTile(id, tex); t->init(); return t; });
+    regTex("MetalTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 1; auto* t = new MetalTile(id, tex); t->init(); return t; });
+    regTex("FenceTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 4; auto* t = new FenceTile(id, tex); t->init(); return t; });
+    regTex("Bush", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 13; auto* t = new Bush(id, tex); t->init(); return t; });
+    regTex("Mushroom", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 13+16; auto* t = new Mushroom(id, tex); t->init(); return t; });
+    regTex("TallGrass", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 2*16+7; auto* t = new TallGrass(id, tex); t->init(); return t; });
+    regTex("Sapling", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 15; auto* t = new Sapling(id, tex); t->init(); return t; });
+    regTex("CropTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 8+5*16; auto* t = new CropTile(id, tex); t->init(); return t; });
+    regTex("LightGemTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 9+16*6; auto* t = new LightGemTile(id, tex, Material::glass); t->init(); return t; });
+    regTex("CarriedTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 1; auto* t = new CarriedTile(id, 3, 12*16+12); t->init(); return t; });
+
+    // (int id, int tex, const Material*)
+    regTex("HeavyTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 18; auto* t = new HeavyTile(id, tex, Material::byName(def.material.empty()?"sand":def.material)); t->init(); return t; });
+    regTex("ThinFenceTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 1+3*16; auto* t = new ThinFenceTile(id, tex, 4+9*16, Material::glass, false); t->init(); return t; });
+
+    // (int id)
+    regTex("GrassTile", [](int id, const TileDefinition&) -> Tile* { auto* t = new GrassTile(id); t->init(); return t; });
+    regTex("BedTile", [](int id, const TileDefinition&) -> Tile* { auto* t = new BedTile(id); t->init(); return t; });
+    regTex("ClothTile", [](int id, const TileDefinition&) -> Tile* { auto* t = new ClothTile(id); t->init(); return t; });
+    regTex("ChestTile", [](int id, const TileDefinition&) -> Tile* { auto* t = new ChestTile(id); t->init(); return t; });
+    regTex("FarmTile", [](int id, const TileDefinition&) -> Tile* { auto* t = new FarmTile(id); t->init(); return t; });
+    regTex("MelonTile", [](int id, const TileDefinition&) -> Tile* { auto* t = new MelonTile(id); t->init(); return t; });
+    regTex("StonecutterTile", [](int id, const TileDefinition&) -> Tile* { auto* t = new StonecutterTile(id); t->init(); return t; });
+    regTex("TreeTile", [](int id, const TileDefinition&) -> Tile* { auto* t = new TreeTile(id); t->init(); return t; });
+    regTex("QuartzBlockTile", [](int id, const TileDefinition&) -> Tile* { auto* t = new QuartzBlockTile(id); t->init(); return t; });
+    regTex("WorkbenchTile", [](int id, const TileDefinition&) -> Tile* { auto* t = new WorkbenchTile(id); t->init(); return t; });
+
+    // Special constructors
+    registerTileClass("GlassTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 49;
+        auto* t = new GlassTile(id, tex, def.material.empty() ? Material::glass : Material::byName(def.material), false);
+        t->init();
+        return t;
+    });
+
+    registerTileClass("LeafTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 4 + 3 * 16;
+        auto* t = new LeafTile(id, tex);
+        t->init();
+        return t;
+    });
+
+    registerTileClass("StairTile", [](int id, const TileDefinition& def) -> Tile* {
+        // Stairs need a base tile reference; stub for now
+        auto* t = new StairTile(id, Tile::stoneBrick ? Tile::stoneBrick : Tile::rock);
+        t->init();
+        return t;
+    });
+
+    registerTileClass("StoneSlabTile", [](int id, const TileDefinition& def) -> Tile* {
+        bool full = (id == 43);
+        auto* t = new StoneSlabTile(id, full);
+        t->init();
+        return t;
+    });
+
+    registerTileClass("FurnaceTile", [](int id, const TileDefinition& def) -> Tile* {
+        bool lit = (id == 62);
+        auto* t = new FurnaceTile(id, lit);
+        t->init();
+        return t;
+    });
+
+    registerTileClass("SignTile", [](int id, const TileDefinition&) -> Tile* {
+        bool standing = (id == 63);
+        auto* t = new SignTile(id, TileEntityType::Sign, standing);
+        t->init();
+        return t;
+    });
+
+    registerTileClass("DoorTile", [](int id, const TileDefinition& def) -> Tile* {
+        const Material* mat = (id == 71) ? Material::metal : Material::wood;
+        auto* t = new DoorTile(id, mat);
+        t->init();
+        return t;
+    });
+
+    registerTileClass("RedStoneOreTile", [](int id, const TileDefinition& def) -> Tile* {
+        bool lit = (id == 74);
+        int tex = def.tex >= 0 ? def.tex : 16 * 3 + 3;
+        auto* t = new RedStoneOreTile(id, tex, lit);
+        t->init();
+        return t;
+    });
+
+    registerTileClass("ObsidianTile", [](int id, const TileDefinition& def) -> Tile* {
+        bool glow = (id == 246);
+        int tex = def.tex >= 0 ? def.tex : (glow ? 10 + 16 * 13 : 37);
+        auto* t = new ObsidianTile(id, tex, glow);
+        t->init();
+        return t;
+    });
+
+    registerTileClass("InvisibleTile", [](int id, const TileDefinition& def) -> Tile* {
+        auto* t = new InvisibleTile(id, 0, def.material.empty() ? Material::stone : Material::byName(def.material));
+        t->init();
+        return t;
+    });
+
+    registerTileClass("FireTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 1 * 16 + 15;
+        auto* t = new FireTile(id, tex);
+        t->init();
+        return t;
+    });
+
+    registerTileClass("TrapDoorTile", [](int id, const TileDefinition&) -> Tile* {
+        auto* t = new TrapDoorTile(id, Material::wood);
+        t->init();
+        return t;
+    });
+
+    registerTileClass("StemTile", [](int id, const TileDefinition&) -> Tile* {
+        auto* t = new StemTile(id, Tile::melon ? Tile::melon : Tile::melon);
+        t->init();
+        return t;
+    });
+
+    registerTileClass("FenceGateTile", [](int id, const TileDefinition&) -> Tile* {
+        auto* t = new FenceGateTile(id, 4);
+        t->init();
+        return t;
+    });
+
+    registerTileClass("NetherReactor", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 10 + 14 * 16;
+        auto* t = new NetherReactor(id, tex, def.material.empty() ? Material::metal : Material::byName(def.material));
+        t->init();
+        return t;
+    });
+
+    // MultiTextureTile and SandStoneTile use int array for textures — skip for now
+    registerTileClass("MultiTextureTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 1;
+        auto* t = new Tile(id, tex, def.material.empty() ? Material::stone : Material::byName(def.material));
+        t->init();
+        return t;
+    });
+    registerTileClass("SandStoneTile", [](int id, const TileDefinition& def) -> Tile* {
+        int tex = def.tex >= 0 ? def.tex : 1;
+        auto* t = new Tile(id, tex, def.material.empty() ? Material::stone : Material::byName(def.material));
+        t->init();
+        return t;
+    });
+
+    registerTileClass("LiquidTileDynamic", [](int id, const TileDefinition& def) -> Tile* {
+        (void)def;
+        auto* t = new LiquidTileDynamic(id, (id == 8 || id == 9) ? Material::water : Material::lava);
+        t->init();
+        return t;
+    });
+
+    registerTileClass("LiquidTileStatic", [](int id, const TileDefinition& def) -> Tile* {
+        (void)def;
+        auto* t = new LiquidTileStatic(id, (id == 8 || id == 9) ? Material::water : Material::lava);
+        t->init();
+        return t;
+    });
+}
+
+// ─── Apply TileDefinition properties to an existing tile ─────
+static void applyDefToTile(Tile* tile, const TileDefinition& def) {
     if (!def.nameId.empty())
         tile->setNameId(def.nameId);
 
-    static const std::unordered_map<std::string, const SoundType*> s_soundMap = {
-        {"stone", &SOUND_STONE},
-        {"wood", &SOUND_WOOD},
-        {"gravel", &SOUND_GRAVEL},
-        {"grass", &SOUND_GRASS},
-        {"metal", &SOUND_METAL},
-        {"glass", &SOUND_GLASS},
-        {"cloth", &SOUND_CLOTH},
-        {"sand", &SOUND_SAND},
-        {"silent", &SOUND_SILENT},
-        {"normal", &SOUND_NORMAL},
+    static const std::unordered_map<std::string, const Tile::SoundType*> s_soundMap = {
+        {"stone", &Tile::SOUND_STONE},
+        {"wood", &Tile::SOUND_WOOD},
+        {"gravel", &Tile::SOUND_GRAVEL},
+        {"grass", &Tile::SOUND_GRASS},
+        {"metal", &Tile::SOUND_METAL},
+        {"glass", &Tile::SOUND_GLASS},
+        {"cloth", &Tile::SOUND_CLOTH},
+        {"sand", &Tile::SOUND_SAND},
+        {"silent", &Tile::SOUND_SILENT},
+        {"normal", &Tile::SOUND_NORMAL},
     };
     if (!def.soundType.empty()) {
         auto it = s_soundMap.find(def.soundType);
@@ -314,6 +534,159 @@ void Tile::handleJsonDefinition(const std::string& modId, const json& data) {
     tile->creativeGroup = def.creativeGroup;
     if (def.tex >= 0)
         tile->tex = def.tex;
+
+    // Auto-generate descriptionId from nameId if missing
+    if (!def.nameId.empty()) {
+        std::string desc = def.nameId;
+        auto colon = desc.find(':');
+        if (colon != std::string::npos) desc = desc.substr(colon + 1);
+        tile->setDescriptionId(desc);
+    }
+}
+
+/*static*/
+Tile* Tile::createFromDefinition(const TileDefinition& def) {
+    if (def.numericId < 0 || def.numericId >= 256)
+        return nullptr;
+    if (Tile::tiles[def.numericId]) {
+        applyDefToTile(Tile::tiles[def.numericId], def);
+        return Tile::tiles[def.numericId];
+    }
+
+    std::string cname = def.className.empty() ? "Tile" : def.className;
+    auto& factories = s_tileFactories();
+    auto it = factories.find(cname);
+    Tile* tile = nullptr;
+    if (it != factories.end()) {
+        tile = it->second(def.numericId, def);
+    } else {
+        printf("Tile: unknown class '%s' for id %d, falling back to basic\n", cname.c_str(), def.numericId);
+        it = factories.find("Tile");
+        if (it != factories.end())
+            tile = it->second(def.numericId, def);
+    }
+    if (!tile) return nullptr;
+
+    applyDefToTile(tile, def);
+    return tile;
+}
+
+/*static*/
+void Tile::resolveStaticPointers() {
+    struct { const char* nameId; Tile*& ptr; } mapping[] = {
+        {"minecraft:stone", Tile::rock},
+        {"minecraft:grass", Tile::grass},
+        {"minecraft:dirt", Tile::dirt},
+        {"minecraft:stonebrick", Tile::stoneBrick},
+        {"minecraft:wood", Tile::wood},
+        {"minecraft:sapling", Tile::sapling},
+        {"minecraft:bedrock", Tile::unbreakable},
+        {"minecraft:water", Tile::water},
+        {"minecraft:calm_water", Tile::calmWater},
+        {"minecraft:lava", Tile::lava},
+        {"minecraft:calm_lava", Tile::calmLava},
+        {"minecraft:sand", Tile::sand},
+        {"minecraft:gravel", Tile::gravel},
+        {"minecraft:gold_ore", Tile::goldOre},
+        {"minecraft:iron_ore", Tile::ironOre},
+        {"minecraft:coal_ore", Tile::coalOre},
+        {"minecraft:log", Tile::treeTrunk},
+        {"minecraft:glass", Tile::glass},
+        {"minecraft:lapis_ore", Tile::lapisOre},
+        {"minecraft:lapis_block", Tile::lapisBlock},
+        {"minecraft:sandstone", Tile::sandStone},
+        {"minecraft:bed", Tile::bed},
+        {"minecraft:web", Tile::web},
+        {"minecraft:tallgrass", Tile::tallgrass},
+        {"minecraft:cloth", Tile::cloth},
+        {"minecraft:flower", Tile::flower},
+        {"minecraft:rose", Tile::rose},
+        {"minecraft:mushroom", Tile::mushroom1},
+        {"minecraft:mushroom_red", Tile::mushroom2},
+        {"minecraft:gold_block", Tile::goldBlock},
+        {"minecraft:iron_block", Tile::ironBlock},
+        {"minecraft:stone_slab", Tile::stoneSlab},
+        {"minecraft:stone_slab_half", Tile::stoneSlabHalf},
+        {"minecraft:brick", Tile::redBrick},
+        {"minecraft:tnt", Tile::tnt},
+        {"minecraft:bookshelf", Tile::bookshelf},
+        {"minecraft:moss_stone", Tile::mossStone},
+        {"minecraft:obsidian", Tile::obsidian},
+        {"minecraft:torch", Tile::torch},
+        {"minecraft:stairs_wood", Tile::stairs_wood},
+        {"minecraft:chest", Tile::chest},
+        {"minecraft:emerald_ore", Tile::emeraldOre},
+        {"minecraft:emerald_block", Tile::emeraldBlock},
+        {"minecraft:workbench", Tile::workBench},
+        {"minecraft:crops", Tile::crops},
+        {"minecraft:farmland", Tile::farmland},
+        {"minecraft:furnace", Tile::furnace},
+        {"minecraft:lit_furnace", Tile::furnace_lit},
+        {"minecraft:sign", Tile::sign},
+        {"minecraft:door_wood", Tile::door_wood},
+        {"minecraft:ladder", Tile::ladder},
+        {"minecraft:stairs_stone", Tile::stairs_stone},
+        {"minecraft:wall_sign", Tile::wallSign},
+        {"minecraft:door_iron", Tile::door_iron},
+        {"minecraft:redstone_ore", Tile::redStoneOre},
+        {"minecraft:lit_redstone_ore", Tile::redStoneOre_lit},
+        {"minecraft:top_snow", Tile::topSnow},
+        {"minecraft:ice", Tile::ice},
+        {"minecraft:snow", Tile::snow},
+        {"minecraft:cactus", Tile::cactus},
+        {"minecraft:clay", Tile::clay},
+        {"minecraft:reeds", Tile::reeds},
+        {"minecraft:fence", Tile::fence},
+        {"minecraft:light_gem", Tile::lightGem},
+        {"minecraft:invisible_bedrock", Tile::invisible_bedrock},
+        {"minecraft:trapdoor", Tile::trapdoor},
+        {"minecraft:stone_brick_smooth", Tile::stoneBrickSmooth},
+        {"minecraft:thin_glass", Tile::thinGlass},
+        {"minecraft:melon", Tile::melon},
+        {"minecraft:melon_stem", Tile::melonStem},
+        {"minecraft:fence_gate", Tile::fenceGate},
+        {"minecraft:stairs_brick", Tile::stairs_brick},
+        {"minecraft:stairs_stone_brick_smooth", Tile::stairs_stoneBrickSmooth},
+        {"minecraft:nether_brick", Tile::netherBrick},
+        {"minecraft:stairs_nether_brick", Tile::stairs_netherBricks},
+        {"minecraft:stairs_sandstone", Tile::stairs_sandStone},
+        {"minecraft:quartz_block", Tile::quartzBlock},
+        {"minecraft:stairs_quartz", Tile::stairs_quartz},
+        {"minecraft:stonecutter", Tile::stonecutterBench},
+        {"minecraft:glowing_obsidian", Tile::glowingObsidian},
+        {"minecraft:nether_reactor", Tile::netherReactor},
+        {"minecraft:grass_carried", Tile::grass_carried},
+    };
+    for (auto& m : mapping) {
+        for (int i = 0; i < 256; i++) {
+            if (Tile::tiles[i] && Tile::tiles[i]->getNameId() == m.nameId) {
+                m.ptr = Tile::tiles[i];
+                break;
+            }
+        }
+    }
+    // Subclass pointers (LeafTile*, FireTile*)
+    for (int i = 0; i < 256; i++) {
+        if (!Tile::tiles[i]) continue;
+        const std::string& nid = Tile::tiles[i]->getNameId();
+        if (nid == "minecraft:leaves") Tile::leaves = (LeafTile*)Tile::tiles[i];
+        else if (nid == "minecraft:leaves_carried") Tile::leaves_carried = (LeafTile*)Tile::tiles[i];
+        else if (nid == "minecraft:fire") Tile::fire = (FireTile*)Tile::tiles[i];
+    }
+}
+
+/*static*/
+void Tile::handleJsonDefinition(const std::string& modId, const json& data) {
+    (void)modId;
+    TileDefinition def = parseTileDefinition(data);
+    if (def.numericId < 0 || def.numericId >= 256)
+        return;
+    Tile* tile = Tile::tiles[def.numericId];
+    if (tile) {
+        applyDefToTile(tile, def);
+    } else {
+        createFromDefinition(def);
+    }
 }
 
 /*static*/

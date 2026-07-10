@@ -5,6 +5,7 @@
 
 #include <string>
 #include <cstdint>
+#include <functional>
 #include <nlohmann/json.hpp>
 #include "../../phys/AABB.h"
 
@@ -269,6 +270,13 @@ public:
 	static Tile* info_updateGame1;
 	static Tile* info_updateGame2;
 	static Tile* info_reserved6;
+
+    using TileFactory = std::function<Tile*(int, const TileDefinition&)>;
+
+    static void registerTileClass(const std::string& name, TileFactory factory);
+    static void initTileFactories();
+    static Tile* createFromDefinition(const TileDefinition& def);
+    static void resolveStaticPointers();
 
 	static void initTiles();
 	static void applyDefinitions();

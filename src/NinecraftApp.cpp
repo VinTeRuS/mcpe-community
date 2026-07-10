@@ -98,8 +98,10 @@ void NinecraftApp::init()
 		TileEntity::initTileEntities();
 
 		DynamicDataLoader::singleton().initialize();
+		Tile::initTileFactories();
 		ModManager::singleton().scanMods();
 		ModManager::singleton().loadMods();
+		Tile::resolveStaticPointers();
 
 	#ifdef ANDROID
 	}

@@ -408,7 +408,7 @@ Render arm0 + projection mirror + culling fix.
 - `std::vector<DimensionDefinition>` static registry
 - 5 files, +150/-9
 
-### Batch 19 (committed: e57b987)
+### Batch 19 (committed: 1474a1f)
 - [1.9] `DynamicDataLoader` + `ModManager` infra
 - `DynamicDataLoader.h/.cpp` — type→handler dispatch with initialize()
 - `ModManager.h/.cpp` — mod scanning, dependency resolution, loading
@@ -420,6 +420,15 @@ Render arm0 + projection mirror + culling fix.
 - Old `applyDefinitions()` calls removed from initTiles/initItems/initBiomes
 - Builds + launches clean (both targets)
 - 230 files, +762/-258
+
+### Batch 20 (committed: 8777bc9)
+- [1.2] Tile factory system for JSON-primary block definitions
+- `TileFactory` typedef + `initTileFactories()` / `createFromDefinition()` / `resolveStaticPointers()`
+- 50+ tile subclass factories registered (all from TileInclude.h)
+- `createFromDefinition()` dispatches by JSON `"class"` field, creates tile if slot empty, patches if exists
+- Wired into NinecraftApp init sequence (initTileFactories then ModManager then resolveStaticPointers)
+- HellSandTile falls back to basic Tile (C++ class doesn't exist)
+- 4 files, +403/-20
 
 ### Phase 0 Legwork
 - [0.1] uint32 chunk storage ✔
