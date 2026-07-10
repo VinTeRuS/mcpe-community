@@ -421,7 +421,7 @@ Render arm0 + projection mirror + culling fix.
 - Builds + launches clean (both targets)
 - 230 files, +762/-258
 
-### Batch 20 (committed: 8777bc9)
+### Batch 20 (committed: 1716d30)
 - [1.2] Tile factory system for JSON-primary block definitions
 - `TileFactory` typedef + `initTileFactories()` / `createFromDefinition()` / `resolveStaticPointers()`
 - 50+ tile subclass factories registered (all from TileInclude.h)
